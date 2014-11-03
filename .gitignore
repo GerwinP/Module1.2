@@ -1,0 +1,6 @@
+#To be ignored#
+*.class
+*.metadata
+*.settings
+*.classpath
+*.project
