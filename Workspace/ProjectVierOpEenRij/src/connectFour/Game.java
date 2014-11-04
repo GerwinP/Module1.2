@@ -26,7 +26,7 @@ public class Game {
 		return currentplayer;
 	}
 	
-	private static void setGameState(String gameState){
+	public static void setGameState(String gameState){
 		if(gameState.equals("finished")){
 			gamestate = GameState.FINISHED;
 		}else if(gameState.equals("draw")){
@@ -36,7 +36,7 @@ public class Game {
 		}else if(gameState.equals("notstarted")){
 			gamestate = GameState.NOTSTARTED;
 		}else {
-			//throw exception
+			System.out.println("The gamestate '" + gameState + "' is not supported.\n Try another one, maybe a typo?");
 		}
 	}
 	
@@ -130,6 +130,10 @@ public class Game {
 					}
 				}
 			}
+		}
+		countFour();
+		if(getGameState() != GameState.FINISHED || getGameState() != GameState.DRAW){
+			nextTurn();
 		}
 	}
 	
