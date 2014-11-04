@@ -1,5 +1,5 @@
 package utils;
 
 public enum PlayerColor {
-	RED, YELLOW, NOCOLOR;
+	RED, YELLOW, EMPTY;
 }
