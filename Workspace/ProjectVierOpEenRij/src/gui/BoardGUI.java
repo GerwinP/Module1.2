@@ -39,7 +39,7 @@ public class BoardGUI {
 		buttons = new JButton[42];
 		for(int x = 0; x < 6; x++){
 			for(int y = 0; y < 7; y++){
-				int index = Board.indexButton(x, y);
+				int index = Board.getIndexButton(x, y);
 				buttons[index] = new JButton();
 				buttons[index].setBackground(Color.black);
 				buttons[index].setText(Integer.toString(index));

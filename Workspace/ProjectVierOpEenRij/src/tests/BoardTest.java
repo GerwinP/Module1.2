@@ -33,7 +33,10 @@ public class BoardTest {
 			e.printStackTrace();
 		}
 		for(int y = 0; y < col; y++){
-			Board.setStone(y);
+			for(int x = 0; x < row; x++){
+				System.out.println("in loop: " + y);
+				Board.setStone(y);
+			}
 		}
 	}
 	

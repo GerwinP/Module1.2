@@ -16,11 +16,11 @@ public class GameTest {
 	}
 	
 	private static boolean testHorizontal(){
-		for(int x = 36; x <=38 ; x++){
+		for(int x = 36; x <= 40 ; x++){
 			Board.setColor(x, PlayerColor.RED);
 		}
-		Board.setStone(4);
-		Game.countColor(0, 4);
+		Board.setStone(0);
+		System.out.println(Game.getHorizontalCount());
 		return false;
 	}
 	

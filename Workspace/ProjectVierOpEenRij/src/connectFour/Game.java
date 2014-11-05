@@ -58,6 +58,7 @@ public class Game {
 	}
 	
 	public static void countColor(int row, int col){
+		System.out.println(row + ", " + col);
 		int buttonNumber = Dimension * row + col;
 		//Check Left
 		if(col != 0){
@@ -66,6 +67,7 @@ public class Game {
 					horizontalCount++;
 				}
 			}
+			System.out.println("After left check: " + horizontalCount);
 		}
 		//Check Right
 		if(col != maxCol-1){
@@ -74,6 +76,7 @@ public class Game {
 					horizontalCount++;
 				}
 			}
+			System.out.println("After right check: " + horizontalCount);
 		}
 		//Check Up
 		if(row != 0){
@@ -144,5 +147,20 @@ public class Game {
 		}
 	}
 	
+	public static int getHorizontalCount(){
+		return horizontalCount;
+	}
+	
+	public static int getVerticalCount(){
+		return verticalCount;
+	}
+	
+	public static int getDiagonalLeftCount(){
+		return diagonalLeftCount;
+	}
+	
+	public static int getDiagonalRightCount(){
+		return diagonalRightCount;
+	}
 	
 }
