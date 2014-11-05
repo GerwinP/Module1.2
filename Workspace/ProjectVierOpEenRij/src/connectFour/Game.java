@@ -68,7 +68,7 @@ public class Game {
 		
 		//Check Left
 		if(col != 0){
-			for(int x = col; x >= 0; x--){
+			for(int x = col-1; x >= 0; x--){
 				if(Board.getColor(row, x).equals(Board.getColor(buttonNumber))){
 					horizontalCount++;
 				}
@@ -80,8 +80,6 @@ public class Game {
 			for(int x = col+1; x >= col && x < maxCol; x++){
 				if(Board.getColor(row, x).equals(Board.getColor(buttonNumber))){
 					horizontalCount++;
-					System.out.println(Board.getColor(row, x));
-					System.out.println(Board.getIndexButton(row, x) + " row: "+ row +" x: "+ x);
 				}
 			}
 			System.out.println("After right check: " + horizontalCount);
