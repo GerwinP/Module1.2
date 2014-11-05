@@ -1,5 +1,7 @@
 package connectFour;
 
+import gui.BoardGUI;
+
 import java.awt.Color;
 
 import utils.PlayerColor;
@@ -76,7 +78,7 @@ public class Game {
 		//Check Right
 		if(col != maxCol-1){
 			for(int x = col+1; x >= col && x < maxCol; x++){
-				if(Board.getColor(row, x).equals(Board.getColor(buttonNumber)) && Board.getColor(row, x).equals("BLACK")){
+				if(Board.getColor(row, x).equals(Board.getColor(buttonNumber))){
 					horizontalCount++;
 					System.out.println(Board.getColor(row, x));
 					System.out.println(Board.getIndexButton(row, x) + " row: "+ row +" x: "+ x);

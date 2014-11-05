@@ -21,7 +21,7 @@ public class Board {
 	}
 
 	public static String getColor(int row, int col) {
-		buttonNumber = MaxRow * row + col;
+		buttonNumber = MaxCol * row + col;
 		return getColor(buttonNumber);
 	}
 
