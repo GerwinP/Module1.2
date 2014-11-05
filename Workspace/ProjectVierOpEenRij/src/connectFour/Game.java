@@ -1,5 +1,7 @@
 package connectFour;
 
+import java.awt.Color;
+
 import utils.PlayerColor;
 import utils.GameState;
 import connectFour.Board;
@@ -60,10 +62,12 @@ public class Game {
 	public static void countColor(int row, int col){
 		System.out.println(row + ", " + col);
 		int buttonNumber = Dimension * row + col;
+		Board.getColor(buttonNumber);
+		
 		//Check Left
 		if(col != 0){
 			for(int x = col; x >= 0; x--){
-				if(Board.getColor(row, x) == Board.getColor(buttonNumber)){
+				if(Board.getColor(row, x).equals(Board.getColor(buttonNumber))){
 					horizontalCount++;
 				}
 			}
@@ -71,9 +75,11 @@ public class Game {
 		}
 		//Check Right
 		if(col != maxCol-1){
-			for(int x = col; x >= col && x < maxCol; x++){
-				if(Board.getColor(row, x) == Board.getColor(buttonNumber)){
+			for(int x = col+1; x >= col && x < maxCol; x++){
+				if(Board.getColor(row, x).equals(Board.getColor(buttonNumber)) && Board.getColor(row, x).equals("BLACK")){
 					horizontalCount++;
+					System.out.println(Board.getColor(row, x));
+					System.out.println(Board.getIndexButton(row, x) + " row: "+ row +" x: "+ x);
 				}
 			}
 			System.out.println("After right check: " + horizontalCount);
@@ -81,7 +87,7 @@ public class Game {
 		//Check Up
 		if(row != 0){
 			for(int x = row; x >= 0; x--){
-				if(Board.getColor(x, col) == Board.getColor(buttonNumber)){
+				if(Board.getColor(x, col).equals(Board.getColor(buttonNumber))){
 					verticalCount++;
 				}
 			}
@@ -89,7 +95,7 @@ public class Game {
 		//Check Down
 		if(row != maxRow-1){
 			for(int x = row; x >= row && x <= maxRow; x++){
-				if(Board.getColor(x, col) == Board.getColor(buttonNumber)){
+				if(Board.getColor(x, col).equals(Board.getColor(buttonNumber))){
 					verticalCount++;
 				}
 			}
@@ -98,7 +104,7 @@ public class Game {
 		if(row != 0 || col != 0 || (row != 0 && col != 0)){
 			for(int x = col; x >= 0; x--){
 				for(int y = row; y >= 0; y--){
-					if(Board.getColor(y,x) == Board.getColor(buttonNumber)){
+					if(Board.getColor(y,x).equals(Board.getColor(buttonNumber))){
 						diagonalLeftCount++;
 					}
 				}
@@ -108,7 +114,7 @@ public class Game {
 		if(row != maxRow-1 || col != maxCol-1 || (row != maxRow-1 && col != maxCol-1)){
 			for(int x = col; x >= col && x < maxCol; x++){
 				for(int y = row; y >= row && y < maxRow; y++){
-					if(Board.getColor(y,x) == Board.getColor(buttonNumber)){
+					if(Board.getColor(y,x).equals(Board.getColor(buttonNumber))){
 						diagonalLeftCount++;
 					}
 				}
@@ -118,7 +124,7 @@ public class Game {
 		if(row != 0 || col != maxCol-1 || (row != 0 && col != maxCol-1)){
 			for(int x = col; x >= 0; x--){
 				for(int y = row; y >= 0; y--){
-					if(Board.getColor(y, x) == Board.getColor(buttonNumber)){
+					if(Board.getColor(y, x).equals(Board.getColor(buttonNumber))){
 						diagonalRightCount++;
 					}
 				}
@@ -128,7 +134,7 @@ public class Game {
 		if(row != maxRow -1 || col != 0 || (row != maxRow-1 && col != 0)){
 			for(int x = col; x >= col && x < maxCol; x++){
 				for(int y = row; y >= row && y < maxRow; y++){
-					if(Board.getColor(y, x) == Board.getColor(buttonNumber)){
+					if(Board.getColor(y, x).equals(Board.getColor(buttonNumber))){
 						diagonalRightCount++;
 					}
 				}

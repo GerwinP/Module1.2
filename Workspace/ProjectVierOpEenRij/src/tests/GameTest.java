@@ -16,7 +16,7 @@ public class GameTest {
 	}
 	
 	private static boolean testHorizontal(){
-		for(int x = 36; x <= 40 ; x++){
+		for(int x = 36; x <= 38 ; x++){
 			Board.setColor(x, PlayerColor.RED);
 		}
 		Board.setStone(0);

@@ -20,15 +20,24 @@ public class Board {
 		return MaxCol * row + col;
 	}
 
-	public static Color getColor(int row, int col) {
+	public static String getColor(int row, int col) {
 		buttonNumber = MaxRow * row + col;
-		Color background = BoardGUI.buttons[buttonNumber].getBackground();
-		return background;
+		return getColor(buttonNumber);
 	}
 
-	public static Color getColor(int buttonNumber) {
+	public static String getColor(int buttonNumber) {
 		Color background = BoardGUI.buttons[buttonNumber].getBackground();
-		return background;
+		String color;
+		if(background == Color.BLACK){
+			color = "BLACK";
+		}else if(background == Color.RED){
+			color = "RED";
+		}else if(background == Color.YELLOW){
+			color = "YELLOW";
+		}else{
+			color = "NOTFOUND";
+		}
+		return color;
 	}
 
 	public static void setColor(int buttonNumber, PlayerColor playercolor) {
@@ -42,7 +51,6 @@ public class Board {
 	}
 
 	public static void setStone(int col){
-		nextCheck = true;
 		PlayerColor currentplayer = Game.getCurrentPlayer();
 		for(int row = 0; row < MaxRow; row++){
 			try {
@@ -52,14 +60,15 @@ public class Board {
 				e.printStackTrace();
 			}
 			buttonNumber = MaxCol * row + col;
-			if(row == 0 && getColor(buttonNumber) == Color.BLACK){
+			if(row == 0 && getColor(buttonNumber).equals("BLACK")){
 				setColor(buttonNumber, currentplayer);
 			}else{
 				int previousButton = MaxCol * (row-1) + col;
-				if(getColor(buttonNumber) == Color.BLACK){
+				if(getColor(buttonNumber).equals("BLACK")){
 					setColor(previousButton, PlayerColor.EMPTY);
 					//System.out.println(buttonNumber);
 					setColor(buttonNumber, currentplayer);
+					
 				}
 			}
 		}
