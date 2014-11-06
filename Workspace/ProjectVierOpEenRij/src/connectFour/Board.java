@@ -52,7 +52,8 @@ public class Board {
 
 	public static void setStone(int col){
 		PlayerColor currentplayer = Game.getCurrentPlayer();
-		for(int row = 0; row < MaxRow; row++){
+		boolean goOn = true;
+		for(int row = 0;goOn && row < MaxRow; row++){
 			try {
 				TimeUnit.MILLISECONDS.sleep(100);
 			} catch (InterruptedException e) {
@@ -60,6 +61,10 @@ public class Board {
 				e.printStackTrace();
 			}
 			buttonNumber = MaxCol * row + col;
+			int buttonNext = MaxCol * (row+1) + col;
+			if(!getColor(buttonNext).equals("BLACK")){
+				goOn = false;
+			}
 			if(row == 0 && getColor(buttonNumber).equals("BLACK")){
 				setColor(buttonNumber, currentplayer);
 			}else{
