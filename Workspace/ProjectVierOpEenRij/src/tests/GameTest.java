@@ -13,14 +13,15 @@ public class GameTest {
 		new BoardGUI();
 //		testHorizontal();
 //		testVertical();
+		testDiagonalLeft();
 		testEndValues();
 	}
 
 	private static void testEndValues(){
-//		System.out.println("After all checks h: " + Game.getHorizontalCount());
-//		System.out.println("After all checks v: " + Game.getVerticalCount());
-//		System.out.println("After all checks dl: " + Game.getDiagonalLeftCount());
-//		System.out.println("After all checks dr: " + Game.getDiagonalRightCount());
+		System.out.println("After all checks h: " + Game.getHorizontalCount());
+		System.out.println("After all checks v: " + Game.getVerticalCount());
+		System.out.println("After all checks dl: " + Game.getDiagonalLeftCount());
+		System.out.println("After all checks dr: " + Game.getDiagonalRightCount());
 		System.out.println("The gamestate: " + Game.getGameState());
 		System.out.println("The winner: " + Game.getWinner());
 	}
@@ -44,6 +45,22 @@ public class GameTest {
 		Board.setStone(2);
 	}
 	
+	private static void testDiagonalLeft(){
+		for(int x = 0; x < 3; x++){
+			Board.setStone(2);
+		}
+		for(int x = 0; x < 2; x++){
+			Board.setStone(3);
+		}
+		Board.setColor(24, red);
+		Board.setColor(32, red);
+		Board.setColor(40, red);
+		Board.setColor(39, yellow);
+		
+		Board.setStone(1);
+		Board.setStone(2);
+	}
+		
 	public static void main(String[] args) {
 		new GameTest();
 	}

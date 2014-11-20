@@ -1,9 +1,5 @@
 package connectFour;
 
-import gui.BoardGUI;
-
-import java.awt.Color;
-
 import utils.PlayerColor;
 import utils.GameState;
 import connectFour.Board;
@@ -61,7 +57,9 @@ public class Game {
 		return playerColor;
 	}
 	
-	public static void countColor(int row, int col){
+	public static void countColor(int row, int col, PlayerColor color){
+		playerColor = color.toString();
+		System.out.println("Playercolor: " + playerColor);
 		System.out.println(row + ", " + col);
 		int buttonNumber = Dimension * row + col;
 		Board.getColor(buttonNumber);
@@ -70,7 +68,7 @@ public class Game {
 		if(col != 0){
 			boolean colorFound = true;
 			for(int x = col-1;colorFound &&  x >= 0; x--){
-				if(!Board.getColor(row,x).equals("RED")){
+				if(!Board.getColor(row,x).equals(playerColor)){
 					colorFound = false;
 				}else if(Board.getColor(row, x).equals(Board.getColor(buttonNumber))){
 					horizontalCount++;
@@ -82,7 +80,7 @@ public class Game {
 		if(col != maxCol-1){
 			boolean colorFound = true;
 			for(int x = col+1;colorFound &&  x >= col && x < maxCol; x++){
-				if(!Board.getColor(row,x).equals("RED")){
+				if(!Board.getColor(row,x).equals(playerColor)){
 					colorFound = false;
 				}else if(Board.getColor(row, x).equals(Board.getColor(buttonNumber))){
 					horizontalCount++;
@@ -94,7 +92,7 @@ public class Game {
 		if(row != 0){
 			boolean colorFound = true;
 			for(int x = row-1;colorFound && x >= 0; x--){
-				if(!Board.getColor(x, col).equals("RED")){
+				if(!Board.getColor(x, col).equals(playerColor)){
 					colorFound = false;
 				}else if(Board.getColor(x, col).equals(Board.getColor(buttonNumber))){
 					verticalCount++;
@@ -106,7 +104,7 @@ public class Game {
 		if(row != maxRow-1){
 			boolean colorFound = true;
 			for(int x = row+1;colorFound && x >= row && x < maxRow; x++){
-				if(!Board.getColor(x, col).equals("RED")){
+				if(!Board.getColor(x, col).equals(playerColor)){
 					colorFound = false;
 				}else if(Board.getColor(x, col).equals(Board.getColor(buttonNumber))){
 					verticalCount++;
@@ -115,26 +113,54 @@ public class Game {
 //			System.out.println("After down check: " + verticalCount);
 		}
 		//Check Diagonal Left Up
+		//Dit werkt niet, het moet 1 forloopje worden.
+//		if(row != 0 || col != 0 || (row != 0 && col != 0)){
+//			boolean colorFound = true;
+//			int y = row-1;
+//			for(int x = col-1; colorFound && x >= 0 && y >= 0; x--){
+//				if(!Board.getColor(y, x).equals(playerColor)){
+//					colorFound = false;
+//				}else if(Board.getColor(y,x).equals(Board.getColor(buttonNumber))){
+//					diagonalLeftCount++;
+//					y++;
+//					System.out.println("y: " + y + " x: " + x);
+//					System.out.println("After up count: " + diagonalLeftCount);
+//				}
+//			}
+//		}
+		
 		if(row != 0 || col != 0 || (row != 0 && col != 0)){
-			for(int x = col; x >= 0; x--){
-				for(int y = row; y >= 0; y--){
-					if(Board.getColor(y,x).equals(Board.getColor(buttonNumber))){
+			boolean colorFound = true;
+			for(int x = col-1;colorFound && x >= 0; x--){
+				for(int y = row-1;colorFound && y >= 0; y=y-7){
+					if(!Board.getColor(y, x).equals(playerColor)){
+						colorFound = false;
+					}else if(Board.getColor(y,x).equals(Board.getColor(buttonNumber))){
 						diagonalLeftCount++;
+						System.out.println("y: " + y + " x: " + x);
+						System.out.println("After up count: " + diagonalLeftCount);
 					}
 				}
 			}
 		}
 		//Check Diagonal Left Down
+		//Dit werkt niet, het moet 1 forloopje worden
 		if(row != maxRow-1 || col != maxCol-1 || (row != maxRow-1 && col != maxCol-1)){
-			for(int x = col; x >= col && x < maxCol; x++){
-				for(int y = row; y >= row && y < maxRow; y++){
-					if(Board.getColor(y,x).equals(Board.getColor(buttonNumber))){
+			boolean colorFound = true;
+			for(int x = col;colorFound && x >= col && x < maxCol; x++){
+				for(int y = row;colorFound && y >= row && y < maxRow; y++){
+					if(!Board.getColor(y,x).equals(playerColor)){
+						colorFound = false;
+					}else if(Board.getColor(y,x).equals(Board.getColor(buttonNumber))){
 						diagonalLeftCount++;
+						System.out.println("y: " + y + " x: " + x);
+						System.out.println("After down count: " + diagonalLeftCount);
 					}
 				}
 			}
 		}
 		//Check Diagonal Right Up
+		//Dit werkt niet, het moet 1 forloopje worden
 		if(row != 0 || col != maxCol-1 || (row != 0 && col != maxCol-1)){
 			for(int x = col; x >= 0; x--){
 				for(int y = row; y >= 0; y--){
@@ -145,6 +171,7 @@ public class Game {
 			}
 		}
 		//Check Diagonal Right Down
+		//Dit werkt niet, het moet 1 forloopje worden
 		if(row != maxRow -1 || col != 0 || (row != maxRow-1 && col != 0)){
 			for(int x = col; x >= col && x < maxCol; x++){
 				for(int y = row; y >= row && y < maxRow; y++){
@@ -171,6 +198,7 @@ public class Game {
 		if(getGameState() != GameState.FINISHED || getGameState() != GameState.DRAW){
 			nextTurn();
 		}
+		resetCount();
 	}
 	
 	public static void countFour(){
@@ -178,6 +206,13 @@ public class Game {
 			setGameState("finished");
 			winner = currentplayer;
 		}
+	}
+	
+	public static void resetCount(){
+		horizontalCount = 0;
+		verticalCount = 0;
+		diagonalLeftCount = 0;
+		diagonalRightCount = 0; 
 	}
 	
 	public static int getHorizontalCount(){

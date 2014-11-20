@@ -1,3 +1,4 @@
+package ss.week1;
 /**
  * Hello World class.
  * @author Arend Rensink

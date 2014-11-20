@@ -10,18 +10,19 @@ public class Password {
 	}
 	
 	public boolean acceptable(String suggestion){
-	
-		return false;
+		return (suggestion.length() >= 6 && !(suggestion.contains(" ")));
 	}
 	
 	public boolean setWord(String oldpass, String newpass){
-		
+		if(acceptable(newpass) && testWord(oldpass)){
+			password = newpass;
+			return true;
+		}
 		return false;
 	}
 	
 	public boolean testWord(String test){
-		
-		return false;
+		return test.equals(password);
 	}
 	
 }

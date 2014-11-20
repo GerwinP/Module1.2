@@ -1,23 +1,33 @@
 package gui;
 
 import connectFour.Board;
+import connectFour.Game;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
-public class BoardGUI {
+import java.util.Observable;
+import java.util.Observer;
+
+@SuppressWarnings("serial")
+public class BoardGUI extends JFrame implements Observer, ActionListener{
 	
 	JPanel connectFourPanel;
 	JFrame board;
 	public static JButton[] buttons;
 	
-	public BoardGUI(){
+	public BoardGUI(Game game){
+		super("ConnectFour");
+		initialise(game);
+	}
+	
+	public void initialise(Game game){
 		boardFrame();
+		
 	}
 	
 	public JFrame boardFrame(){
@@ -50,6 +60,17 @@ public class BoardGUI {
 	}
 	
 	public static void main(String [] args){
-		new BoardGUI();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 }

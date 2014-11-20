@@ -62,7 +62,7 @@ public class Board {
 			}
 			buttonNumber = MaxCol * row + col;
 			int buttonNext = MaxCol * (row+1) + col;
-			if(!getColor(buttonNext).equals("BLACK")){
+			if(buttonNext < 42 && !getColor(buttonNext).equals("BLACK")){
 				goOn = false;
 			}
 			if(row == 0 && getColor(buttonNumber).equals("BLACK")){
@@ -78,7 +78,7 @@ public class Board {
 			}
 		}
 		setCoordinates(buttonNumber, col);
-		Game.countColor(x,y);
+		Game.countColor(x,y, currentplayer);
 	}
 	
 	public static int getLastSetStone(){
