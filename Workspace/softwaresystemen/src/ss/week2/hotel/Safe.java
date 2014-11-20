@@ -38,6 +38,7 @@ public class Safe {
 	//@ requires password != null;
 	//@ ensures isOpen() == true || isOpen() == false;
 	public void open(String password){
+		assert password != null;
 		if(code.testWord(password) && isActive()){
 			open = true;
 		}
@@ -75,5 +76,11 @@ public class Safe {
 	 */
 	/*@pure*/public Password getPassword(){
 		return code;
+	}
+	
+	public static void main(String[] args){
+		System.out.println("Log of " + Safe.class + ", " + new java.util.Date());
+		Safe test = new Safe();
+		test.open(null);
 	}
 }

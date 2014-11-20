@@ -2,7 +2,7 @@ package ss.week2.hotel;
 
 public class Password {
 	
-	public static final String INITIAL = "WELKOM"; 
+	public static final String INITIAL = "correct"; 
 	private String password;
 	
 	public Password(){

@@ -24,13 +24,44 @@ public class SafeTest {
 	}
 	
 	private void testActivate(){
-		assertEquals("activeSafe.getActive")
+		assertEquals("activeSafe.isActive()", true, activeSafe.isActive());
+		assertEquals("inactiveSafe.isActive", false, inactiveSafe.isActive());
 	}
 
+	private void testDeActivate(){
+		activeSafe.deactivate();
+		assertEquals("activeSafe.isActive()", false, activeSafe.isActive());
+	}
+	
+	private void testOpenCorrect(){
+		activeSafe.open(correctPass);
+		assertEquals("activeSafe.isOpen()", true, activeSafe.isOpen());
+	}
+	
+	private void testOpenWrong(){
+		activeSafe.open(wrongPass);
+		assertEquals("activeSafe.isOpen()", false, activeSafe.isOpen());
+	}
+	
+	private void testClosed(){
+		activeSafe.open(correctPass);
+		assertEquals("activeSafe.isOpen()", true, activeSafe.isOpen());
+		activeSafe.close();
+		assertEquals("activeSafe.isOpen()", false, activeSafe.isOpen());
+	}
+	
 	@Test
 	public void test() {
 		setUp();
-		fail("Not yet implemented");
+		testActivate();
+		setUp();
+		testDeActivate();
+		setUp();
+		testOpenCorrect();
+		setUp();
+		testOpenWrong();
+		setUp();
+		testClosed();
 	}
 
 }

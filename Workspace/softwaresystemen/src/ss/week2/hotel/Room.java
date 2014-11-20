@@ -1,4 +1,4 @@
-package ss.week1.hotel;
+package ss.week2.hotel;
 
 /**
  * Hotel room with number and possibly a guest.
@@ -11,6 +11,7 @@ public class Room {
     private int number;
     private Guest guest;
     private String room;
+    public Safe safe;
 
     // ------------------ Constructor ------------------------
 
@@ -20,6 +21,7 @@ public class Room {
      */
     public Room(int no) {
     	number = no;
+    	safe = new Safe();
     }
 
     // ------------------ Queries --------------------------
@@ -40,17 +42,25 @@ public class Room {
     public Guest getGuest() {
     	return guest;
     }
+    
+    /**
+     * Returns the <code>Safe</code> that is available in this <code>Room</code>
+     * @return the <code>Safe</code> of the <code>Room</code>
+     */
+    public Safe getSafe(){
+    	return safe;
+    }
 
     // ------------------ Commands --------------------------
 
     /**
      * Assigns a <code>Guest</code> to this <code>Room</code>.
-     * @param guest2 the next guest renting this <code>Room</code>;
+     * @param g the next guest renting this <code>Room</code>;
      *        if <code>null</code> is passed, this <code>Room</code>
      *        is empty afterwards
      */
-    public void setGuest(Guest guest2) {
-    	guest = guest2;
+    public void setGuest(Guest g) {
+    	guest = g;
     }
     
     public String toString(){
