@@ -11,7 +11,7 @@ public class Board {
     // -- Constants --------------------------------------------------
 
     public static final int DIM = 3;
-    private static final String[] NUMBERING = {" 0 | 1 | 2 ", "---+---+---",
+    private static final String[] NUMBERING = {" 0 | 1 | 2 ", "----+----+----",
         " 3 | 4 | 5 ", "---+---+---", " 6 | 7 | 8 "};
     private static final String LINE = NUMBERING[1];
     private static final String DELIM = "     ";
@@ -153,7 +153,7 @@ public class Board {
      * @return true if the field is empty
      */
     public boolean isEmptyField(int i) {
-        return getField(i) == Mark.EMPTY;
+        return getField(i) == Mark.EM;
     }
 
     /*@
@@ -172,7 +172,7 @@ public class Board {
      */
     /*@pure*/
     public boolean isEmptyField(int row, int col) {
-        return getField(index(row,col)) == Mark.EMPTY;
+        return getField(index(row,col)) == Mark.EM;
     }
 
     /*@
@@ -187,7 +187,7 @@ public class Board {
     public boolean isFull() {
     	boolean isFull = true;
     	for(int i = 0; i < DIM*DIM; i++){
-    		if(fields[i] == Mark.EMPTY){
+    		if(fields[i] == Mark.EM){
     			isFull = false;
     		}
     	}
@@ -356,7 +356,7 @@ public class Board {
      */
     public void reset() {
     	for(int i = 0; i < DIM*DIM; i++){
-    		setField(i, Mark.EMPTY);
+    		setField(i, Mark.EM);
     	}
     }
 

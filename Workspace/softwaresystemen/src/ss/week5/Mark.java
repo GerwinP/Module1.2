@@ -10,7 +10,7 @@ package ss.week5;
  */
 public enum Mark {
     
-    EMPTY, XX, OO;
+    EM, XX, OO;
 
     /*@
        ensures this == Mark.XX ==> \result == Mark.OO;
@@ -28,7 +28,7 @@ public enum Mark {
         } else if (this == OO) {
             return XX;
         } else {
-            return EMPTY;
+            return EM;
         }
     }
 }
