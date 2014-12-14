@@ -77,4 +77,14 @@ public class MapUtils {
 		}
 		return compatible;
 	}
+	
+	public static <K,V> Map<K,V> compose(Map<K,V> f, Map<K,V> g){
+		Map<K,V> mapR = new HashMap<K,V>();
+		if(isCompatible(f,g)){
+			for(K key : f.keySet()){
+				mapR.put(key, g.get(f.get(key)));
+			}
+		}
+		return mapR;
+	}
 }

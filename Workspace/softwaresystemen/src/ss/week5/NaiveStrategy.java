@@ -1,7 +1,6 @@
 package ss.week5;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 public class NaiveStrategy implements Strategy{
 
@@ -14,14 +13,15 @@ public class NaiveStrategy implements Strategy{
 
 	@Override
 	public int determineMove(Board b, Mark m) {
-		Set<Integer> emptyFields = new HashSet<Integer>();
+		LinkedList<Integer> emptyFields = new LinkedList<Integer>();
 		for(int i = 0; i < b.DIM*b.DIM; i++){
 			if(b.isEmptyField(i)){
 				emptyFields.add(i);
 			}
 		}
 		double randomNumber = Math.random() * emptyFields.size();
-		return (int)randomNumber;
+		int toPlay = emptyFields.get((int)randomNumber);
+		return (int)toPlay;
 	}
 
 }
