@@ -13,7 +13,8 @@ public class BoardTest {
 	private static int col = 7;
 	
 	public BoardTest(){
-		new BoardGUI();
+		Game game = new Game();
+		new BoardGUI(game);
 //		for(int x = 0; x < 8; x++){
 //			System.out.println("x is: " + x);
 //			testSetStone(2);

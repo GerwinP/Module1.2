@@ -39,13 +39,19 @@ public class Sort {
 			for (int x = middle; x < toSort.size(); x++) {
 				right.add(toSort.get(x));
 			}
-			merge(left);
-			merge(right);
-			while (left.size() <= 0 && right.size() <= 0) {
-				if (left.getFirst() > right.getFirst()) {
-					toSort.add(right.poll());
-				} else {
-					toSort.add(left.poll());
+			left = merge(left);
+			right = merge(right);
+			int iL = 0;
+			int iR = 0;
+			for(int i = 0; i < toSort.size(); i++){
+				if(iL >= left.size()){
+					toSort.set(i, right.get(iR++));
+				}else if(iR >= right.size()){
+					toSort.set(i, left.get(iL++));
+				}else if(left.get(iL).compareTo(right.get(iR)) <= 0){
+					toSort.set(i, left.get(iL++));
+				}else{
+					toSort.set(i, right.get(iR++));
 				}
 			}
 		}
@@ -53,12 +59,10 @@ public class Sort {
 	}
 
 	public static void main(String[] args) {
-		LinkedList<Integer> toTest = new LinkedList<Integer>(Arrays.asList(3,
-				2, 4, 6, 9, 7, 8, 5, 1));
-		Sort s = new Sort();
-		System.out.println("Bubble");
-		System.out.println(s.bubble(toTest));
+		LinkedList<Integer> toTest = new LinkedList<Integer>(Arrays.asList(3, 2, 4, 6, 9, 7, 8, 5, 1 ,2));
+		//System.out.println("Bubble");
+		//System.out.println(Sort.bubble(toTest));
 		System.out.println("Merge");
-		System.out.println(s.merge(toTest));
+		System.out.println(Sort.merge(toTest));
 	}
 }

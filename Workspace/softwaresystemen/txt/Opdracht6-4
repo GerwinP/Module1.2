@@ -1,0 +1,4 @@
+1. Je kan een file meegeven in de constructor van de PrintWriter. 
+	Om een file te laten lezen door een bufferedreader moet je eerst een filereader gebruiken die de file leest. Deze returnt een Reader object die je weer mee kan geven aan de bufferedreader
+2. De flush methode flushed de stream. Als de stream characters heeft opgeslagen van verschillende write() methodes, worden deze geschreven naar hun bestemming waar ze heen moesten. 1 flush() zal alle buffers flushen.
+3. Door een boolean in de constructor mee te geven die autoFlush aan zet. Default staat autoFlush uit, maar als deze aan staat wordt elke keer de stream geflusht.

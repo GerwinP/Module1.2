@@ -9,15 +9,14 @@ public class Hallo {
 		Scanner in = new Scanner(System.in);
 		while(notEmpty){
 			System.out.println("What is your name?");
-			if(in.nextLine().isEmpty()){
-				notEmpty = false;
-			}else{
-				String name = in.next();
-				System.out.println("Hello " + name);
-			}
+				String name = in.nextLine();
+				if(name.isEmpty()){
+					notEmpty = false;
+				}else{
+					System.out.println("Hello " + name);
+				}
 		}
 		in.close();
-		System.exit(0);
 	}
 
 }

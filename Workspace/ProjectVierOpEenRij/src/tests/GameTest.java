@@ -10,7 +10,8 @@ public class GameTest {
 	private static PlayerColor red = PlayerColor.RED;
 	
 	public GameTest(){
-		new BoardGUI();
+		Game game = new Game();
+		new BoardGUI(game);
 //		testHorizontal();
 //		testVertical();
 		testDiagonalLeft();
@@ -52,10 +53,10 @@ public class GameTest {
 		for(int x = 0; x < 2; x++){
 			Board.setStone(3);
 		}
-		Board.setColor(24, red);
-		Board.setColor(32, red);
-		Board.setColor(40, red);
-		Board.setColor(39, yellow);
+		Board.setColor(24, yellow);
+		Board.setColor(32, yellow);
+		Board.setColor(40, yellow);
+		Board.setColor(39, red);
 		
 		Board.setStone(1);
 		Board.setStone(2);

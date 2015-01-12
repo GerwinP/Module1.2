@@ -1,5 +1,8 @@
 package ss.week6.cards;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 public class Card
 {
 
@@ -319,5 +322,21 @@ public class Card
 	 */
 	public boolean isInRankBefore(Card card) {
 		return isRankFollowing(this.getRank(), card.getRank());
+	}
+	
+	public void write(PrintWriter toWrite){
+		toWrite.write(this.toString());
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException{
+		PrintWriter toWrite = new PrintWriter(args[0]);
+		Card cardC = new Card('C', '5');
+		Card cardH = new Card('H', 'Q');
+		Card cardS = new Card('S', 'K');
+		Card cardD = new Card('D', 'A');
+		cardC.write(toWrite);
+		cardH.write(toWrite);
+		cardS.write(toWrite);
+		cardD.write(toWrite);
 	}
 }
