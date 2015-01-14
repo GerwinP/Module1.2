@@ -1,5 +1,6 @@
 package ss.week6.cards;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
@@ -325,11 +326,12 @@ public class Card
 	}
 	
 	public void write(PrintWriter toWrite){
-		toWrite.write(this.toString());
+		toWrite.println(this.toString());
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException{
-		PrintWriter toWrite = new PrintWriter(args[0]);
+		File file = new File("C:\\Development\\GitWorkspace\\Workspace\\softwaresystemen\\" + args[0]);
+		PrintWriter toWrite = new PrintWriter(file);
 		Card cardC = new Card('C', '5');
 		Card cardH = new Card('H', 'Q');
 		Card cardS = new Card('S', 'K');

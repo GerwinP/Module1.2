@@ -1,0 +1,2 @@
+The advantage of using the MVC model is that you can easily use the same view with another implementation, of use a different implementation with the same view. As long as the controller is still combining both.
+This means that you can easily reuse a view for a billion implementations. This makes a program easy to maintain and also really flexible.

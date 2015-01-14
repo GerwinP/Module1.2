@@ -1,0 +1,4 @@
+The observable supports the following methods:
+addObserver(), clearChanged(), countObservers(), deleteOberserver(Observer o), deleteObservers(), hasChanged(), notifyObservers(), notifyOberservers(Object arg), setChanged()
+
+The addParty() and the makeVote() methods should call methods from the Observable class. 

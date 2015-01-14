@@ -9,7 +9,7 @@ public class Hallo {
 		Scanner in = new Scanner(System.in);
 		while(notEmpty){
 			System.out.println("What is your name?");
-				String name = in.nextLine();
+				String name = in.next();
 				if(name.isEmpty()){
 					notEmpty = false;
 				}else{
