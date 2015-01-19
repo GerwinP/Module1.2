@@ -1,10 +1,15 @@
 package ss.week6.cards;
 
+import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Card {
 
@@ -354,15 +359,39 @@ public class Card {
 		toWrite.println(this);
 	}
 
+	public static Card read(BufferedReader in) throws EOFException, IOException{
+		String line = in.readLine();
+		Card card;
+		if(line != null){
+			String[] words = line.split("\\s+");
+			String suit = words[0];
+			String rank = words[1];
+			char s = suitString2Char(suit);
+			char r = rankString2Char(rank);
+			if(isValidSuit(s) && isValidRank(r)){
+				card = new Card(s,r);
+			}else{
+				card = null;
+			}
+		}else{
+			return null;
+		}
+		return card;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		try {
+			Scanner scanner;
 			PrintWriter toWrite;
 			if (args.length == 0) {
 				toWrite = new PrintWriter(System.out);
+				scanner = new Scanner(System.in);
 			} else {
-				toWrite = new PrintWriter(new FileWriter(args[0]), true);
+				File file = new File(args[0]);
+				toWrite = new PrintWriter(file);
+				scanner = new Scanner(file);
 			}
-			Card cardC = new Card('C', '5');
+			Card cardC = new Card('C', '6');
 			Card cardH = new Card('H', 'Q');
 			Card cardS = new Card('S', 'K');
 			Card cardD = new Card('D', 'K');
@@ -371,6 +400,15 @@ public class Card {
 			cardS.write(toWrite);
 			cardD.write(toWrite);
 			toWrite.close();
+			List<Card> cards = new LinkedList<Card>();
+			while(scanner.hasNext()){
+				String next = scanner.nextLine();
+				System.out.println(next);
+				String[] words = next.split("\\s+");
+				cards.add(new Card(suitString2Char(words[0]), rankString2Char(words[1])));
+				scanner.close();
+			}
+			System.out.println(cards);
 		} catch (IOException e) {
 			System.out.println("File not found");
 		}
