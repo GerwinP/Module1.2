@@ -39,8 +39,8 @@ public class StartGUI extends JFrame implements Observer, ActionListener{
 	}
 	
 	private JPanel chooseColorPanel(){
+		chooseColorPanel = new JPanel();
 		JRadioButton red = new JRadioButton("red");
-		
 		JRadioButton yellow = new JRadioButton("yellow");
 		JRadioButton pink = new JRadioButton("pink");
 		JRadioButton green = new JRadioButton("green");

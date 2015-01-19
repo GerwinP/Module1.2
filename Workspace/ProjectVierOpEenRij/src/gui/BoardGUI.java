@@ -16,9 +16,11 @@ import java.util.Observer;
 @SuppressWarnings("serial")
 public class BoardGUI extends JFrame implements Observer, ActionListener{
 	
-	JPanel connectFourPanel;
-	JFrame board;
+	private JPanel connectFourPanel;
+	private JPanel rowChooserPanel;
+	private JFrame board;
 	public static JButton[] buttons;
+	public static JButton[] rowChoosers;
 	
 	public BoardGUI(Game game){
 		super("ConnectFour");
@@ -35,11 +37,26 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		
 		BorderLayout border = new BorderLayout();
 		board.setLayout(border);
+		board.add(rowChooserPanel(), BorderLayout.NORTH);
 		board.add(connectFourPanel(), BorderLayout.CENTER);
 		board.setVisible(true);
 		board.setSize(700,700);
 		board.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return board;
+	}
+	
+	private JPanel rowChooserPanel(){
+		rowChooserPanel = new JPanel();
+		GridLayout gridLayout = new GridLayout(1,7);
+		rowChooserPanel.setLayout(gridLayout);
+		rowChoosers = new JButton[7];
+		for(int i = 0; i < 7; i++){
+			rowChoosers[i] = new JButton();
+			rowChoosers[i].setBackground(Color.blue);
+			rowChoosers[i].setText("\\/");
+			rowChooserPanel.add(rowChoosers[i]);
+		}
+		return rowChooserPanel;
 	}
 	
 	private JPanel connectFourPanel(){
@@ -53,6 +70,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 				buttons[index] = new JButton();
 				buttons[index].setBackground(Color.black);
 				buttons[index].setText(Integer.toString(index));
+				buttons[index].setEnabled(false);
 				connectFourPanel.add(buttons[index]);
 			}
 		}
@@ -60,6 +78,8 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	}
 	
 	public static void main(String [] args){
+		Game game = new Game();
+		new BoardGUI(game);
 	}
 
 	@Override

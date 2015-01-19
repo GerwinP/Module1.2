@@ -1,0 +1,2 @@
+The difference is that if the method drawMandel is called, the multi-threading is disabled, so when you let the program draw the picture, you can not interact with the menu.
+If the draw method is called, you can interact with the menu while the picture is drawing.

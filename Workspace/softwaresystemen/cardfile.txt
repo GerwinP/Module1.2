@@ -1,0 +1,4 @@
+Clubs 5
+Hearts queen
+Spades king
+Diamonds king
