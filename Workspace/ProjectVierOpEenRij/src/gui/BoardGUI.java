@@ -99,9 +99,9 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			JButton source = (JButton)e.getSource();
-			source.setBackground(Color.red);
-			System.out.println(source);
 			int index = Arrays.asList(rowChoosers).indexOf(source);
+			System.out.println(index);
+			Board.setStone(index);
 		}
 
 	}

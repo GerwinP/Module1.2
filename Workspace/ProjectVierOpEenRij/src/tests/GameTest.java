@@ -11,10 +11,12 @@ public class GameTest {
 	
 	public GameTest(){
 		Game game = new Game();
+		game.setGameState("inprogress");
 		new BoardGUI(game);
 //		testHorizontal();
 //		testVertical();
-		testDiagonalLeft();
+//		testDiagonalLeft();
+		testDiagonalRight();
 		testEndValues();
 	}
 
@@ -62,6 +64,22 @@ public class GameTest {
 		Board.setStone(2);
 	}
 		
+	private static void testDiagonalRight(){
+		for(int x = 0; x < 3; x++){
+			Board.setStone(4);
+		}
+		for(int y = 0; y < 2; y++){
+			Board.setStone(3);
+		}
+		Board.setColor(24, red);
+		Board.setColor(37, yellow);
+		Board.setColor(30, red);
+		Board.setColor(36, red);
+		
+		Board.setStone(5);
+		Board.setStone(4);
+	}
+	
 	public static void main(String[] args) {
 		new GameTest();
 	}

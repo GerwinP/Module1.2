@@ -19,7 +19,8 @@ public class BoardTest {
 //			System.out.println("x is: " + x);
 //			testSetStone(2);
 //		}
-		testOldSetStone();
+		testSetStone(2);
+//		testOldSetStone();
 	}
 	
 	private static void testSetStone(int col){
