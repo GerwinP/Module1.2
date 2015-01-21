@@ -19,30 +19,31 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	
 	private JPanel connectFourPanel;
 	private JPanel rowChooserPanel;
-	private JFrame board;
-	public static JButton[] buttons;
-	public static JButton[] rowChoosers;
+	private JFrame boardFrame;
+	public JButton[] buttons;
+	public JButton[] rowChoosers;
+	public Game game;
 	
 	public BoardGUI(Game game){
 		super("ConnectFour");
-		initialise(game);
+		this.game = game;
+		initialise(this.game);
 	}
 	
 	public void initialise(Game game){
-		boardFrame();
-		
+		boardFrameFrame();
 	}
 	
-	public JFrame boardFrame(){
-		board = new JFrame("Vier Op Een Rij");
+	public JFrame boardFrameFrame(){
+		boardFrame = new JFrame("Vier Op Een Rij");
 		BorderLayout border = new BorderLayout();
-		board.setLayout(border);
-		board.add(rowChooserPanel(), BorderLayout.NORTH);
-		board.add(connectFourPanel(), BorderLayout.CENTER);
-		board.setVisible(true);
-		board.setSize(700,700);
-		board.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		return board;
+		boardFrame.setLayout(border);
+		boardFrame.add(rowChooserPanel(), BorderLayout.NORTH);
+		boardFrame.add(connectFourPanel(), BorderLayout.CENTER);
+		boardFrame.setVisible(true);
+		boardFrame.setSize(700,700);
+		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		return boardFrame;
 	}
 	
 	private JPanel rowChooserPanel(){
@@ -54,7 +55,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 			rowChoosers[i] = new JButton();
 			rowChoosers[i].setBackground(Color.white);
 			rowChoosers[i].setText("\\/");
-			rowChoosers[i].addActionListener(new BoardController());
+			rowChoosers[i].addActionListener(new boardFrameController());
 			rowChooserPanel.add(rowChoosers[i]);
 		}
 		return rowChooserPanel;
@@ -77,11 +78,11 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		}
 		return connectFourPanel;
 	}
-	
-	public static void main(String [] args){
-		Game game = new Game();
-		new BoardGUI(game);
-	}
+//	
+//	public static void main(String [] args){
+//		Game game = new Game();
+//		new BoardGUI(game);
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -95,13 +96,13 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		
 	}
 	
-	class BoardController implements ActionListener{
+	class boardFrameController implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			JButton source = (JButton)e.getSource();
 			int index = Arrays.asList(rowChoosers).indexOf(source);
 			System.out.println(index);
-			Board.setStone(index);
+			game.board.setStone(index);
 		}
 
 	}

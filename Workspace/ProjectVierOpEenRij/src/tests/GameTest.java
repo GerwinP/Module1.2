@@ -1,83 +1,111 @@
 package tests;
 
 import connectFour.*;
-import gui.BoardGUI;
 import utils.*;
 
 public class GameTest {
 
-	private static PlayerColor yellow = PlayerColor.YELLOW;
-	private static PlayerColor red = PlayerColor.RED;
+	private PlayerColor yellow = PlayerColor.YELLOW;
+	private PlayerColor red = PlayerColor.RED;
+	private Game game;
 	
 	public GameTest(){
-		Game game = new Game();
+		game = new Game();
 		game.setGameState("inprogress");
-		new BoardGUI(game);
 //		testHorizontal();
 //		testVertical();
 //		testDiagonalLeft();
-		testDiagonalRight();
-		testEndValues();
+//		testDiagonalRight();
+//		testDiagonalExtreme();
+//		testDiagonalLeftBoth();
+		testNonStatic();
+//		testEndValues();
 	}
 
-	private static void testEndValues(){
-		System.out.println("After all checks h: " + Game.getHorizontalCount());
-		System.out.println("After all checks v: " + Game.getVerticalCount());
-		System.out.println("After all checks dl: " + Game.getDiagonalLeftCount());
-		System.out.println("After all checks dr: " + Game.getDiagonalRightCount());
-		System.out.println("The gamestate: " + Game.getGameState());
-		System.out.println("The winner: " + Game.getWinner());
+	private void testEndValues(){
+		System.out.println("After all checks h: " + game.getHorizontalCount());
+		System.out.println("After all checks v: " + game.getVerticalCount());
+		System.out.println("After all checks dl: " + game.getDiagonalLeftCount());
+		System.out.println("After all checks dr: " + game.getDiagonalRightCount());
+		System.out.println("The gamestate: " + game.getGameState());
+		System.out.println("The winner: " + game.getWinner());
 	}
 	
-	private static void testVertical(){
-		Board.setColor(23, red);
-		Board.setColor(30, red);
-		Board.setColor(37, red);
-		Board.setStone(2);
+	private void testVertical(){
+		game.board.setColor(23, red);
+		game.board.setColor(30, red);
+		game.board.setColor(37, red);
+		game.board.setStone(2);
 	}
 	
-	private static void testHorizontal(){
-		Board.setColor(36, yellow);
-		Board.setColor(37, yellow);
-		Board.setColor(39, yellow);
-		Board.setColor(38, red);
+	private void testHorizontal(){
+		game.board.setColor(36, yellow);
+		game.board.setColor(37, yellow);
+		game.board.setColor(39, yellow);
+		game.board.setColor(38, red);
 		
-		Board.setColor(29, red);
-		Board.setColor(31, red);
-		Board.setColor(32, red);
-		Board.setStone(2);
+		game.board.setColor(29, red);
+		game.board.setColor(31, red);
+		game.board.setColor(32, red);
+		game.board.setStone(2);
 	}
 	
-	private static void testDiagonalLeft(){
+	private void testDiagonalLeft(){
 		for(int x = 0; x < 3; x++){
-			Board.setStone(2);
+			game.board.setStone(2);
 		}
 		for(int x = 0; x < 2; x++){
-			Board.setStone(3);
+			game.board.setStone(3);
 		}
-		Board.setColor(24, red);
-		Board.setColor(32, red);
-		Board.setColor(40, red);
-		Board.setColor(39, yellow);
+		game.board.setColor(24, red);
+		game.board.setColor(32, red);
+//		game.board.setColor(16, red);
+		game.board.setColor(40, red);
+		game.board.setColor(39, yellow);
 		
-		Board.setStone(1);
-		Board.setStone(2);
+		game.board.setStone(1);
+		game.board.setStone(2);
+//		game.board.setStone(5);
 	}
 		
-	private static void testDiagonalRight(){
+	private void testDiagonalRight(){
 		for(int x = 0; x < 3; x++){
-			Board.setStone(4);
+			game.board.setStone(4);
 		}
 		for(int y = 0; y < 2; y++){
-			Board.setStone(3);
+			game.board.setStone(3);
 		}
-		Board.setColor(24, red);
-		Board.setColor(37, yellow);
-		Board.setColor(30, red);
-		Board.setColor(36, red);
+		game.board.setColor(24, red);
+		game.board.setColor(37, yellow);
+		game.board.setColor(30, red);
+		game.board.setColor(36, red);
 		
-		Board.setStone(5);
-		Board.setStone(4);
+		game.board.setStone(5);
+		game.board.setStone(4);
+	}
+	
+	public void testDiagonalLeftBoth(){
+		game.board.setColor(40, red);
+		game.board.setColor(16, red);
+		game.board.setColor(32, red);
+		game.board.setColor(8, red);
+		
+		game.board.setColor(15, yellow);
+		game.board.setColor(23, yellow);
+		game.board.setColor(31, yellow);
+		game.board.setColor(39, yellow);
+		
+		game.board.setStone(3);
+	}
+	
+	public void testDiagonalExtreme(){
+		game.board.setColor(34, yellow);
+		game.board.setColor(41, yellow);
+		game.board.setStone(6);
+	}
+	
+	public void testNonStatic(){
+		game.board.setColor(1, red);
 	}
 	
 	public static void main(String[] args) {

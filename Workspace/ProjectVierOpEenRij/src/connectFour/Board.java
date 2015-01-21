@@ -9,24 +9,31 @@ import java.util.concurrent.TimeUnit;
 
 public class Board {
 
-	static int MaxRow = 6;
-	static int MaxCol = 7;
-	static int buttonNumber;
-	static boolean nextCheck = true;
-	static int x;
-	static int y;
+	private int MaxRow = 6;
+	private int MaxCol = 7;
+	public static int DIM = 7;
+	private int buttonNumber;
+	private static int x;
+	private static int y;
+	private Game game;
+	private BoardGUI boardgui;
 
+	public Board(Game game, BoardGUI gui){
+		this.game = game;
+		boardgui = gui;
+	}
+	
 	public static int getIndexButton(int row, int col) {
-		return MaxCol * row + col;
+		return DIM * row + col;
 	}
 
-	public static String getColor(int row, int col) {
-		buttonNumber = MaxCol * row + col;
+	public String getColor(int row, int col) {
+		buttonNumber = getIndexButton(row, col);
 		return getColor(buttonNumber);
 	}
 
-	public static String getColor(int buttonNumber) {
-		Color background = BoardGUI.buttons[buttonNumber].getBackground();
+	public String getColor(int buttonNumber) {
+		Color background = boardgui.buttons[buttonNumber].getBackground();
 		String color;
 		if(background == Color.BLACK){
 			color = "BLACK";
@@ -40,18 +47,18 @@ public class Board {
 		return color;
 	}
 
-	public static void setColor(int buttonNumber, PlayerColor playercolor) {
+	public void setColor(int buttonNumber, PlayerColor playercolor) {
 		if (playercolor == PlayerColor.RED) {
-			BoardGUI.buttons[buttonNumber].setBackground(Color.RED);
+			boardgui.buttons[buttonNumber].setBackground(Color.RED);
 		} else if (playercolor == PlayerColor.YELLOW) {
-			BoardGUI.buttons[buttonNumber].setBackground(Color.YELLOW);
+			boardgui.buttons[buttonNumber].setBackground(Color.YELLOW);
 		} else {
-			BoardGUI.buttons[buttonNumber].setBackground(Color.BLACK);
+			boardgui.buttons[buttonNumber].setBackground(Color.BLACK);
 		}
 	}
 
-	public static void setStone(int col){
-		PlayerColor currentplayer = Game.getCurrentPlayer();
+	public void setStone(int col){
+		PlayerColor currentplayer = game.getCurrentPlayer();
 		boolean goOn = true;
 		for(int row = 0;goOn && row < MaxRow; row++){
 			try {
@@ -60,7 +67,7 @@ public class Board {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			buttonNumber = MaxCol * row + col;
+			buttonNumber = getIndexButton(row, col);
 			int buttonNext = MaxCol * (row+1) + col;
 			if(buttonNext < 42 && !getColor(buttonNext).equals("BLACK")){
 				goOn = false;
@@ -72,15 +79,14 @@ public class Board {
 				if(getColor(buttonNumber).equals("BLACK")){
 					setColor(previousButton, PlayerColor.EMPTY);
 					setColor(buttonNumber, currentplayer);
-					
 				}
 			}
 		}
 		setCoordinates(buttonNumber, col);
-		Game.countColor(x,y, currentplayer);
+		game.countColor(x,y, currentplayer);
 	}
 	
-	public static int getLastSetStone(){
+	public int getLastSetStone(){
 		return buttonNumber;
 	}
 	
