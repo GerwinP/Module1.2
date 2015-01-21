@@ -71,7 +71,6 @@ public class Board {
 				int previousButton = MaxCol * (row-1) + col;
 				if(getColor(buttonNumber).equals("BLACK")){
 					setColor(previousButton, PlayerColor.EMPTY);
-					//System.out.println(buttonNumber);
 					setColor(buttonNumber, currentplayer);
 					
 				}

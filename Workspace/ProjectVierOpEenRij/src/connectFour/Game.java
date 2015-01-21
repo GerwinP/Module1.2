@@ -57,13 +57,7 @@ public class Game {
 		return playerColor;
 	}
 	
-	public static void countColor(int row, int col, PlayerColor color){
-		playerColor = color.toString();
-		System.out.println("Playercolor: " + playerColor);
-		System.out.println(row + ", " + col);
-		int buttonNumber = Dimension * row + col;
-		Board.getColor(buttonNumber);
-		
+	public static void countHorizontal(int row, int col, int buttonNumber){
 		//Check Left
 		if(col != 0){
 			boolean colorFound = true;
@@ -88,6 +82,9 @@ public class Game {
 			}
 //			System.out.println("After right check: " + horizontalCount);
 		}
+	}
+	
+	public static void countVertical(int row, int col, int buttonNumber){
 		//Check Up
 		if(row != 0){
 			boolean colorFound = true;
@@ -98,7 +95,6 @@ public class Game {
 					verticalCount++;
 				}
 			}
-//			System.out.println("After up check: " + verticalCount);
 		}
 		//Check Down
 		if(row != maxRow-1){
@@ -110,8 +106,33 @@ public class Game {
 					verticalCount++;
 				}
 			}
-//			System.out.println("After down check: " + verticalCount);
 		}
+	}
+	
+	public static void countDiagonalLeft(int row, int col, int buttonNumber){
+		
+	}
+	
+	public static void countDiagonalRight(int row, int col, int buttonNumber){
+		
+	}
+	
+	public static void countColor(int row, int col, PlayerColor color){
+		playerColor = color.toString();
+		System.out.println("Playercolor: " + playerColor);
+		System.out.println(row + ", " + col);
+		int buttonNumber = Dimension * row + col;
+		
+		//Check horizontal
+		countHorizontal(row, col, buttonNumber);
+		//Check vertical
+		countVertical(row, col, buttonNumber);
+		//Check DiagonalLeft
+		countDiagonalLeft(row, col, buttonNumber);
+		//Check DiagonalRight
+		countDiagonalRight(row, col, buttonNumber);
+
+
 		//Check Diagonal Left Up
 		//Dit werkt niet, het moet 1 forloopje worden.
 //		if(row != 0 || col != 0 || (row != 0 && col != 0)){
@@ -129,6 +150,8 @@ public class Game {
 //			}
 //		}
 		
+		
+		
 		if(row != 0 || col != 0 || (row != 0 && col != 0)){
 			boolean colorFound = true;
 			for(int x = col-1;colorFound && x >= 0; x--){
@@ -143,6 +166,11 @@ public class Game {
 				}
 			}
 		}
+		
+		if(row != maxRow-1 || col != maxCol-1 || (row != maxRow-1 && col != maxCol-1)){
+			
+		}
+		
 		//Check Diagonal Left Down
 		//Dit werkt niet, het moet 1 forloopje worden
 		if(row != maxRow-1 || col != maxCol-1 || (row != maxRow-1 && col != maxCol-1)){

@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -34,7 +35,6 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	
 	public JFrame boardFrame(){
 		board = new JFrame("Vier Op Een Rij");
-		
 		BorderLayout border = new BorderLayout();
 		board.setLayout(border);
 		board.add(rowChooserPanel(), BorderLayout.NORTH);
@@ -52,8 +52,9 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		rowChoosers = new JButton[7];
 		for(int i = 0; i < 7; i++){
 			rowChoosers[i] = new JButton();
-			rowChoosers[i].setBackground(Color.blue);
+			rowChoosers[i].setBackground(Color.white);
 			rowChoosers[i].setText("\\/");
+			rowChoosers[i].addActionListener(new BoardController());
 			rowChooserPanel.add(rowChoosers[i]);
 		}
 		return rowChooserPanel;
@@ -92,5 +93,16 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	class BoardController implements ActionListener{
+
+		public void actionPerformed(ActionEvent e) {
+			JButton source = (JButton)e.getSource();
+			source.setBackground(Color.red);
+			System.out.println(source);
+			int index = Arrays.asList(rowChoosers).indexOf(source);
+		}
+
 	}
 }
