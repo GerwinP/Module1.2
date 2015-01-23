@@ -31,8 +31,15 @@ public class Server {
 
 	private int port;
 	private List<ClientHandler> threads;
+	public ServerSocket serverSocket = null;
     /** Constructs a new Server object */
 	public Server(int portArg) {
+		port = portArg;
+		try {
+			serverSocket = new ServerSocket(port);
+		} catch (IOException e) {
+			System.out.println("Could not create a ServerSocket on port " + port);
+		}
 	}
 	
 	/**
@@ -42,6 +49,16 @@ public class Server {
 	     * communication with the Client. 
 	 */
 	public void run() {
+		while(true){
+			try {
+				Socket clientSocket = serverSocket.accept();
+				ClientHandler clientHandler = new ClientHandler(this, clientSocket);
+				addHandler(clientHandler);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void print(String message){

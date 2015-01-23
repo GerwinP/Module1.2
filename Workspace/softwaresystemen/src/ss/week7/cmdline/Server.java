@@ -43,14 +43,13 @@ public class Server {
     	}
     	
     	try{
-    		while(true){
     			Socket clientSocket = sock.accept();
     			System.out.println("Client connected");
     			Peer client = new Peer(name, clientSocket);
     			Thread streamInputHandler = new Thread(client);
     			streamInputHandler.start();
     			client.handleTerminalInput();
-    		}
+    			client.shutDown();
     	}catch(IOException e){
     		e.printStackTrace();
     	}
