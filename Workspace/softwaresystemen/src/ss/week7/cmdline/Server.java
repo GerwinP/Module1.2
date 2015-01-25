@@ -45,11 +45,11 @@ public class Server {
     	try{
     			Socket clientSocket = sock.accept();
     			System.out.println("Client connected");
-    			Peer client = new Peer(name, clientSocket);
-    			Thread streamInputHandler = new Thread(client);
+    			Peer server = new Peer(name, clientSocket);
+    			Thread streamInputHandler = new Thread(server);
     			streamInputHandler.start();
-    			client.handleTerminalInput();
-    			client.shutDown();
+    			server.handleTerminalInput();
+    			server.shutDown();
     	}catch(IOException e){
     		e.printStackTrace();
     	}

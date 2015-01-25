@@ -63,26 +63,62 @@ public class Client extends Thread{
 	private Socket sock;
 	private BufferedReader in;
 	private BufferedWriter out;
+	private boolean isConnected = false;
 
 	/**
 	 * Constructs a Client-object and tries to make a socket connection
 	 */
 	public Client(String name, InetAddress host, int port) throws IOException {
+		clientName = name;
 		sock = new Socket(host, port);
+		isConnected = true;
+		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+		sendMessage(clientName);
 	}
 
 	/**
 	 * Reads the messages in the socket connection. Each message will be forwarded to the MessageUI
 	 */
 	public void run() {
+		try{
+			while(isConnected){
+				String message = in.readLine();
+				if(message != null){
+//					print(message);
+					sendMessage(message);
+				}else{
+					isConnected = false;
+				}
+			}
+		}catch(IOException e){
+			shutdown();
+		}
 	}
 
 	/** send a message to a ClientHandler. */
 	public void sendMessage(String msg) {
+//		System.out.println("Message: " + msg);
+		try {
+			out.write(msg);
+			out.newLine();
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/** close the socket connection. */
 	public void shutdown() {
+		try {
+			sock.shutdownInput();
+			sock.shutdownOutput();
+			sock.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/** returns the client name */
