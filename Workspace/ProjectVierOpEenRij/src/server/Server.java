@@ -11,8 +11,19 @@ public class Server {
 
 	private int port;
 	private List<ClientHandler> threads;
-	private ServerSocket serverSocket = null;
-
+	public ServerSocket serverSocket = null;
+	private static final String USAGE = "usage: " + Server.class.getName() + " <port>";
+	
+	public static void main(String[] args){
+		if (args.length != 1) {
+			System.out.println(USAGE);
+			System.exit(0);
+		}
+		
+		Server server = new Server(Integer.parseInt(args[0]));
+		server.run();
+	}
+	
 	public Server(int portArg) {
 		port = portArg;
 		threads = new ArrayList<ClientHandler>();
@@ -30,6 +41,7 @@ public class Server {
 				Socket clientSocket = serverSocket.accept();
 				ClientHandler clientHandler = new ClientHandler(clientSocket, this);
 				addHandler(clientHandler);
+				clientHandler.announce();
 				clientHandler.start();
 			}
 		} catch (IOException e) {
@@ -43,6 +55,8 @@ public class Server {
 
 	public void broadcast(String msg) {
 		Iterator<ClientHandler> iterator = threads.iterator();
+		
+		print(msg);
 		
 		while(iterator.hasNext()){
 			iterator.next().sendMessage(msg);

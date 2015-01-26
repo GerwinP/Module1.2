@@ -55,7 +55,7 @@ public class Server{
 				Socket clientSocket = serverSocket.accept();
 				ClientHandler clientHandler = new ClientHandler(this, clientSocket);
 				addHandler(clientHandler);
-//				clientHandler.announce();
+				clientHandler.announce();
 				clientHandler.start();
 			}
 		} catch (IOException e) {
