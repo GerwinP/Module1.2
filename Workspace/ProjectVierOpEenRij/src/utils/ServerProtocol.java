@@ -115,7 +115,38 @@ public interface ServerProtocol {
 	 */
 	public static final String SEND_CHALLENGE = "challenge";
 	
+	/**
+	 * A message sent by a user when accepting a challenge. <br>
+	 * As this does not specify which user he accepts, the rule has to be made by the server there can only be 1 challenge to a client. <Br>
+	 * usage: acceptChallenge<ul></ul>
+	 * <b>Errors:</b>
+	 * <ul>
+	 *{@link #SEND_ERROR_INVALIDCOMMAND <b>error invalidCommand</b>} if <code>arguments.size != 0 || !client.isChallenged()</code>
+	 *</ul>
+	 */
+	public static final String ACCEPT_CHALLENGE = "acceptChallenge";
 	
+	/**
+	 * A message sent by a user when rejecting a challenge. <br>
+	 * As this does not specify which user he rejects, the rule has to be made by the server there can only be 1 challenge to a client. <Br>
+	 * usage: rejectChallenge<ul></ul>
+	 * <b>Errors:</b>
+	 * <ul>
+	 *{@link #SEND_ERROR_INVALIDCOMMAND <b>error invalidCommand</b>} if <code>arguments.size != 0 || !client.isChallenged()</code>
+	 *</ul>
+	 */
+	public static final String REJECT_CHALLENGE = "rejectChallenge";
+	
+	/**
+	 * A message sent by a client to request the leaderboard<br>
+	 * usage: getLeaderboard<ul></ul>
+	 * 
+	 * <b>Errors:</b>
+	 * <ul>
+	 * {@link #SEND_ERROR_INVALIDCLIENT <b>error invalidClient</b>} if <code>sender</code> is ingame or the <code>sender/server</code> does not support {@link #SEND_LEADERBOARD} as provided in {@link #SEND_HELLO}<br>
+	 *</ul>
+	 */
+	public static final String GET_LEADERBOARD = "getLeaderboard";
 
 	
 	/*                 ----------------------------------------------------
