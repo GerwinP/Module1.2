@@ -39,7 +39,7 @@ public class Server {
 		try {
 			while (true) {
 				Socket clientSocket = serverSocket.accept();
-				ClientHandler clientHandler = new ClientHandler(clientSocket, this);
+				ClientHandler clientHandler = new ClientHandler(this, clientSocket);
 				addHandler(clientHandler);
 				clientHandler.announce();
 				clientHandler.start();

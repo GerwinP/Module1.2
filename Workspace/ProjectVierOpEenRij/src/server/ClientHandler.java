@@ -17,7 +17,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	private BufferedWriter out;
 	private String clientName;
 
-	public ClientHandler(Socket clientSock, Server serverSock)
+	public ClientHandler(Server serverSock, Socket clientSock)
 			throws IOException {
 		client = clientSock;
 		server = serverSock;
