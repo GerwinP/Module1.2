@@ -85,8 +85,8 @@ public class Client extends Thread{
 			while(isConnected){
 				String message = in.readLine();
 				if(message != null){
-//					print(message);
-					sendMessage(message);
+					print(message);
+//					sendMessage(message);
 				}else{
 					isConnected = false;
 				}

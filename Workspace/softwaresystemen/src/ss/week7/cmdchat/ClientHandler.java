@@ -33,16 +33,16 @@ public class ClientHandler extends Thread {
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 	}
 
-	/**
-	 * Reads the name of a Client from the input stream and sends 
-         * a broadcast message to the Server to signal that the Client
-         * is participating in the chat. Notice that this method should 
-         * be called immediately after the ClientHandler has been constructed.
-	 */
-	public void announce() throws IOException {
-		clientName = in.readLine();
-		server.broadcast("[" + clientName + " has entered]");
-	}
+//	/**
+//	 * Reads the name of a Client from the input stream and sends 
+//         * a broadcast message to the Server to signal that the Client
+//         * is participating in the chat. Notice that this method should 
+//         * be called immediately after the ClientHandler has been constructed.
+//	 */
+//	public void announce() throws IOException {
+//		clientName = in.readLine();
+//		server.broadcast("[" + clientName + " has entered]");
+//	}
 
 	/**
          * This method takes care of sending messages from the Client.
