@@ -13,6 +13,9 @@ public class Server {
 	private List<ClientHandler> threads;
 	public ServerSocket serverSocket = null;
 	private static final String USAGE = "usage: " + Server.class.getName() + " <port>";
+	private List<String> clientNames = new ArrayList<String>();
+	public final String versie = "000";
+	public List<Socket> waitingForGame = new ArrayList<Socket>();
 	
 	public static void main(String[] args){
 		if (args.length != 1) {
@@ -41,8 +44,11 @@ public class Server {
 				Socket clientSocket = serverSocket.accept();
 				ClientHandler clientHandler = new ClientHandler(this, clientSocket);
 				addHandler(clientHandler);
-				clientHandler.announce();
 				clientHandler.start();
+				if(waitingForGame.size() == 2){
+					print("Two players waiting");
+				}
+				
 			}
 		} catch (IOException e) {
 			System.out.println("Stuk");
@@ -52,7 +58,7 @@ public class Server {
 	public void print(String message) {
 		System.out.println(message);
 	}
-
+	
 	public void broadcast(String msg) {
 		Iterator<ClientHandler> iterator = threads.iterator();
 		
@@ -69,5 +75,17 @@ public class Server {
 
 	public void removeHandler(ClientHandler handler) {
 		threads.remove(handler);
+	}
+	
+	public void addClientName(String name){
+		clientNames.add(name);
+	}
+	
+	public void removeClientName(String name){
+		clientNames.remove(name);
+	}
+	
+	public String getVersie(){
+		return versie;
 	}
 }

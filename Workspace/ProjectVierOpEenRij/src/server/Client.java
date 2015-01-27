@@ -65,8 +65,8 @@ public class Client extends Thread{
 		isConnected = true;
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-		sendMessage(this.name);
-		//sendMessage("hello " + "000 " + name);
+//		sendMessage(this.name);
+		sendMessage("hello " + "000 " + name);
 	}
 	
 	public void run(){
@@ -86,6 +86,7 @@ public class Client extends Thread{
 	}
 	
 	public void sendMessage(String msg){
+		print(msg);
 		try {
 			out.write(msg);
 			out.newLine();

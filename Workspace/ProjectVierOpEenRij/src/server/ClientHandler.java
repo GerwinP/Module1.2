@@ -16,6 +16,8 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	private BufferedReader in;
 	private BufferedWriter out;
 	private String clientName;
+	private String opties;
+	private boolean ack = false;
 
 	public ClientHandler(Server serverSock, Socket clientSock)
 			throws IOException {
@@ -30,12 +32,24 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	public void run() {
 		try {
 			while (true) {
-//				String message = in.readLine();
-				server.broadcast("[" + clientName + "]" + in.readLine());
-//				String[] splitMessage = message.split("\\s+");
-//				if (splitMessage[0].equals(SEND_HELLO)) {
-//
-//				}
+//				server.broadcast("[" + clientName + "]" + in.readLine());
+				String msg = in.readLine();
+				String[] splitMessage = msg.split("\\s+");
+				if (splitMessage[0].equals(SEND_HELLO)) {
+					clientName = splitMessage[2];
+					server.addClientName(clientName);
+					opties = splitMessage[1];
+					announce();
+					sendMessage("hello " + server.getVersie());
+					ack = true;
+				}
+				if(splitMessage[0].equals(SEND_PLAY) && ack){
+					System.out.println("Another one");
+					server.waitingForGame.add(client);
+					if(server.waitingForGame.size() == 2){
+						System.out.println("Two players waiting");
+					}
+				}
 			}
 		} catch (IOException e) {
 			shutDown();
@@ -43,7 +57,6 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	}
 
 	public void announce() throws IOException {
-		clientName = in.readLine();
 		server.broadcast("[" + clientName + " has entered]");
 	}
 
