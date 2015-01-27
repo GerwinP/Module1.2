@@ -39,7 +39,7 @@ public class ClientStarter {
 		arguments[2] = scanner.nextLine();
 		scanner.close();
 		checkArguments(arguments);
-		Client.startClient(arguments[0], host, port);
+//		Client.startClient(arguments[0], host, port);
 		
 	}
 	

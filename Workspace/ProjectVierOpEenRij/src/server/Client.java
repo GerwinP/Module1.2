@@ -69,23 +69,6 @@ public class Client extends Thread{
 		//sendMessage("hello " + "000 " + name);
 	}
 	
-	public static void startClient(String name, InetAddress host, int port){
-		try {
-			Client client = new Client(name, host, port);
-			client.sendMessage(name);
-			client.start();
-			
-			do{
-				String input = readIn();
-				client.sendMessage(input);
-			}while(true);
-			
-		} catch (IOException e) {
-			print("ERROR: couldn't construct a client object!");
-			System.exit(0);
-		}
-	}
-	
 	public void run(){
 		try{
 			while(isConnected){
@@ -136,7 +119,9 @@ public class Client extends Thread{
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			input = in.readLine();
 		} catch (IOException e) {
+			System.exit(0);
+//			e.printStackTrace();
 		}
-		return (input == null) ? "" : input;
+		return (input == null) ? "hoi" : input;
 	}
 }

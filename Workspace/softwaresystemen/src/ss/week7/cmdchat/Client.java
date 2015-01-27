@@ -89,6 +89,7 @@ public class Client extends Thread{
 //					sendMessage(message);
 				}else{
 					isConnected = false;
+					shutdown();
 				}
 			}
 		}catch(IOException e){
@@ -104,8 +105,9 @@ public class Client extends Thread{
 			out.newLine();
 			out.flush();
 		} catch (IOException e) {
+			shutdown();
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
@@ -138,6 +140,7 @@ public class Client extends Thread{
 					System.in));
 			antw = in.readLine();
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		return (antw == null) ? "" : antw;
