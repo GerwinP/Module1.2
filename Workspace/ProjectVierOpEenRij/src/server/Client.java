@@ -91,12 +91,13 @@ public class Client extends Thread{
 			out.newLine();
 			out.flush();
 		}catch(IOException e){
-		
+			shutDown();
 		}
 	}
 	
 	public void shutDown(){
 		try {
+//			out.flush();
 			sock.shutdownInput();
 			sock.shutdownOutput();
 			sock.close();
@@ -122,6 +123,6 @@ public class Client extends Thread{
 			System.exit(0);
 //			e.printStackTrace();
 		}
-		return (input == null) ? "hoi" : input;
+		return (input == null) ? "" : input;
 	}
 }

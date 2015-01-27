@@ -45,7 +45,7 @@ public class Server {
 				clientHandler.start();
 			}
 		} catch (IOException e) {
-
+			System.out.println("Stuk");
 		}
 	}
 
