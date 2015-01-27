@@ -8,41 +8,37 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class Client extends Thread{
 	
+	private static final String USAGE = "usage: java week7.cmdchat.Client <name> <address> <port>";
+	
 	public static void main(String[] args){
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter your username");
-		String[] arguments = new String[3];
-		arguments[0] = scanner.nextLine();
-		System.out.println("Enter ip address");
-		arguments[1] = scanner.nextLine();
-		System.out.println("Enter port number");
-		arguments[2] = scanner.nextLine();
-		scanner.close();
+		if (args.length != 3) {
+			System.out.println(USAGE);
+			System.exit(0);
+		}
 		
 		InetAddress host = null;
 		int port = 0;
 		
 		try {
-			host = InetAddress.getByName(arguments[1]);
+			host = InetAddress.getByName(args[1]);
 		} catch (UnknownHostException e) {
 			print("ERROR: no valid hostname!");
 			System.exit(0);
 		}
 		
 		try {
-			port = Integer.parseInt(arguments[2]);
+			port = Integer.parseInt(args[2]);
 		} catch (NumberFormatException e) {
 			print("ERROR: no valid portnummer!");
 			System.exit(0);
 		}
 		
 		try {
-			Client client = new Client(arguments[0], host, port);
-			client.sendMessage(arguments[0]);
+			Client client = new Client(args[0], host, port);
+			client.sendMessage(args[0]);
 			client.start();
 			
 			do{
@@ -71,6 +67,23 @@ public class Client extends Thread{
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 		sendMessage(this.name);
 		//sendMessage("hello " + "000 " + name);
+	}
+	
+	public static void startClient(String name, InetAddress host, int port){
+		try {
+			Client client = new Client(name, host, port);
+			client.sendMessage(name);
+			client.start();
+			
+			do{
+				String input = readIn();
+				client.sendMessage(input);
+			}while(true);
+			
+		} catch (IOException e) {
+			print("ERROR: couldn't construct a client object!");
+			System.exit(0);
+		}
 	}
 	
 	public void run(){
