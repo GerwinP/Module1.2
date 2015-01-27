@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import connectFour.Game;
+
 public class Server {
 
 	private int port;
@@ -87,5 +89,9 @@ public class Server {
 	
 	public String getVersie(){
 		return versie;
+	}
+	
+	public void makeGame(){
+		Game game = new Game();
 	}
 }

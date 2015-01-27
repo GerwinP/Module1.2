@@ -48,6 +48,8 @@ public class ClientHandler extends Thread implements ServerProtocol {
 					server.waitingForGame.add(client);
 					if(server.waitingForGame.size() == 2){
 						System.out.println("Two players waiting");
+						sendMessage("makeGame");
+						
 					}
 				}
 			}
