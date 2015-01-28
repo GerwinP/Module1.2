@@ -10,7 +10,7 @@ public class GameTest {
 	private Game game;
 	
 	public GameTest(){
-		game = new Game();
+//		game = new Game();
 		game.setGameState("inprogress");
 //		testHorizontal();
 //		testVertical();

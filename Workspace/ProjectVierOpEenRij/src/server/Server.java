@@ -7,17 +7,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import players.HumanPlayer;
+import players.Player;
+import utils.GameState;
+import utils.PlayerColor;
 import connectFour.Game;
 
 public class Server {
 
+	private GameState gamestate;
 	private int port;
 	private List<ClientHandler> threads;
 	public ServerSocket serverSocket = null;
 	private static final String USAGE = "usage: " + Server.class.getName() + " <port>";
 	private List<String> clientNames = new ArrayList<String>();
 	public final String versie = "000";
-	public List<Socket> waitingForGame = new ArrayList<Socket>();
+	public List<ClientHandler> waitingForGame = new ArrayList<ClientHandler>();
 	
 	public static void main(String[] args){
 		if (args.length != 1) {
@@ -47,10 +52,6 @@ public class Server {
 				ClientHandler clientHandler = new ClientHandler(this, clientSocket);
 				addHandler(clientHandler);
 				clientHandler.start();
-				if(waitingForGame.size() == 2){
-					print("Two players waiting");
-				}
-				
 			}
 		} catch (IOException e) {
 			System.out.println("Stuk");
@@ -92,6 +93,23 @@ public class Server {
 	}
 	
 	public void makeGame(){
-		Game game = new Game();
+		ClientHandler p1 = waitingForGame.get(0);
+		ClientHandler p2 = waitingForGame.get(1);
+		waitingForGame.remove(p1);
+		waitingForGame.remove(p2);
+		Player player1 = new HumanPlayer(p1.getClientName(), PlayerColor.RED);
+		Player player2 = new HumanPlayer(p2.getClientName(), PlayerColor.YELLOW);
+		Game game = new Game(player1, player2);
+		game.setGameState("inprogress");
+		gamestate = game.getGameState();
+		System.out.println(gamestate.toString());
+		while(gamestate == GameState.INPROGRESS){
+			if(gamestate == GameState.FINISHED){
+				print(gamestate.toString());
+				p1.sendMessage(gamestate.toString() + " The winner is: " + game.getWinner());
+				p2.sendMessage(gamestate.toString() + " The winner is: " + game.getWinner());
+			
+			}
+		}
 	}
 }

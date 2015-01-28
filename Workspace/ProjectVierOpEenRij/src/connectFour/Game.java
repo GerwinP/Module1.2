@@ -1,17 +1,21 @@
 package connectFour;
 
+import java.util.Observable;
+
+import players.HumanPlayer;
+import players.Player;
 import gui.BoardGUI;
 import utils.PlayerColor;
 import utils.GameState;
 import connectFour.Board;
 
-public class Game {
+public class Game extends Observable{
 
 	private int maxCol = 7;
 	private int maxRow = 6;
 	private String playerColor;
-	private PlayerColor currentplayer = PlayerColor.RED;
-	private PlayerColor winner;
+	private Player currentplayer;;
+	private Player winner;
 	private GameState gamestate = GameState.NOTSTARTED;
 	private int horizontalCount = 0;
 	private int verticalCount = 0;
@@ -19,8 +23,12 @@ public class Game {
 	private int diagonalRightCount = 0;
 	public Board board;
 	public BoardGUI boardgui;
+	private Player[] players = new Player[2];
 
-	public Game(){
+	public Game(Player player1, Player player2){
+		players[0] = player1;
+		players[1] = player2;
+		currentplayer = players[0];
 		boardgui = new BoardGUI(this);
 		board = new Board(this, boardgui);
 	}
@@ -29,7 +37,7 @@ public class Game {
 		return gamestate;
 	}
 
-	public PlayerColor getCurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return currentplayer;
 	}
 
@@ -49,15 +57,15 @@ public class Game {
 	}
 
 	public void nextTurn() {
-		if (currentplayer == PlayerColor.RED) {
-			currentplayer = PlayerColor.YELLOW;
+		if (currentplayer == players[0]) {
+			currentplayer = players[1];
 		} else {
-			currentplayer = PlayerColor.RED;
+			currentplayer = players[0];
 		}
 	}
 
 	public String toStringPlayer() {
-		if (currentplayer == PlayerColor.RED) {
+		if (currentplayer.getPlayerColor() == PlayerColor.RED) {
 			playerColor = "RED";
 		} else {
 			playerColor = "YELLOW";
@@ -136,8 +144,8 @@ public class Game {
 				}else if(board.getColor(x,y).equals(board.getColor(buttonNumber))){
 					diagonalLeftCount++;
 					y--;
-					System.out.println(" x: " + x + " y: " + y);
-					System.out.println("After up count1: " + diagonalLeftCount);
+//					System.out.println(" x: " + x + " y: " + y);
+//					System.out.println("After up count1: " + diagonalLeftCount);
 				}
 			}
 		}
@@ -189,9 +197,9 @@ public class Game {
 	}
 
 	public void countColor(int row, int col, PlayerColor color) {
-		System.out.println("Count color is aangeroepen");
+//		System.out.println("Count color is aangeroepen");
 		playerColor = color.toString();
-		System.out.println("Playercolor: " + playerColor);
+//		System.out.println("Playercolor: " + playerColor);
 		
 
 		// Check horizontal
@@ -209,7 +217,7 @@ public class Game {
 			setGameState("finished");
 			winner = currentplayer;
 		}
-		System.out.println(isWinner());
+//		System.out.println(isWinner());
 		if (getGameState() != GameState.FINISHED
 				|| getGameState() != GameState.DRAW) {
 			nextTurn();
@@ -240,15 +248,20 @@ public class Game {
 		return diagonalRightCount;
 	}
 
-	public PlayerColor getWinner() {
+	public Player getWinner() {
 		return winner;
 	}
 
 	public boolean isWinner(){
+		if(gamestate==GameState.FINISHED){
+			notifyObservers("winner");
+		}
 		return gamestate == GameState.FINISHED;
 	}
 	
 	public static void main(String[] args){
-		new Game();
+		Player player1 = new HumanPlayer("Gerwin", PlayerColor.RED);
+		Player player2 = new HumanPlayer("Josje", PlayerColor.YELLOW);
+		new Game(player1, player2);
 	}
 }

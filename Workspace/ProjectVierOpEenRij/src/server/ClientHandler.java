@@ -45,11 +45,11 @@ public class ClientHandler extends Thread implements ServerProtocol {
 				}
 				if(splitMessage[0].equals(SEND_PLAY) && ack){
 					System.out.println("Another one");
-					server.waitingForGame.add(client);
+					server.waitingForGame.add(this);
 					if(server.waitingForGame.size() == 2){
 						System.out.println("Two players waiting");
 						sendMessage("makeGame");
-						
+						server.makeGame();
 					}
 				}
 			}
@@ -72,6 +72,10 @@ public class ClientHandler extends Thread implements ServerProtocol {
 		}
 	}
 
+	public String getClientName(){
+		return clientName;
+	}
+	
 	private void shutDown() {
 		server.removeHandler(this);
 		server.broadcast("[" + clientName + " has left]");

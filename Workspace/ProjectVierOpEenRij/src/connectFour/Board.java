@@ -7,6 +7,8 @@ import connectFour.Game;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
+import players.Player;
+
 public class Board {
 
 	private int MaxRow = 6;
@@ -58,7 +60,7 @@ public class Board {
 	}
 
 	public void setStone(int col){
-		PlayerColor currentplayer = game.getCurrentPlayer();
+		Player currentplayer = game.getCurrentPlayer();
 		boolean goOn = true;
 		for(int row = 0;goOn && row < MaxRow; row++){
 			try {
@@ -73,17 +75,17 @@ public class Board {
 				goOn = false;
 			}
 			if(row == 0 && getColor(buttonNumber).equals("BLACK")){
-				setColor(buttonNumber, currentplayer);
+				setColor(buttonNumber, currentplayer.getPlayerColor());
 			}else{
 				int previousButton = MaxCol * (row-1) + col;
 				if(getColor(buttonNumber).equals("BLACK")){
 					setColor(previousButton, PlayerColor.EMPTY);
-					setColor(buttonNumber, currentplayer);
+					setColor(buttonNumber, currentplayer.getPlayerColor());
 				}
 			}
 		}
 		setCoordinates(buttonNumber, col);
-		game.countColor(x,y, currentplayer);
+		game.countColor(x,y, currentplayer.getPlayerColor());
 	}
 	
 	public int getLastSetStone(){

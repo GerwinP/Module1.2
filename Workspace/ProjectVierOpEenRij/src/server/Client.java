@@ -102,6 +102,7 @@ public class Client extends Thread{
 			sock.shutdownInput();
 			sock.shutdownOutput();
 			sock.close();
+			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
