@@ -29,8 +29,8 @@ public class Game extends Observable{
 		players[0] = player1;
 		players[1] = player2;
 		currentplayer = players[0];
-		boardgui = new BoardGUI(this);
 		board = new Board(this, boardgui);
+		setGameState("inprogress");
 	}
 	
 	public GameState getGameState() {
@@ -220,6 +220,7 @@ public class Game extends Observable{
 //		System.out.println(isWinner());
 		if (getGameState() != GameState.FINISHED
 				|| getGameState() != GameState.DRAW) {
+			notifyObservers("nextturn");
 			nextTurn();
 		}
 		resetCount();

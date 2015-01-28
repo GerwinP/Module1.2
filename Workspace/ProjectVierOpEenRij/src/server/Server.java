@@ -15,7 +15,8 @@ import connectFour.Game;
 
 public class Server {
 
-	private GameState gamestate;
+	public Game game;
+	public GameState gamestate;
 	private int port;
 	private List<ClientHandler> threads;
 	public ServerSocket serverSocket = null;
@@ -23,6 +24,7 @@ public class Server {
 	private List<String> clientNames = new ArrayList<String>();
 	public final String versie = "000";
 	public List<ClientHandler> waitingForGame = new ArrayList<ClientHandler>();
+	private List<ClientHandler> inGame = new ArrayList<ClientHandler>();
 	
 	public static void main(String[] args){
 		if (args.length != 1) {
@@ -71,6 +73,16 @@ public class Server {
 			iterator.next().sendMessage(msg);
 		}
 	}
+	
+	public void broadcastInGame(String msg){
+		Iterator<ClientHandler> iterator = inGame.iterator();
+		
+		print(msg);
+		
+		while(iterator.hasNext()){
+			iterator.next().sendMessage(msg);
+		}
+	}
 
 	public void addHandler(ClientHandler handler) {
 		threads.add(handler);
@@ -97,19 +109,23 @@ public class Server {
 		ClientHandler p2 = waitingForGame.get(1);
 		waitingForGame.remove(p1);
 		waitingForGame.remove(p2);
+		inGame.add(p1);
+		inGame.add(p2);
 		Player player1 = new HumanPlayer(p1.getClientName(), PlayerColor.RED);
 		Player player2 = new HumanPlayer(p2.getClientName(), PlayerColor.YELLOW);
 		Game game = new Game(player1, player2);
 		game.setGameState("inprogress");
 		gamestate = game.getGameState();
+		broadcastInGame("startgui");
 		System.out.println(gamestate.toString());
 		while(gamestate == GameState.INPROGRESS){
 			if(gamestate == GameState.FINISHED){
-				print(gamestate.toString());
-				p1.sendMessage(gamestate.toString() + " The winner is: " + game.getWinner());
-				p2.sendMessage(gamestate.toString() + " The winner is: " + game.getWinner());
-			
+				broadcastInGame("The winner is " + game.getWinner());
 			}
 		}
+	}
+	
+	public void makeMove(int index){
+		
 	}
 }

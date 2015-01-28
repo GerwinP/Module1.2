@@ -24,13 +24,12 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	public JButton[] rowChoosers;
 	public Game game;
 	
-	public BoardGUI(Game game){
+	public BoardGUI(){
 		super("ConnectFour");
-		this.game = game;
-		initialise(this.game);
+		initialise();
 	}
 	
-	public void initialise(Game game){
+	public void initialise(){
 		boardFrameFrame();
 	}
 	
@@ -78,11 +77,6 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		}
 		return connectFourPanel;
 	}
-//	
-//	public static void main(String [] args){
-//		Game game = new Game();
-//		new BoardGUI(game);
-//	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -101,8 +95,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JButton source = (JButton)e.getSource();
 			int index = Arrays.asList(rowChoosers).indexOf(source);
-			System.out.println(index);
-			game.board.setStone(index);
+			System.out.println("move " + index);
 		}
 
 	}

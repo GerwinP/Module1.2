@@ -1,5 +1,7 @@
 package server;
 
+import gui.BoardGUI;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -73,12 +75,19 @@ public class Client extends Thread{
 		try{
 			while(isConnected){
 				String message = in.readLine();
-				if(message != null){
+				if(message != null && message.equals("quit")){
+					shutDown();
+				}else if(message!= null && message.equals("startgui")){
+					System.out.println("Starting boardGui");
+					BoardGUI boardgui = new BoardGUI();
+				}else if(message != null){
 					print(message);
 				}else{
 					isConnected = false;
 				}
 			}
+			System.out.println("No longer connected, terminating process");
+			shutDown();
 		}catch(IOException e){
 			System.out.println("Connection to the server lost. Terminating process");
 			shutDown();

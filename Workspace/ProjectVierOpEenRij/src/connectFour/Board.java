@@ -1,5 +1,6 @@
 package connectFour;
 
+import utils.GameState;
 import utils.PlayerColor;
 import gui.BoardGUI;
 import connectFour.Game;
@@ -62,7 +63,8 @@ public class Board {
 	public void setStone(int col){
 		Player currentplayer = game.getCurrentPlayer();
 		boolean goOn = true;
-		for(int row = 0;goOn && row < MaxRow; row++){
+		boolean inprogress = (game.getGameState() == GameState.INPROGRESS);
+		for(int row = 0;inprogress && goOn && row < MaxRow; row++){
 			try {
 				TimeUnit.MILLISECONDS.sleep(100);
 			} catch (InterruptedException e) {
