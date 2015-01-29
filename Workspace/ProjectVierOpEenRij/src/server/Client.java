@@ -11,6 +11,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import connectFour.Board;
+
 public class Client extends Thread{
 	
 	private static final String USAGE = "usage: java week7.cmdchat.Client <name> <address> <port>";
@@ -60,6 +62,8 @@ public class Client extends Thread{
 	private BufferedReader in;
 	private BufferedWriter out;
 	private boolean isConnected = false;
+	private BoardGUI boardgui;
+	private Board board;
 	
 	public Client(String name, InetAddress host, int port) throws IOException{
 		this.name = name;
@@ -79,7 +83,8 @@ public class Client extends Thread{
 					shutDown();
 				}else if(message!= null && message.equals("startgui")){
 					System.out.println("Starting boardGui");
-					BoardGUI boardgui = new BoardGUI();
+					boardgui = new BoardGUI(this);
+					board = new Board(boardgui);
 				}else if(message != null){
 					print(message);
 				}else{

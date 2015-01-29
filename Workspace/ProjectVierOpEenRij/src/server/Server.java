@@ -1,5 +1,7 @@
 package server;
 
+import gui.BoardGUI;
+
 import java.util.Iterator;
 import java.util.List;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import players.HumanPlayer;
 import players.Player;
 import utils.GameState;
 import utils.PlayerColor;
+import connectFour.Board;
 import connectFour.Game;
 
 public class Server {
@@ -114,18 +117,24 @@ public class Server {
 		Player player1 = new HumanPlayer(p1.getClientName(), PlayerColor.RED);
 		Player player2 = new HumanPlayer(p2.getClientName(), PlayerColor.YELLOW);
 		Game game = new Game(player1, player2);
+		BoardGUI gui = new BoardGUI(this);
+		Board board = new Board(game, gui);
 		game.setGameState("inprogress");
 		gamestate = game.getGameState();
 		broadcastInGame("startgui");
 		System.out.println(gamestate.toString());
-		while(gamestate == GameState.INPROGRESS){
-			if(gamestate == GameState.FINISHED){
-				broadcastInGame("The winner is " + game.getWinner());
-			}
-		}
+//		while(gamestate == GameState.INPROGRESS){
+//			if(gamestate == GameState.FINISHED){
+//				broadcastInGame("The winner is " + game.getWinner());
+//			}
+//		}
 	}
 	
 	public void makeMove(int index){
+		if(index > 6 || index < 0){
+			broadcastInGame("Move not valid");
+		}
+		System.out.println("makeMove " + index);
 		
 	}
 }

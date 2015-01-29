@@ -21,8 +21,14 @@ public class Board {
 	private Game game;
 	private BoardGUI boardgui;
 
+	//Server constructor
 	public Board(Game game, BoardGUI gui){
 		this.game = game;
+		boardgui = gui;
+	}
+	
+	//Client constructor
+	public Board(BoardGUI gui){
 		boardgui = gui;
 	}
 	

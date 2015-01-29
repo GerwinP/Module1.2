@@ -10,6 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
+import server.Client;
+import server.Server;
+
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
@@ -23,14 +26,27 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	public JButton[] buttons;
 	public JButton[] rowChoosers;
 	public Game game;
+	private Client client;
 	
-	public BoardGUI(){
+	public BoardGUI(Client client){
+		super("ConnectFour");
+		this.client = client;
+		initialise();
+		setVisible(true);
+	}
+	
+	public BoardGUI(Server server){
 		super("ConnectFour");
 		initialise();
+		setVisible(false);
 	}
 	
 	public void initialise(){
 		boardFrameFrame();
+	}
+	
+	public void setVisible(boolean visible){
+		boardFrame.setVisible(visible);
 	}
 	
 	public JFrame boardFrameFrame(){
@@ -39,7 +55,6 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		boardFrame.setLayout(border);
 		boardFrame.add(rowChooserPanel(), BorderLayout.NORTH);
 		boardFrame.add(connectFourPanel(), BorderLayout.CENTER);
-		boardFrame.setVisible(true);
 		boardFrame.setSize(700,700);
 		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return boardFrame;
@@ -95,7 +110,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JButton source = (JButton)e.getSource();
 			int index = Arrays.asList(rowChoosers).indexOf(source);
-			System.out.println("move " + index);
+			client.sendMessage("move " + index);
 		}
 
 	}
