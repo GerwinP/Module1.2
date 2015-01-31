@@ -10,10 +10,11 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import utils.ServerProtocol;
 
 import connectFour.Board;
 
-public class Client extends Thread{
+public class Client extends Thread implements ServerProtocol{
 	
 	private static final String USAGE = "usage: java week7.cmdchat.Client <name> <address> <port>";
 	
@@ -81,11 +82,12 @@ public class Client extends Thread{
 				String message = in.readLine();
 				if(message != null && message.equals("quit")){
 					shutDown();
-				}else if(message!= null && message.equals("startgui")){
+				}else if(message!= null && message.equals(MAKE_GAME)){
 					System.out.println("Starting boardGui");
 					boardgui = new BoardGUI(this);
 					board = new Board(boardgui);
-				}else if(message != null){
+				}
+				else if(message != null){
 					print(message);
 				}else{
 					isConnected = false;

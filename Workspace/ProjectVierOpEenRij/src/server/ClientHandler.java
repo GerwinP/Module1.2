@@ -58,6 +58,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 						System.out.println("Two players waiting");
 						server.print(MAKE_GAME);
 						server.makeGame();
+						server.broadcastInGame(MAKE_GAME);
 						inGame = true;
 					}
 				}

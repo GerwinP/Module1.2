@@ -13,10 +13,11 @@ import players.HumanPlayer;
 import players.Player;
 import utils.GameState;
 import utils.PlayerColor;
+import utils.ServerProtocol;
 import connectFour.Board;
 import connectFour.Game;
 
-public class Server {
+public class Server implements ServerProtocol{
 
 	public Game game;
 	public GameState gamestate;
@@ -123,7 +124,6 @@ public class Server {
 		board = new Board(game, gui);
 		game.setGameState("inprogress");
 		gamestate = game.getGameState();
-		broadcastInGame("startgui");
 		System.out.println(gamestate.toString());
 //		while(gamestate == GameState.INPROGRESS){
 //			if(gamestate == GameState.FINISHED){
@@ -138,6 +138,7 @@ public class Server {
 		}else{
 			board.setCurrentPlayer();
 			board.setStone(index);
+			broadcastInGame(MAKE_MOVE + " " + index);
 		}
 		
 		System.out.println("makeMove " + index);

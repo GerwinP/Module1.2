@@ -28,6 +28,12 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	public Game game;
 	private Client client;
 	
+	public BoardGUI(){
+		super("ConnectFour");
+		initialise();
+		setVisible(true);
+	}
+	
 	public BoardGUI(Client client){
 		super("ConnectFour");
 		this.client = client;
@@ -110,7 +116,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JButton source = (JButton)e.getSource();
 			int index = Arrays.asList(rowChoosers).indexOf(source);
-			client.sendMessage("move " + index);
+//			client.sendMessage("move " + index);
 		}
 
 	}

@@ -105,18 +105,6 @@ public class Game extends Observable{
 
 	public void countVertical(int row, int col) {
 		int buttonNumber = Board.getIndexButton(row, col);
-		// Check Up
-		if (row > 0) {
-			boolean colorFound = true;
-			for (int x = row - 1; colorFound && x >= 0; x--) {
-				if (!board.getColor(x, col).equals(playerColor)) {
-					colorFound = false;
-				} else if (board.getColor(x, col).equals(
-						board.getColor(buttonNumber))) {
-					verticalCount++;
-				}
-			}
-		}
 		// Check Down
 		if (row < maxRow - 1) {
 			boolean colorFound = true;
@@ -263,6 +251,8 @@ public class Game extends Observable{
 	public static void main(String[] args){
 		Player player1 = new HumanPlayer("Gerwin", PlayerColor.RED);
 		Player player2 = new HumanPlayer("Josje", PlayerColor.YELLOW);
-		new Game(player1, player2);
+		Game game = new Game(player1, player2);
+		BoardGUI gui = new BoardGUI();
+		Board board = new Board(game, gui);
 	}
 }
