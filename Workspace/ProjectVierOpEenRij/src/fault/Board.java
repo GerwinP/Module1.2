@@ -1,4 +1,4 @@
-package connectFour;
+package fault;
 
 import utils.GameState;
 import utils.PlayerColor;
@@ -20,7 +20,6 @@ public class Board {
 	private static int y;
 	private Game game;
 	private BoardGUI boardgui;
-	private PlayerColor currentColor;
 
 	//Server constructor
 	public Board(Game game, BoardGUI gui){
@@ -31,15 +30,6 @@ public class Board {
 	//Client constructor
 	public Board(BoardGUI gui){
 		boardgui = gui;
-		currentColor = PlayerColor.RED;
-	}
-	
-	private void otherColor(PlayerColor color){
-		if(color == PlayerColor.RED){
-			currentColor = PlayerColor.YELLOW;
-		}else{
-			currentColor = PlayerColor.RED;
-		}
 	}
 	
 	public static int getIndexButton(int row, int col) {
@@ -76,12 +66,8 @@ public class Board {
 		}
 	}
 
-	public void setCurrentPlayer(){
-		Player currentplayer = game.getCurrentPlayer();
-		currentColor = currentplayer.getPlayerColor();
-	}
-	
 	public void setStone(int col){
+		Player currentplayer = game.getCurrentPlayer();
 		boolean goOn = true;
 		boolean inprogress = (game.getGameState() == GameState.INPROGRESS);
 		for(int row = 0;inprogress && goOn && row < MaxRow; row++){
@@ -97,17 +83,17 @@ public class Board {
 				goOn = false;
 			}
 			if(row == 0 && getColor(buttonNumber).equals("BLACK")){
-				setColor(buttonNumber, currentColor);
+				setColor(buttonNumber, currentplayer.getPlayerColor());
 			}else{
 				int previousButton = MaxCol * (row-1) + col;
 				if(getColor(buttonNumber).equals("BLACK")){
 					setColor(previousButton, PlayerColor.EMPTY);
-					setColor(buttonNumber, currentColor);
+					setColor(buttonNumber, currentplayer.getPlayerColor());
 				}
 			}
 		}
 		setCoordinates(buttonNumber, col);
-		game.countColor(x,y, currentColor);
+		game.countColor(x,y, currentplayer.getPlayerColor());
 	}
 	
 	public int getLastSetStone(){

@@ -28,6 +28,8 @@ public class Server {
 	public final String versie = "000";
 	public List<ClientHandler> waitingForGame = new ArrayList<ClientHandler>();
 	private List<ClientHandler> inGame = new ArrayList<ClientHandler>();
+	private Board board;
+	private BoardGUI gui;
 	
 	public static void main(String[] args){
 		if (args.length != 1) {
@@ -116,9 +118,9 @@ public class Server {
 		inGame.add(p2);
 		Player player1 = new HumanPlayer(p1.getClientName(), PlayerColor.RED);
 		Player player2 = new HumanPlayer(p2.getClientName(), PlayerColor.YELLOW);
-		Game game = new Game(player1, player2);
-		BoardGUI gui = new BoardGUI(this);
-		Board board = new Board(game, gui);
+		game = new Game(player1, player2);
+		gui = new BoardGUI(this);
+		board = new Board(game, gui);
 		game.setGameState("inprogress");
 		gamestate = game.getGameState();
 		broadcastInGame("startgui");
@@ -131,9 +133,13 @@ public class Server {
 	}
 	
 	public void makeMove(int index){
-		if(index > 6 || index < 0){
+		if(!board.isValidMove(index)){
 			broadcastInGame("Move not valid");
+		}else{
+			board.setCurrentPlayer();
+			board.setStone(index);
 		}
+		
 		System.out.println("makeMove " + index);
 		
 	}

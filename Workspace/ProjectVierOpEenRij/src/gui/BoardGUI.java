@@ -38,7 +38,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	public BoardGUI(Server server){
 		super("ConnectFour");
 		initialise();
-		setVisible(false);
+		setVisible(true);
 	}
 	
 	public void initialise(){
