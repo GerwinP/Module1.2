@@ -1,0 +1,29 @@
+Hallo, leuk dat je deze README leest.
+
+Deze readme gaat over het spel vier op een rij, geïmplementeerd in java.
+Hier de stappen om een server en een client te kunnen starten.
+
+Start een client:
+1. Ga naar de runconfiguratie van de Client klasse.
+2. Bij program parameters vul de volgende dingen in:
+	[naam] [server address] [poortnummer]
+3. Run de client
+
+Om twee clients te runnen, kun je deze stap nog een keer uitvoeren.
+
+Start een server:
+1. Ga naar de runconfiguratie van de Server klasse
+2. Bij program parameters vul de volgende dingen in:
+	[poortnummer]
+3. Run de server
+
+Om een spel te starten:
+1. typ in de console van beide clients die met de server zijn verbonden 'play'.
+2. Er zullen nu twee schermen openen.
+3. Op de witte knoppen bovenaan kan gedrukt worden om een zet te doen.
+
+Om te chatten:
+1. Typ chat met het bericht dat je wil sturen erachter aan.
+
+DISCLAIMER:
+Er zijn een hoop functies nog niet geïmplementeerd, dus er kunnen nog een hoop fouten optreden of een hoop dingen niet gaan zoals verwacht.
