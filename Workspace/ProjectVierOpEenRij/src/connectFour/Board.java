@@ -52,9 +52,6 @@ public class Board {
 	}
 
 	public String getColor(int buttonNumber) {
-		if(boardgui == null){
-			System.out.println("Stuk");
-		}
 		Color background = boardgui.buttons[buttonNumber].getBackground();
 		String color;
 		if(background == Color.BLACK){

@@ -84,20 +84,13 @@ public class Game extends Observable{
 		if (col > 0) {
 			boolean colorFound = true;
 			for (int x = col - 1; colorFound && x >= 0; x--) {
-				if(board == null){
-					System.out.println("Board is null");
-				}
-				if(playerColor == null){
-					System.out.println("playerColor = null");
-				}
 				if (!board.getColor(row, x).equals(playerColor)) {
 					colorFound = false;
 				} else if (board.getColor(row, x).equals(
-						board.getColor(buttonNumber))) {
+					board.getColor(buttonNumber))) {
 					horizontalCount++;
 				}
 			}
-			// System.out.println("After left check: " + horizontalCount);
 		}
 		// Check Right
 		if (col < maxCol - 1) {
@@ -110,7 +103,6 @@ public class Game extends Observable{
 					horizontalCount++;
 				}
 			}
-			// System.out.println("After right check: " + horizontalCount);
 		}
 	}
 
@@ -143,8 +135,6 @@ public class Game extends Observable{
 				}else if(board.getColor(x,y).equals(board.getColor(buttonNumber))){
 					diagonalLeftCount++;
 					y--;
-//					System.out.println(" x: " + x + " y: " + y);
-//					System.out.println("After up count1: " + diagonalLeftCount);
 				}
 			}
 		}
@@ -196,10 +186,7 @@ public class Game extends Observable{
 	}
 
 	public void countColor(int row, int col, PlayerColor color) {
-//		System.out.println("Count color is aangeroepen");
 		playerColor = color.toString();
-//		System.out.println("Playercolor: " + playerColor);
-		
 
 		// Check horizontal
 		countHorizontal(row, col);
@@ -216,7 +203,6 @@ public class Game extends Observable{
 			setGameState("finished");
 			winner = currentplayer;
 		}
-//		System.out.println(isWinner());
 		if (getGameState() != GameState.FINISHED
 				|| getGameState() != GameState.DRAW) {
 			notifyObservers("nextturn");
@@ -260,9 +246,9 @@ public class Game extends Observable{
 	}
 	
 	public static void main(String[] args){
-		Player player1 = new HumanPlayer("Gerwin", PlayerColor.RED);
-		Player player2 = new HumanPlayer("Josje", PlayerColor.YELLOW);
-		new Game(player1, player2);
+//		Player player1 = new HumanPlayer("Gerwin", PlayerColor.RED);
+//		Player player2 = new HumanPlayer("Josje", PlayerColor.YELLOW);
+//		new Game(player1, player2);
 		
 	}
 }

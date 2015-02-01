@@ -1,12 +1,20 @@
 package players;
 
+import server.ClientHandler;
 import utils.PlayerColor;
 import connectFour.Board;
 
 public class HumanPlayer extends Player{
 
-	public HumanPlayer(String name, PlayerColor color){
+	private ClientHandler clientHandler;
+	
+	public HumanPlayer(ClientHandler clientHandler, String name, PlayerColor color){
 		super(name,color);
+		this.clientHandler = clientHandler;
+	}
+	
+	public ClientHandler getClientHandler(){
+		return clientHandler;
 	}
 	
 	@Override

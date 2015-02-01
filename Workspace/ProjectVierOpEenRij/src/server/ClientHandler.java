@@ -26,6 +26,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	private String opties;
 	private boolean ack = false;
 	private boolean inGame = false;
+	private ServerGame serverGame;
 
 	public ClientHandler(Server serverSock, Socket clientSock)
 			throws IOException {
@@ -58,13 +59,12 @@ public class ClientHandler extends Thread implements ServerProtocol {
 						System.out.println("Two players waiting");
 						server.print(MAKE_GAME);
 						server.makeGame();
-						server.broadcastInGame(MAKE_GAME);
 						inGame = true;
 					}
 				}
 				if (ack && inGame && splitMessage[0].equals(SEND_MOVE)) {
 					int index = Integer.parseInt(splitMessage[1]);
-					server.makeMove(index);
+					makeMove(index);
 				}
 				if (splitMessage[0].equals(SEND_QUIT)) {
 					server.removeClientName(clientName);
@@ -94,8 +94,16 @@ public class ClientHandler extends Thread implements ServerProtocol {
 		return clientName;
 	}
 
+	public void setServerGame(ServerGame serverGame){
+		this.serverGame = serverGame;
+	}
+	
+	public ServerGame getServerGame(){
+		return serverGame;
+	}
+	
 	private void makeMove(int index) {
-
+		serverGame.makeMove(index, this);
 	}
 
 	private void shutDown() {

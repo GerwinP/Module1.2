@@ -28,9 +28,7 @@ public class Server implements ServerProtocol{
 	private List<String> clientNames = new ArrayList<String>();
 	public final String versie = "000";
 	public List<ClientHandler> waitingForGame = new ArrayList<ClientHandler>();
-	private List<ClientHandler> inGame = new ArrayList<ClientHandler>();
-	private Board board;
-	private BoardGUI gui;
+	private List<ServerGame> servergames = new ArrayList<ServerGame>();
 	
 	public static void main(String[] args){
 		if (args.length != 1) {
@@ -70,18 +68,16 @@ public class Server implements ServerProtocol{
 		System.out.println(message);
 	}
 	
-	public void broadcast(String msg) {
-		Iterator<ClientHandler> iterator = threads.iterator();
-		
+	public void broadcast(List<ClientHandler> chs, String msg){
+		Iterator<ClientHandler> iterator = chs.iterator();
 		print(msg);
-		
 		while(iterator.hasNext()){
 			iterator.next().sendMessage(msg);
 		}
 	}
 	
-	public void broadcastInGame(String msg){
-		Iterator<ClientHandler> iterator = inGame.iterator();
+	public void broadcast(String msg) {
+		Iterator<ClientHandler> iterator = threads.iterator();
 		
 		print(msg);
 		
@@ -115,29 +111,14 @@ public class Server implements ServerProtocol{
 		ClientHandler p2 = waitingForGame.get(1);
 		waitingForGame.remove(p1);
 		waitingForGame.remove(p2);
-		inGame.add(p1);
-		inGame.add(p2);
-		Player player1 = new HumanPlayer(p1.getClientName(), PlayerColor.RED);
-		Player player2 = new HumanPlayer(p2.getClientName(), PlayerColor.YELLOW);
-		game = new Game(player1, player2);
-		game.setGameState("inprogress");
-		gamestate = game.getGameState();
-		System.out.println(gamestate.toString());
+		ServerGame serverGame = new ServerGame(p1, p2, this);
+		servergames.add(serverGame);
+		p1.setServerGame(serverGame);
+		p2.setServerGame(serverGame);
 //		while(gamestate == GameState.INPROGRESS){
 //			if(gamestate == GameState.FINISHED){
 //				broadcastInGame("The winner is " + game.getWinner());
 //			}
 //		}
-	}
-	
-	public void makeMove(int index){
-		if(!game.board.isValidMove(index)){
-			broadcastInGame("Move not valid");
-		}else{
-			game.board.setStone(index);
-			broadcastInGame(MAKE_MOVE + " " + index);
-		}
-		System.out.println("makeMove " + index);
-		
 	}
 }
