@@ -66,6 +66,17 @@ public class ClientHandler extends Thread implements ServerProtocol {
 					int index = Integer.parseInt(splitMessage[1]);
 					makeMove(index);
 				}
+				if(splitMessage[0].equals(CHAT)){
+					StringBuilder builder = new StringBuilder();
+					for(int x = 1; x < splitMessage.length; x++){
+						if(builder.length() > 0){
+							builder.append(" ");
+						}
+						builder.append(splitMessage[x]);
+					}
+					String message = builder.toString();
+					server.broadcast(message);
+				}
 				if (splitMessage[0].equals(SEND_QUIT)) {
 					server.removeClientName(clientName);
 					server.removeHandler(this);

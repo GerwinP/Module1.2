@@ -6,7 +6,7 @@ import connectFour.Board;
 
 public class HumanPlayer extends Player{
 
-	private ClientHandler clientHandler;
+	public ClientHandler clientHandler;
 	
 	public HumanPlayer(ClientHandler clientHandler, String name, PlayerColor color){
 		super(name,color);

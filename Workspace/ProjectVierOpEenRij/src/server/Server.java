@@ -26,7 +26,7 @@ public class Server implements ServerProtocol{
 	public ServerSocket serverSocket = null;
 	private static final String USAGE = "usage: " + Server.class.getName() + " <port>";
 	private List<String> clientNames = new ArrayList<String>();
-	public final String versie = "000";
+	public final String versie = "100";
 	public List<ClientHandler> waitingForGame = new ArrayList<ClientHandler>();
 	private List<ServerGame> servergames = new ArrayList<ServerGame>();
 	

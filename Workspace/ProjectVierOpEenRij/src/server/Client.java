@@ -72,8 +72,7 @@ public class Client extends Thread implements ServerProtocol{
 		isConnected = true;
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-//		sendMessage(this.name);
-		sendMessage("hello " + "000 " + name);
+		sendMessage("hello " + "100 " + name);
 	}
 	
 	public void run(){
