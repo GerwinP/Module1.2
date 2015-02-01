@@ -48,7 +48,7 @@ public class ServerGame implements ServerProtocol{
 	
 	public void makeMove(int index, ClientHandler clienthandler){
 		System.out.println(getStringPlayer());
-		if(game.getCurrentPlayer() == player1){
+		if(game.getCurrentPlayer() == player1 && ((HumanPlayer)player1).getClientHandler() == clienthandler){
 			game.board.setCurrentPlayer(player1);
 			game.board.setStone(index);
 			server.broadcast(chs, MAKE_MOVE + " " + index);
