@@ -80,14 +80,15 @@ public class Client extends Thread implements ServerProtocol{
 		try{
 			while(isConnected){
 				String message = in.readLine();
-				if(message != null && message.equals("quit")){
+				if(message != null && message.equals(SEND_QUIT)){
 					shutDown();
 				}else if(message!= null && message.equals(MAKE_GAME)){
 					System.out.println("Starting boardGui");
 					boardgui = new BoardGUI(this, name);
 					board = new Board(boardgui);
-				}
-				else if(message != null){
+				}else if(message != null && message.equals(MAKE_MOVE)){
+					
+				}else if(message != null){
 					print(message);
 				}else{
 					isConnected = false;

@@ -137,7 +137,6 @@ public class Server implements ServerProtocol{
 			game.board.setStone(index);
 			broadcastInGame(MAKE_MOVE + " " + index);
 		}
-		
 		System.out.println("makeMove " + index);
 		
 	}

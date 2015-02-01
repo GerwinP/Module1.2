@@ -65,7 +65,6 @@ public class ClientHandler extends Thread implements ServerProtocol {
 				if (ack && inGame && splitMessage[0].equals(SEND_MOVE)) {
 					int index = Integer.parseInt(splitMessage[1]);
 					server.makeMove(index);
-					System.out.println(MAKE_MOVE);
 				}
 				if (splitMessage[0].equals(SEND_QUIT)) {
 					server.removeClientName(clientName);
