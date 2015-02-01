@@ -13,6 +13,11 @@ import java.net.UnknownHostException;
 import utils.ServerProtocol;
 
 import connectFour.Board;
+import utils.*;
+import java.net.*;
+import java.io.*;
+import gui.*;
+import connectFour.*;
 
 public class Client extends Thread implements ServerProtocol{
 	
@@ -79,15 +84,23 @@ public class Client extends Thread implements ServerProtocol{
 		try{
 			while(isConnected){
 				String message = in.readLine();
-				if(message != null && message.equals(SEND_QUIT)){
+				String[] splitMessage = message.split("\\s+");
+				if(message != null && splitMessage[0].equals(SEND_QUIT)){
 					shutDown();
-				}else if(message!= null && message.equals(MAKE_GAME)){
+				}else if(message!= null && splitMessage[0].equals(MAKE_GAME)){
 					System.out.println("Starting boardGui");
 					boardgui = new BoardGUI(this, name);
 					board = new Board(boardgui);
-				}else if(message != null && message.equals(MAKE_MOVE)){
-					
-				}else if(message != null){
+				}else if(message != null && splitMessage[0].equals(MAKE_MOVE)){
+					int index = Integer.parseInt(splitMessage[1]);
+					makeMove(index);
+				}else if(message != null && splitMessage[0].equals(SEND_GAME_OVER)){
+					print("The game is over");
+					print("The winner is: " + splitMessage[2]);
+					boardgui.disposeFrame();
+					sendMessage(SEND_GAME_OVER);
+				}
+				else if(message != null){
 					print(message);
 				}else{
 					isConnected = false;
@@ -96,6 +109,9 @@ public class Client extends Thread implements ServerProtocol{
 			System.out.println("No longer connected, terminating process");
 			shutDown();
 		}catch(IOException e){
+			System.out.println("Connection to the server lost. Terminating process");
+			shutDown();
+		}catch(NullPointerException e){
 			System.out.println("Connection to the server lost. Terminating process");
 			shutDown();
 		}
@@ -130,6 +146,10 @@ public class Client extends Thread implements ServerProtocol{
 	
 	public String getClientName(){
 		return name;
+	}
+	
+	private void makeMove(int index){
+		board.setStone(index);
 	}
 	
 	public static String readIn(){

@@ -16,6 +16,10 @@ import server.Server;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.*;
+import java.util.*;
+import connectFour.*;
+import server.*;
 
 @SuppressWarnings("serial")
 public class BoardGUI extends JFrame implements Observer, ActionListener{
@@ -29,11 +33,11 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	private Client client;
 	private String name;
 	
-	public BoardGUI(Game game){
+	public BoardGUI(Game game, boolean isVisible){
 		super("ConnectFour");
 		this.game = game;
 		initialise();
-		setVisible(true);
+		setVisible(isVisible);
 	}
 	
 	public BoardGUI(Client client, String name){
@@ -65,7 +69,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		boardFrame.add(rowChooserPanel(), BorderLayout.NORTH);
 		boardFrame.add(connectFourPanel(), BorderLayout.CENTER);
 		boardFrame.setSize(700,700);
-		boardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		boardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		return boardFrame;
 	}
 	
@@ -114,12 +118,15 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		
 	}
 	
+	public void disposeFrame(){
+		boardFrame.dispose();
+	}
+	
 	class boardFrameController implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			JButton source = (JButton)e.getSource();
 			int index = Arrays.asList(rowChoosers).indexOf(source);
-			System.out.println(index);
 //			game.board.setStone(index);
 			client.sendMessage("move " + index);
 		}

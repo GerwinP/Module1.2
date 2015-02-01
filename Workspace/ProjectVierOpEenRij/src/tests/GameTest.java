@@ -5,8 +5,8 @@ import utils.*;
 
 public class GameTest {
 
-	private PlayerColor yellow = PlayerColor.YELLOW;
-	private PlayerColor red = PlayerColor.RED;
+	private PlayerColor yellow;
+	private PlayerColor red;
 	private Game game;
 	
 	public GameTest(){

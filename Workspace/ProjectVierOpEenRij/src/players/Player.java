@@ -2,6 +2,8 @@ package players;
 
 import connectFour.Board;
 import utils.PlayerColor;
+import utils.*;
+import connectFour.*;
 
 public abstract class Player {
 	

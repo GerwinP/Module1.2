@@ -16,6 +16,10 @@ import utils.PlayerColor;
 import utils.ServerProtocol;
 import connectFour.Board;
 import connectFour.Game;
+import utils.*;
+import connectFour.*;
+import java.util.*;
+import java.net.*;
 
 public class Server implements ServerProtocol{
 
@@ -115,10 +119,9 @@ public class Server implements ServerProtocol{
 		servergames.add(serverGame);
 		p1.setServerGame(serverGame);
 		p2.setServerGame(serverGame);
-//		while(gamestate == GameState.INPROGRESS){
-//			if(gamestate == GameState.FINISHED){
-//				broadcastInGame("The winner is " + game.getWinner());
-//			}
-//		}
+	}
+	
+	public void removeGame(ServerGame serverGame){
+		servergames.remove(serverGame);
 	}
 }

@@ -1,7 +1,5 @@
 package server;
 
-import gui.BoardGUI;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -9,12 +7,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import connectFour.Game;
-import players.HumanPlayer;
-import players.Player;
-import utils.GameState;
-import utils.PlayerColor;
 import utils.ServerProtocol;
+import utils.*;
+import java.net.*;
+import java.io.*;
 
 public class ClientHandler extends Thread implements ServerProtocol {
 
@@ -51,22 +47,18 @@ public class ClientHandler extends Thread implements ServerProtocol {
 					announce();
 					sendMessage(SEND_HELLO + " " + server.getVersie());
 					ack = true;
-				}
-				if (ack && !inGame && splitMessage[0].equals(SEND_PLAY)) {
-					System.out.println("Another one");
+				}else if (ack && !inGame && splitMessage[0].equals(SEND_PLAY)) {
+					System.out.println("[" + clientName + " is waiting]");
 					server.waitingForGame.add(this);
 					if (server.waitingForGame.size() == 2) {
 						System.out.println("Two players waiting");
 						server.print(MAKE_GAME);
 						server.makeGame();
-						inGame = true;
 					}
-				}
-				if (ack && inGame && splitMessage[0].equals(SEND_MOVE)) {
+				}else if (ack && inGame && splitMessage[0].equals(SEND_MOVE)) {
 					int index = Integer.parseInt(splitMessage[1]);
 					makeMove(index);
-				}
-				if(splitMessage[0].equals(CHAT)){
+				}else if(splitMessage[0].equals(CHAT)){
 					StringBuilder builder = new StringBuilder();
 					for(int x = 1; x < splitMessage.length; x++){
 						if(builder.length() > 0){
@@ -75,18 +67,32 @@ public class ClientHandler extends Thread implements ServerProtocol {
 						builder.append(splitMessage[x]);
 					}
 					String message = builder.toString();
-					server.broadcast(message);
-				}
-				if (splitMessage[0].equals(SEND_QUIT)) {
+					server.broadcast("[" + clientName + "]" + message);
+				}else if (splitMessage[0].equals(SEND_QUIT)) {
+					sendMessage(SEND_QUIT);
 					server.removeClientName(clientName);
 					server.removeHandler(this);
+				}else if(splitMessage[0].equals(SEND_GAME_OVER)){
+					server.removeGame(serverGame);
+				}else{
+//					sendMessage(SEND_ERROR_INVALIDCOMMAND);
 				}
 			}
 		} catch (IOException e) {
 			shutDown();
+		} catch( NullPointerException e){
+			shutDown();
 		}
 	}
 
+	public void setIngame(){
+		if(inGame){
+			inGame = false;
+		}else{
+			inGame = true;
+		}
+	}
+	
 	public void announce() throws IOException {
 		server.broadcast("[" + clientName + " has entered]");
 	}
@@ -116,7 +122,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	private void makeMove(int index) {
 		serverGame.makeMove(index, this);
 	}
-
+	
 	private void shutDown() {
 		server.removeHandler(this);
 		server.broadcast("[" + clientName + " has left]");

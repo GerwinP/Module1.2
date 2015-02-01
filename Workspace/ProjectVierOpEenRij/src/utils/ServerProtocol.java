@@ -1,10 +1,8 @@
 package utils;
 
 /**
- * The Protocol for server received messages. <br>
- * contains all strings the user may send.
- * @author Jordy Brinks
- *
+ * The Protocol for server received messages. <br> contains all strings the user may send.
+ * @author  Jordy Brinks
  */
 public interface ServerProtocol {
 	
