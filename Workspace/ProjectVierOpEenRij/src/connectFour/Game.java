@@ -29,8 +29,11 @@ public class Game extends Observable{
 		players[0] = player1;
 		players[1] = player2;
 		currentplayer = players[0];
+		boardgui = new BoardGUI(this);
 		board = new Board(this, boardgui);
+		board.setCurrentPlayer(player1);
 		setGameState("inprogress");
+//		playerColor = "red";
 	}
 	
 	public GameState getGameState() {
@@ -58,9 +61,11 @@ public class Game extends Observable{
 
 	public void nextTurn() {
 		if (currentplayer == players[0]) {
+			board.setCurrentPlayer(players[1]);
 			currentplayer = players[1];
 		} else {
 			currentplayer = players[0];
+			board.setCurrentPlayer(players[0]);
 		}
 	}
 
@@ -79,6 +84,12 @@ public class Game extends Observable{
 		if (col > 0) {
 			boolean colorFound = true;
 			for (int x = col - 1; colorFound && x >= 0; x--) {
+				if(board == null){
+					System.out.println("Board is null");
+				}
+				if(playerColor == null){
+					System.out.println("playerColor = null");
+				}
 				if (!board.getColor(row, x).equals(playerColor)) {
 					colorFound = false;
 				} else if (board.getColor(row, x).equals(
@@ -251,8 +262,7 @@ public class Game extends Observable{
 	public static void main(String[] args){
 		Player player1 = new HumanPlayer("Gerwin", PlayerColor.RED);
 		Player player2 = new HumanPlayer("Josje", PlayerColor.YELLOW);
-		Game game = new Game(player1, player2);
-		BoardGUI gui = new BoardGUI();
-		Board board = new Board(game, gui);
+		new Game(player1, player2);
+		
 	}
 }

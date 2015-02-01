@@ -120,8 +120,6 @@ public class Server implements ServerProtocol{
 		Player player1 = new HumanPlayer(p1.getClientName(), PlayerColor.RED);
 		Player player2 = new HumanPlayer(p2.getClientName(), PlayerColor.YELLOW);
 		game = new Game(player1, player2);
-		gui = new BoardGUI(this);
-		board = new Board(game, gui);
 		game.setGameState("inprogress");
 		gamestate = game.getGameState();
 		System.out.println(gamestate.toString());
@@ -133,11 +131,10 @@ public class Server implements ServerProtocol{
 	}
 	
 	public void makeMove(int index){
-		if(!board.isValidMove(index)){
+		if(!game.board.isValidMove(index)){
 			broadcastInGame("Move not valid");
 		}else{
-			board.setCurrentPlayer();
-			board.setStone(index);
+			game.board.setStone(index);
 			broadcastInGame(MAKE_MOVE + " " + index);
 		}
 		

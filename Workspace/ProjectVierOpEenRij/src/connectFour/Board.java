@@ -52,6 +52,9 @@ public class Board {
 	}
 
 	public String getColor(int buttonNumber) {
+		if(boardgui == null){
+			System.out.println("Stuk");
+		}
 		Color background = boardgui.buttons[buttonNumber].getBackground();
 		String color;
 		if(background == Color.BLACK){
@@ -76,8 +79,8 @@ public class Board {
 		}
 	}
 
-	public void setCurrentPlayer(){
-		Player currentplayer = game.getCurrentPlayer();
+	public void setCurrentPlayer(Player player){
+		Player currentplayer = player;
 		currentColor = currentplayer.getPlayerColor();
 	}
 	

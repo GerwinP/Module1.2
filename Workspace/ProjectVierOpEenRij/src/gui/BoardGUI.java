@@ -27,15 +27,18 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	public JButton[] rowChoosers;
 	public Game game;
 	private Client client;
+	private String name;
 	
-	public BoardGUI(){
+	public BoardGUI(Game game){
 		super("ConnectFour");
+		this.game = game;
 		initialise();
 		setVisible(true);
 	}
 	
-	public BoardGUI(Client client){
+	public BoardGUI(Client client, String name){
 		super("ConnectFour");
+		this.name = name;
 		this.client = client;
 		initialise();
 		setVisible(true);
@@ -44,7 +47,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	public BoardGUI(Server server){
 		super("ConnectFour");
 		initialise();
-		setVisible(true);
+		setVisible(false);
 	}
 	
 	public void initialise(){
@@ -56,7 +59,7 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 	}
 	
 	public JFrame boardFrameFrame(){
-		boardFrame = new JFrame("Vier Op Een Rij");
+		boardFrame = new JFrame("Vier Op Een Rij [" + name + "]");
 		BorderLayout border = new BorderLayout();
 		boardFrame.setLayout(border);
 		boardFrame.add(rowChooserPanel(), BorderLayout.NORTH);
@@ -116,7 +119,9 @@ public class BoardGUI extends JFrame implements Observer, ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JButton source = (JButton)e.getSource();
 			int index = Arrays.asList(rowChoosers).indexOf(source);
-//			client.sendMessage("move " + index);
+			System.out.println(index);
+//			game.board.setStone(index);
+			client.sendMessage("move " + index);
 		}
 
 	}

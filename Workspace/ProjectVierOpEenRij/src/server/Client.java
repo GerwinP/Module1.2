@@ -84,7 +84,7 @@ public class Client extends Thread implements ServerProtocol{
 					shutDown();
 				}else if(message!= null && message.equals(MAKE_GAME)){
 					System.out.println("Starting boardGui");
-					boardgui = new BoardGUI(this);
+					boardgui = new BoardGUI(this, name);
 					board = new Board(boardgui);
 				}
 				else if(message != null){
