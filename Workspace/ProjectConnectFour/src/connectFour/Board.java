@@ -6,18 +6,20 @@ import utils.PlayerColor;
 
 public class Board extends Observable{
 
-	private PlayerColor[] colors;
-	
-	private static final int maxFields = 42;
-	private static final int x = 6;
-	private static final int y =7;
+	private static final int maxRow = 6;
+	private static final int maxCol =7;
+	private static final int maxFields = maxRow * maxCol;
 	private PlayerColor[] fields;
+	private int horizontalCount = 0;
+	private int verticalCount = 0;
+	private int diagonalLeftCount = 0;
+	private int diagonalRightCount = 0;
 	
 	/**
 	 * Creates a new empty <code>Board</code>
 	 */
 	public Board(){
-		fields = new PlayerColor[x*y];
+		fields = new PlayerColor[maxFields];
 		reset();
 	}
 	
@@ -41,8 +43,12 @@ public class Board extends Observable{
 	 * @return the index of a field
 	 */
 	private int index(int row, int col){
-		int index = col + row * y;
+		int index = col + row * maxCol;
 		return index;
+	}
+	
+	public PlayerColor[] getFields(){
+		return fields;
 	}
 	
 	/**
@@ -50,7 +56,7 @@ public class Board extends Observable{
 	 * @param index
 	 * @return if the index is a field
 	 */
-	private boolean isField(int index){
+	public boolean isField(int index){
 		boolean isField = false;
 		if(0 <= index && index <= maxFields){
 			isField = true;
@@ -64,7 +70,7 @@ public class Board extends Observable{
 	 * @param col
 	 * @return if the row and column belong to a field
 	 */
-	private boolean isField(int row, int col){
+	public boolean isField(int row, int col){
 		return isField(index(row,col));
 	}
 	
@@ -73,7 +79,7 @@ public class Board extends Observable{
 	 * @param index
 	 * @return </code>PlayerColor</code> of the given field
 	 */
-	private PlayerColor getField(int index){
+	public PlayerColor getField(int index){
 		PlayerColor color = null;
 		if(isField(index)){
 			color = fields[index];
@@ -87,7 +93,7 @@ public class Board extends Observable{
 	 * @param col
 	 * @return <code>PlayerColor</code> of the given pair (row,col)
 	 */
-	private PlayerColor getField(int row, int col){
+	public PlayerColor getField(int row, int col){
 		return getField(index(row,col));
 	}
 	
@@ -97,7 +103,7 @@ public class Board extends Observable{
 	 * @param index
 	 * @return true if the field is empty
 	 */
-	private boolean isEmptyField(int index){	
+	public boolean isEmptyField(int index){	
 		return getField(index) == PlayerColor.EMPTY;
 	}
 	
@@ -107,7 +113,7 @@ public class Board extends Observable{
 	 * @param col
 	 * @return true if the field is empty
 	 */
-	private boolean isEmptyField(int row, int col){
+	public boolean isEmptyField(int row, int col){
 		return isEmptyField(index(row,col));
 	}
 	
@@ -115,7 +121,7 @@ public class Board extends Observable{
 	 * Checks if the whole <code>Board</code> is full
 	 * @return true if the <code>Board</code> is full
 	 */
-	private boolean isFull(){
+	public boolean isFull(){
 		boolean isFull = true;
 		for(int i = 0; i < maxFields; i++){
 			if(fields[i] == PlayerColor.EMPTY){
@@ -129,7 +135,7 @@ public class Board extends Observable{
 	 * Checks if the game is over, so if there is a winner or if the <code>Board</code> is full
 	 * @return true if the game is over
 	 */
-	private boolean gameOver(){
+	public boolean gameOver(){
 		return hasWinner() || isFull();
 	}
 	
@@ -138,7 +144,7 @@ public class Board extends Observable{
 	 * @param color
 	 * @return true if the <code>PlayerColor</code> is a winner
 	 */
-	private boolean isWinner(PlayerColor color){
+	public boolean isWinner(PlayerColor color){
 		
 		return false;
 	}
@@ -147,7 +153,7 @@ public class Board extends Observable{
 	 * Checks if the <code>Game</code> has a winner
 	 * @return true if there is a winner
 	 */
-	private boolean hasWinner(){
+	public boolean hasWinner(){
 		return isWinner(PlayerColor.RED) || isWinner(PlayerColor.YELLOW);
 	}
 	
@@ -160,8 +166,29 @@ public class Board extends Observable{
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
 	private int countHorizontal(int row, int col, PlayerColor color){
-		
-		return 0;
+		//Check left
+		if(col>0){
+			boolean colorFound = true;
+			for(int x = col - 1; colorFound && x >= 0; x--){
+				if(!getField(row,x).equals(color)){
+					colorFound = false;
+				}else if(getField(row,x).equals(color)){
+					horizontalCount++;
+				}
+			}
+		}
+		//Check right
+		if(col < maxCol - 1){
+			boolean colorFound = true;
+			for(int x = col + 1; colorFound && x >= col && x < maxCol; x++){
+				if(!getField(row,x).equals(color)){
+					colorFound = false;
+				} else if(getField(row,x).equals(color)){
+					horizontalCount++;
+				}
+			}
+		}
+		return horizontalCount++;
 	}
 	
 	/**
@@ -173,8 +200,18 @@ public class Board extends Observable{
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
 	private int countVertical(int row, int col, PlayerColor color){
-		
-		return 0;
+		//Check down
+		if(row < maxRow-1){
+			boolean colorFound = true;
+			for(int x = row + 1; colorFound && x >= row && x < maxRow; x++){
+				if(!getField(x, col).equals(color)){
+					colorFound = false;
+				}else if(getField(x,col).equals(color)){
+					verticalCount++;
+				}
+			}
+		}
+		return verticalCount;
 	}
 	
 	/**
@@ -186,8 +223,33 @@ public class Board extends Observable{
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
 	private int countDiagonalLeft(int row, int col, PlayerColor color){
-		
-		return 0;
+		//Check left up
+		if(row > 0 && col > 0){
+			boolean colorFound = true;
+			int y = col-1;
+			for(int x = row-1; colorFound && row >= 0; x--){
+				if(!getField(x,y).equals(color)){
+					colorFound = false;
+				}else if(getField(x,y).equals(color)){
+					diagonalLeftCount++;
+					y--;
+				}
+			}
+		}
+		//Check left down
+		if(row < maxRow-1 && col < maxCol-1){
+			boolean colorFound = true;
+			int y = col+1;
+			for(int x = row+1; colorFound && x < maxRow; x++){
+				if(!getField(x,y).equals(color)){
+					colorFound = false;
+				}else if(getField(x,y).equals(color)){
+					diagonalLeftCount++;
+					y++;
+				}
+			}
+		}
+		return diagonalLeftCount;
 	}
 	
 	/**
@@ -199,15 +261,41 @@ public class Board extends Observable{
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
 	private int countDiagonalRight(int row, int col, PlayerColor color){
+		//Check right up
+		if(row < maxRow-1 && col > 0){
+			boolean colorFound = true;
+			int y = col + 1;
+			for(int x = row -1; colorFound && x >= 0; x--){
+				if(!getField(x,y).equals(color)){
+					colorFound = false;
+				}else if(getField(x,y).equals(color)){
+					diagonalRightCount++;
+					y++;
+				}
+			}
+		}
+		//Check right down
+		if(row > 0 && col < maxRow-1){
+			boolean colorFound = true;
+			int y = col-1;
+			for(int x = row + 1; colorFound && x < maxRow; x++){
+				if(!getField(x,y).equals(color)){
+					colorFound = false;
+				}else if(getField(x,y).equals(color)){
+					diagonalRightCount++;
+					y--;
+				}
+			}
+		}
 		
-		return 0;
+		return diagonalRightCount;
 	}
 	
 	
 	/**
 	 * Resets the <code>Board</code> by setting all the fields to empty
 	 */
-	private void reset(){
+	public void reset(){
 		for(int i = 0; i < maxFields; i++){
 			setField(i, PlayerColor.EMPTY);
 		}
@@ -218,7 +306,7 @@ public class Board extends Observable{
 	 * @param index
 	 * @param color
 	 */
-	private void setField(int index, PlayerColor color){
+	public void setField(int index, PlayerColor color){
 		fields[index] = color;
 	}
 	
@@ -228,7 +316,7 @@ public class Board extends Observable{
 	 * @param col
 	 * @param color
 	 */
-	private void setField(int row, int col, PlayerColor color){
+	public void setField(int row, int col, PlayerColor color){
 		fields[index(row,col)] = color;
 	}
 }
