@@ -11,6 +11,7 @@ import connectFour.*;
 public class TestBoard {
 
 	public Board board;
+	private int maxFields = 42;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -45,5 +46,29 @@ public class TestBoard {
 		board.setField(3,4,PlayerColor.YELLOW);
 		assertEquals("With filled in field", board.getField(32), PlayerColor.RED);
 		assertEquals("With filled in row and col", board.getField(3,4), PlayerColor.YELLOW);
+	}
+	
+	@Test
+	public void testIsEmptyField(){
+		assertEquals("With an empty field 32", board.isEmptyField(32), true);
+		assertEquals("With empty row and col 3,4", board.isEmptyField(3,4), true);
+		board.setField(32, PlayerColor.RED);
+		board.setField(3,4,PlayerColor.YELLOW);
+		assertEquals("With an Red field 32", board.isEmptyField(32), false);
+		assertEquals("With Yellow row and col 3,4", board.isEmptyField(3,4), false);
+	}
+	
+	@Test
+	public void testIsFull(){
+		assertEquals("Start with an empty board", board.isFull(), false);
+		for(int i = 0; i < 42; i++){
+			board.setField(i, PlayerColor.RED);
+		}
+		assertEquals("End with full board", board.isFull(), true);
+	}
+	
+	@Test
+	public void testGameOver(){
+//		assertEquals("With an empty board and no winner")
 	}
 }
