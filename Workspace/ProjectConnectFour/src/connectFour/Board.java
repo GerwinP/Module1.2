@@ -201,7 +201,6 @@ public class Board extends Observable{
 	 */
 	public int countVertical(int row, int col, PlayerColor color){
 		//Check down
-		System.out.println(verticalCount);
 		if(row < maxRow-1){
 			boolean colorFound = true;
 			for(int x = row + 1; colorFound && x >= row && x < maxRow; x++){
@@ -212,7 +211,6 @@ public class Board extends Observable{
 				}
 			}
 		}
-		System.out.println(verticalCount);
 		return verticalCount;
 	}
 	

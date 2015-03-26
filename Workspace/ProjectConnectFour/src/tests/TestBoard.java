@@ -86,8 +86,26 @@ public class TestBoard {
 		assertEquals("Test with no vertical line", 0 , board.countVertical(5,2,PlayerColor.YELLOW));
 		board.setField(4,2,PlayerColor.YELLOW);
 		board.setField(3,2,PlayerColor.YELLOW);
-		board.setField(2,2,PlayerColor.YELLOW);
-		assertEquals("Test with a vertical line", 3 , board.countVertical(5, 2, PlayerColor.YELLOW));
+		board.setField(5,2,PlayerColor.YELLOW);
+		assertEquals("Test with a vertical line", 3 , board.countVertical(2, 2, PlayerColor.YELLOW));
+	}
+	
+	@Test
+	public void testCountDiagonalLeft(){
+		assertEquals("Test with no diagonal line", 0, board.countDiagonalLeft(3, 2, PlayerColor.RED));
+		board.setField(2,1,PlayerColor.RED);
+		board.setField(4,3,PlayerColor.RED);
+		board.setField(5, 4, PlayerColor.RED);
+		assertEquals("Test with a diagonal line", 3, board.countDiagonalLeft(3, 2, PlayerColor.RED));
+	}
+	
+	@Test
+	public void testCountDiagonalRight(){
+		assertEquals("Test with no diagonal line", 0, board.countDiagonalRight(2, 3, PlayerColor.YELLOW));
+		board.setField(1,4,PlayerColor.YELLOW);
+		board.setField(3,2,PlayerColor.YELLOW);
+		board.setField(4, 1, PlayerColor.YELLOW);
+		assertEquals("Test with a diagonal line", 3, board.countDiagonalRight(2,3,PlayerColor.YELLOW));
 	}
 	
 	
