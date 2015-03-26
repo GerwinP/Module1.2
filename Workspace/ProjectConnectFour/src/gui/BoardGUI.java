@@ -13,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import players.HumanPlayer;
+import players.Player;
+import utils.PlayerColor;
 import connectFour.Game;
 
 @SuppressWarnings("serial")
@@ -82,6 +85,15 @@ public class BoardGUI extends JFrame implements Observer{
 		return connectFourPanel;
 	}
 	
+	private void setBackground(int buttonIndex, PlayerColor color){
+		if(color == PlayerColor.YELLOW){
+			buttons[buttonIndex].setBackground(Color.yellow);	
+		} else if(color == PlayerColor.RED){
+			buttons[buttonIndex].setBackground(Color.red);
+		}
+		
+	}
+	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
@@ -89,7 +101,9 @@ public class BoardGUI extends JFrame implements Observer{
 	}
 	
 	public static void main(String[] args){
-		Game game = new Game();
+		Player p1 = new HumanPlayer("Player1", PlayerColor.RED);
+		Player p2 = new HumanPlayer("Player2", PlayerColor.YELLOW);
+		Game game = new Game(p1,p2);
 		BoardGUI gui= new BoardGUI(game);
 	}
 	
