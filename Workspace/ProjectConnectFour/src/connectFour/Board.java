@@ -165,7 +165,7 @@ public class Board extends Observable{
 	 * @param color
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
-	private int countHorizontal(int row, int col, PlayerColor color){
+	public int countHorizontal(int row, int col, PlayerColor color){
 		//Check left
 		if(col>0){
 			boolean colorFound = true;
@@ -188,7 +188,7 @@ public class Board extends Observable{
 				}
 			}
 		}
-		return horizontalCount++;
+		return horizontalCount;
 	}
 	
 	/**
@@ -199,8 +199,9 @@ public class Board extends Observable{
 	 * @param color
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
-	private int countVertical(int row, int col, PlayerColor color){
+	public int countVertical(int row, int col, PlayerColor color){
 		//Check down
+		System.out.println(verticalCount);
 		if(row < maxRow-1){
 			boolean colorFound = true;
 			for(int x = row + 1; colorFound && x >= row && x < maxRow; x++){
@@ -211,6 +212,7 @@ public class Board extends Observable{
 				}
 			}
 		}
+		System.out.println(verticalCount);
 		return verticalCount;
 	}
 	
@@ -222,7 +224,7 @@ public class Board extends Observable{
 	 * @param color
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
-	private int countDiagonalLeft(int row, int col, PlayerColor color){
+	public int countDiagonalLeft(int row, int col, PlayerColor color){
 		//Check left up
 		if(row > 0 && col > 0){
 			boolean colorFound = true;
@@ -260,7 +262,7 @@ public class Board extends Observable{
 	 * @param color
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
-	private int countDiagonalRight(int row, int col, PlayerColor color){
+	public int countDiagonalRight(int row, int col, PlayerColor color){
 		//Check right up
 		if(row < maxRow-1 && col > 0){
 			boolean colorFound = true;
