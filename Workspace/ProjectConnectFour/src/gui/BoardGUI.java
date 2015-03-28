@@ -13,10 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import players.HumanPlayer;
-import players.Player;
-import utils.PlayerColor;
 import connectFour.Game;
+import utils.PlayerColor;
 
 @SuppressWarnings("serial")
 public class BoardGUI extends JFrame implements Observer{
@@ -30,8 +28,10 @@ public class BoardGUI extends JFrame implements Observer{
 	private static final int x = 6;
 	private static final int y = 7;
 	private static final int DIM = 7;
+	private Game game;
 	
 	public BoardGUI(Game game){
+		this.game = game;
 		initialise();
 	}
 	
@@ -96,15 +96,14 @@ public class BoardGUI extends JFrame implements Observer{
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
+		if(arg1 instanceof Integer){
+			setBackground((int)arg1, game.getCurrentPlayer());
+		}
 		
 	}
 	
 	public static void main(String[] args){
-		Player p1 = new HumanPlayer("Player1", PlayerColor.RED);
-		Player p2 = new HumanPlayer("Player2", PlayerColor.YELLOW);
-		Game game = new Game(p1,p2);
-		BoardGUI gui= new BoardGUI(game);
+//		BoardGUI gui= new BoardGUI();
 	}
 	
 	class boardFrameController implements ActionListener{
@@ -113,7 +112,7 @@ public class BoardGUI extends JFrame implements Observer{
 		public void actionPerformed(ActionEvent arg0) {
 			JButton source = (JButton)arg0.getSource();
 			int index = Arrays.asList(rowChoosers).indexOf(source);
-			
+			game.takeTurn();
 		}
 		
 	}
