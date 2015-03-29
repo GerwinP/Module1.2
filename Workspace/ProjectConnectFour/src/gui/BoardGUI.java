@@ -112,7 +112,7 @@ public class BoardGUI extends JFrame implements Observer{
 		public void actionPerformed(ActionEvent arg0) {
 			JButton source = (JButton)arg0.getSource();
 			int index = Arrays.asList(rowChoosers).indexOf(source);
-			game.takeTurn();
+			game.takeTurn(index);
 		}
 		
 	}

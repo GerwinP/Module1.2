@@ -127,4 +127,10 @@ public class TestBoard {
 		board.setField(10, PlayerColor.RED);
 		assertEquals("Test with 5 fields filled", 3, board.checkForFreeSpot(3, PlayerColor.RED));
 	}
+	
+	@Test
+	public void testCheckForFreeSpotFirstColumn(){
+		assertEquals("Test with no other field filled", 35, board.checkForFreeSpot(0, PlayerColor.RED));
+		
+	}
 }

@@ -22,6 +22,7 @@ public class Game extends Observable {
 	public Game(Player p1, Player p2){
 		board = new Board();
 		gui = new BoardGUI(this);
+		this.addObserver(gui);
 		players = new Player[NUMBER_PLAYERS];
 		players[0] = p1;
 		players[1] = p2;
@@ -52,8 +53,12 @@ public class Game extends Observable {
 		return players[current].getPlayerColor();
 	}
 	
-	public void takeTurn(){
-		
+	public void takeTurn(int index){
+		int field = board.checkForFreeSpot(index, players[current].getPlayerColor());
+		board.setField(field, players[current].getPlayerColor());
+		setChanged();
+		notifyObservers(field);
+		current = (current+1) % NUMBER_PLAYERS;
 	}
 	
 	public static void main(String[] args){

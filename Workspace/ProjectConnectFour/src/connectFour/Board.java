@@ -56,7 +56,7 @@ public class Board{
 	 */
 	public boolean isField(int index){
 		boolean isField = false;
-		if(0 <= index && index <= maxFields){
+		if(0 <= index && index < maxFields){
 			isField = true;
 		}
 		return isField;
