@@ -36,6 +36,7 @@ public class BoardGUI extends JFrame implements Observer{
 	 */
 	public BoardGUI(Game game){
 		this.game = game;
+		this.game.addObserver(this);
 		initialise();
 	}
 	

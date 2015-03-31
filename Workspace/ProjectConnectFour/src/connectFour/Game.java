@@ -24,7 +24,7 @@ public class Game extends Observable {
 	public Game(Player p1, Player p2){
 		board = new Board();
 		gui = new BoardGUI(this);
-		this.addObserver(gui);
+//		this.addObserver(gui);
 		players = new Player[NUMBER_PLAYERS];
 		players[0] = p1;
 		players[1] = p2;
