@@ -30,6 +30,10 @@ public class BoardGUI extends JFrame implements Observer{
 	private static final int DIM = 7;
 	private Game game;
 	
+	/**
+	 * Creates a new <code>BoardGUI</code> with a <code>Game</code>
+	 * @param game
+	 */
 	public BoardGUI(Game game){
 		this.game = game;
 		initialise();

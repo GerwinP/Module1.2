@@ -18,16 +18,34 @@ public abstract class Player {
 		color = theColor;
 	}
 	
+	/**
+	 * Returns the name from the <code>Player</code>
+	 * @return
+	 */
 	public String getName(){
 		return name;
 	}
 	
+	/**
+	 * Returns the <code>PlayerColor</code> from this <code>Player</code>
+	 * @return
+	 */
 	public PlayerColor getPlayerColor(){
 		return color;
 	}
 	
+	/**
+	 * Abstract class for determining a move according to the current state of a <code>Board</code>
+	 * and returns an possible move
+	 * @param board
+	 * @return
+	 */
 	public abstract int determineMove(Board board);
 	
+	/**
+	 * Calls <code>determineMove</code> to get a possible move and plays this on the <code>Board</code>
+	 * @param board
+	 */
 	public void makeMove(Board board){
 		int keuze = determineMove(board);
 		board.setField(keuze, getPlayerColor());

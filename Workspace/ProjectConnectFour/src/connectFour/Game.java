@@ -10,15 +10,17 @@ import utils.PlayerColor;
 public class Game extends Observable {
 	
 	public static final int NUMBER_PLAYERS = 2;
-	
 	private Board board;
-	
 	private BoardGUI gui;
-	
 	private Player[] players;
-	
 	private int current;
 	
+	/**
+	 * Creates a new <code>Game</code> with two <code>Player</code>s
+	 * Also adds an <code>Observer</code> to the <code>BoardGUI</code>
+	 * @param p1
+	 * @param p2
+	 */
 	public Game(Player p1, Player p2){
 		board = new Board();
 		gui = new BoardGUI(this);
@@ -29,6 +31,9 @@ public class Game extends Observable {
 		current = 0;
 	}
 	
+	/**
+	 * Resets the <code>Game</code> and then starts a new <code>Game</code>
+	 */
 	public void start(){
 		boolean goOn = true;
 		while(goOn){
@@ -37,11 +42,18 @@ public class Game extends Observable {
 		}
 	}
 	
+	/**
+	 * Calls the reset method from <code>Board</code>
+	 * and sets the current <code>Player</code> to p1
+	 */
 	private void reset(){
 		current = 0;
 		board.reset();
 	}
 	
+	/**
+	 * Waits for input from a <code>Player</code> untill the <code>Game</code> is over
+	 */
 	private void play(){
 		while(!board.gameOver()){
 			players[current].makeMove(board);
@@ -49,6 +61,10 @@ public class Game extends Observable {
 		}
 	}
 	
+	/**
+	 * Returns the current <code>PlayerColor</code>
+	 * @return
+	 */
 	public PlayerColor getCurrentPlayer(){
 		return players[current].getPlayerColor();
 	}

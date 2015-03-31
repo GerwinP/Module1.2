@@ -10,6 +10,7 @@ public class HumanPlayer extends Player{
 	}
 
 	public int determineMove(Board board) {
+		
 		return 0;
 	}
 	
