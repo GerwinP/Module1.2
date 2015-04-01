@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import connectFour.ConnectFourController;
 import connectFour.Game;
 import utils.PlayerColor;
 
@@ -29,6 +30,7 @@ public class BoardGUI extends JFrame implements Observer{
 	private static final int y = 7;
 	private static final int DIM = 7;
 	private Game game;
+	private ConnectFourController controller;
 	
 	/**
 	 * Creates a new <code>BoardGUI</code> with a <code>Game</code>
@@ -38,6 +40,7 @@ public class BoardGUI extends JFrame implements Observer{
 		this.game = game;
 		this.game.addObserver(this);
 		initialise();
+		controller = new ConnectFourController(this.game, this);
 	}
 	
 	private void initialise(){
@@ -65,7 +68,7 @@ public class BoardGUI extends JFrame implements Observer{
 			rowChoosers[i] = new JButton();
 			rowChoosers[i].setBackground(Color.white);
 			rowChoosers[i].setText("\\/");
-			rowChoosers[i].addActionListener(new boardFrameController());
+			rowChoosers[i].setActionCommand(Integer.toString(i));
 			rowChooserPanel.add(rowChoosers[i]);
 		}
 		return rowChooserPanel;
@@ -105,6 +108,10 @@ public class BoardGUI extends JFrame implements Observer{
 			setBackground((int)arg1, game.getCurrentPlayer());
 		}
 		
+	}
+	
+	public JButton[] getRowChoosers(){
+		return rowChoosers;
 	}
 	
 	public static void main(String[] args){
