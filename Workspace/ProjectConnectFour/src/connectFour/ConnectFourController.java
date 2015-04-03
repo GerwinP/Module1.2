@@ -11,6 +11,11 @@ import players.HumanPlayer;
 import players.Player;
 import utils.PlayerColor;
 
+/**
+ * The controller for the Connect Four game
+ * @author Gerwin Puttenstein
+ *
+ */
 public class ConnectFourController implements ActionListener{
 	
 	private Game game;
@@ -41,5 +46,6 @@ public class ConnectFourController implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		int index = Integer.parseInt(arg0.getActionCommand());
 		System.out.println(index);
+		game.takeTurn(index);
 	}
 }

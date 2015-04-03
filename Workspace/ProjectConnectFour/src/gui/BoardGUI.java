@@ -3,9 +3,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,10 +10,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import connectFour.ConnectFourController;
-import connectFour.Game;
 import utils.PlayerColor;
 
+/**
+ * The class for creating a <code>BoardGUI</code>
+ * It is the view for the Connect Four game.
+ * @author Gerwin Puttenstein
+ *
+ */
 @SuppressWarnings("serial")
 public class BoardGUI extends JFrame implements Observer{
 

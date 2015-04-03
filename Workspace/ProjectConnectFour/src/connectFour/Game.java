@@ -2,16 +2,20 @@ package connectFour;
 
 import java.util.Observable;
 
-import gui.BoardGUI;
 import players.HumanPlayer;
 import players.Player;
 import utils.PlayerColor;
 
+/**
+ * The class that makes the game start, progresses and stops with the correct result.
+ * It also keeps track of the current player and knows the <code>Board</code>
+ * @author Gerwin Puttenstein
+ *
+ */
 public class Game extends Observable {
 	
 	public static final int NUMBER_PLAYERS = 2;
 	private Board board;
-	private BoardGUI gui;
 	private Player[] players;
 	private int current;
 	
@@ -50,7 +54,7 @@ public class Game extends Observable {
 	}
 	
 	/**
-	 * Waits for input from a <code>Player</code> untill the <code>Game</code> is over
+	 * Waits for input from a <code>Player</code> until the <code>Game</code> is over
 	 */
 	private void play(){
 		while(!board.gameOver()){

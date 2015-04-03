@@ -11,8 +11,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import server.Client;
 import connectFour.ConnectFourController;
 
+/**
+ * The class that creates a new <code>StartGUI</code>
+ * With an inner class that contains the controller for the <code>StartGUI</code>
+ * @author Gerwin Puttenstein
+ *
+ */
 public class StartGUI {
 	
 	private JPanel startPanel;
@@ -24,14 +31,29 @@ public class StartGUI {
 	private JTextField ipField;
 	private JTextField portField;
 	
+	private String name;
+	private String ipadress;
+	private String port;
+	
+	/**
+	 * Initialises a new <code>StartGUI</code>
+	 */
 	public StartGUI(){
 		initialise();
 	}
 	
+	/**
+	 * Creates a new frame for the <code>StartGUI</code>
+	 */
 	private void initialise(){
 		createStartFrame();
 	}
 	
+	/**
+	 * Returns a <code>JFrame</code> for the startframe
+	 * with a infopanel and a startpanel.
+	 * @return
+	 */
 	private JFrame createStartFrame(){
 		startFrame = new JFrame("Welcome");
 		BorderLayout border = new BorderLayout();
@@ -44,6 +66,10 @@ public class StartGUI {
 		return startFrame;
 	}
 	
+	/**
+	 * Creates and returns a <code>JPanel</code> which contains two buttons to start a server or stand alone game
+	 * @return
+	 */
 	private JPanel createStartPanel(){
 		startPanel = new JPanel();
 		GridLayout grid = new GridLayout(2,1);
@@ -53,10 +79,16 @@ public class StartGUI {
 		startPanel.add(startButton);
 		startPanel.add(startMPButton);
 		startButton.setActionCommand("standalone");
+		startMPButton.setActionCommand("multiplayer");
 		startButton.addActionListener(new startFrameController());
 		return startPanel;
 	}
 	
+	/**
+	 * Creates and returns a <code>JPanel</code> with empty textfields where the information for connecting to a server have to be entered.
+	 * It also add labels to these textfields 
+	 * @return
+	 */
 	private JPanel createInfoPanel(){
 		infoPanel = new JPanel();
 		GridLayout grid = new GridLayout(4,1);
@@ -76,16 +108,32 @@ public class StartGUI {
 		return infoPanel;
 	}
 	
+	/**
+	 * Starts a new <code>StartGUI</code>
+	 * @param args
+	 */
 	public static void main(String[] args){
 		new StartGUI();
 	}
 	
+	/**
+	 * The controller class for the start menu.
+	 * @author Gerwin
+	 *
+	 */
 	class startFrameController implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if(arg0.getActionCommand().equals("standalone")){
 				new ConnectFourController();
+				startFrame.dispose();
+			} else if(arg0.getActionCommand().equals("multiplayer")){
+				//Create a new client
+				name = nameField.getText();
+				ipadress = ipField.getText();
+				port = portField.getText();
+				new Client(name, ipadress, port);
 				startFrame.dispose();
 			}
 		}

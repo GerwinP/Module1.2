@@ -2,6 +2,12 @@ package connectFour;
 
 import utils.PlayerColor;
 
+/**
+ * The class that contains the logic and the rules for the Connect Four Game.
+ * It also keeps track of the fields that are filled.
+ * @author Gerwin Puttenstein
+ *
+ */
 public class Board{
 
 	private static final int maxRow = 6;
