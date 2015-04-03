@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import players.HumanPlayer;
+import players.Player;
+import utils.PlayerColor;
+
 public class ConnectFourController implements ActionListener{
 	
 	private Game game;
@@ -14,9 +18,12 @@ public class ConnectFourController implements ActionListener{
 	private static final int y = 7;
 	private JButton[] rowChoosers;
 	
-	public ConnectFourController(Game game, BoardGUI gui){
-		this.game = game;
-		this.gui = gui;
+	public ConnectFourController(){
+		Player p1 = new HumanPlayer("Gerwin", PlayerColor.RED);
+		Player p2 = new HumanPlayer("Henk", PlayerColor.YELLOW);
+		game = new Game(p1,p2);
+		gui = new BoardGUI();
+		this.game.addObserver(this.gui);
 		rowChoosers = this.gui.getRowChoosers();
 		for(int i = 0; i < y; i++){
 			rowChoosers[i].addActionListener(this);

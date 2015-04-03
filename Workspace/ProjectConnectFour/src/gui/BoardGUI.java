@@ -29,18 +29,13 @@ public class BoardGUI extends JFrame implements Observer{
 	private static final int x = 6;
 	private static final int y = 7;
 	private static final int DIM = 7;
-	private Game game;
-	private ConnectFourController controller;
 	
 	/**
 	 * Creates a new <code>BoardGUI</code> with a <code>Game</code>
 	 * @param game
 	 */
-	public BoardGUI(Game game){
-		this.game = game;
-		this.game.addObserver(this);
+	public BoardGUI(){
 		initialise();
-		controller = new ConnectFourController(this.game, this);
 	}
 	
 	private void initialise(){
@@ -105,7 +100,7 @@ public class BoardGUI extends JFrame implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if(arg1 instanceof Integer){
-			setBackground((int)arg1, game.getCurrentPlayer());
+//			setBackground((int)arg1, game.getCurrentPlayer());
 		}
 		
 	}
@@ -116,16 +111,5 @@ public class BoardGUI extends JFrame implements Observer{
 	
 	public static void main(String[] args){
 //		BoardGUI gui= new BoardGUI();
-	}
-	
-	class boardFrameController implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			JButton source = (JButton)arg0.getSource();
-			int index = Arrays.asList(rowChoosers).indexOf(source);
-			game.takeTurn(index);
-		}
-		
 	}
 }
