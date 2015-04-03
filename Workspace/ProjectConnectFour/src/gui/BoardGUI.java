@@ -31,17 +31,23 @@ public class BoardGUI extends JFrame implements Observer{
 	private static final int DIM = 7;
 	
 	/**
-	 * Creates a new <code>BoardGUI</code> with a <code>Game</code>
-	 * @param game
+	 * Creates a new <code>BoardGUI</code>.
 	 */
 	public BoardGUI(){
 		initialise();
 	}
 	
+	/**
+	 * Creates a new <code>BoardFrame</code> that displays the <code>Board</code>
+	 */
 	private void initialise(){
 		createBoardFrame();
 	}
 	
+	/**
+	 * Creates and returns a <code>BoardFrame</code> with the buttons on it.
+	 * @return
+	 */
 	private JFrame createBoardFrame(){
 		boardFrame = new JFrame("Vier op een Rij");
 		BorderLayout border = new BorderLayout();
@@ -54,6 +60,11 @@ public class BoardGUI extends JFrame implements Observer{
 		return boardFrame;
 	}
 	
+	/**
+	 * Creates the seven <code>JButtons</code> that can be used to choose a row on the <code>Board</code>
+	 * and the method returns the rowchoosers as a <code>JPanel</code>
+	 * @return
+	 */
 	private JPanel createRowChooserPanel(){
 		rowChooserPanel = new JPanel();
 		GridLayout gridLayout = new GridLayout(1,7);
@@ -69,6 +80,11 @@ public class BoardGUI extends JFrame implements Observer{
 		return rowChooserPanel;
 	}
 	
+	/**
+	 * Creates the visual representation of the ConnectFour board.
+	 * It creates 42 <code>JButton</code> which are initially set to black.
+	 * @return
+	 */
 	private JPanel createConnectFourPanel(){
 		connectFourPanel = new JPanel();
 		GridLayout gridLayout = new GridLayout(x,y);
@@ -88,6 +104,12 @@ public class BoardGUI extends JFrame implements Observer{
 		return connectFourPanel;
 	}
 	
+	/**
+	 * The method that lets the <code>BoardGUI</code> change the Background of the buttons
+	 * given an index and a <code>PlayerColor</code>
+	 * @param buttonIndex
+	 * @param color
+	 */
 	private void setBackground(int buttonIndex, PlayerColor color){
 		if(color == PlayerColor.YELLOW){
 			buttons[buttonIndex].setBackground(Color.yellow);	
@@ -97,6 +119,11 @@ public class BoardGUI extends JFrame implements Observer{
 		
 	}
 	
+	/**
+	 * The update method that the <code>BoardGUI</code> uses in the Observer-Oberservable pattern.
+	 * It reacts to changes in the <code>Game</code> and makes sure that the colors on the <code>BoardGUI</code>
+	 * represent the state of the <code>Game</code>
+	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if(arg1 instanceof Integer){
@@ -105,11 +132,11 @@ public class BoardGUI extends JFrame implements Observer{
 		
 	}
 	
+	/**
+	 * A getter for accessing the rowChooser buttons.
+	 * @return
+	 */
 	public JButton[] getRowChoosers(){
 		return rowChoosers;
-	}
-	
-	public static void main(String[] args){
-//		BoardGUI gui= new BoardGUI();
 	}
 }

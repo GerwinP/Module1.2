@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import connectFour.ConnectFourController;
+
 public class StartGUI {
 	
 	private JPanel startPanel;
@@ -50,6 +52,7 @@ public class StartGUI {
 		startMPButton = new JButton("Start multiplayer");
 		startPanel.add(startButton);
 		startPanel.add(startMPButton);
+		startButton.setActionCommand("standalone");
 		startButton.addActionListener(new startFrameController());
 		return startPanel;
 	}
@@ -81,7 +84,10 @@ public class StartGUI {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			
+			if(arg0.getActionCommand().equals("standalone")){
+				new ConnectFourController();
+				startFrame.dispose();
+			}
 		}
 		
 	}

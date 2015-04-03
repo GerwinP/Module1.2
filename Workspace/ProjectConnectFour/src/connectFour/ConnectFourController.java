@@ -18,6 +18,11 @@ public class ConnectFourController implements ActionListener{
 	private static final int y = 7;
 	private JButton[] rowChoosers;
 	
+	/**
+	 * Creates a new <code>Game</code> with two <code>Player</code> objects.
+	 * Also creates a new <code>BoardGUI</code> and connects the <code>Game</code> and the <code>BoardGUI</code> together.
+	 * For every button on the <code>BoardGUI</code> it adds an <code>ActionListener</code> to it.
+	 */
 	public ConnectFourController(){
 		Player p1 = new HumanPlayer("Gerwin", PlayerColor.RED);
 		Player p2 = new HumanPlayer("Henk", PlayerColor.YELLOW);
@@ -30,9 +35,10 @@ public class ConnectFourController implements ActionListener{
 		}
 	}
 
-	@Override
+	/**
+	 * The <code>ActionPerformed</code> method that reacts on button presses.
+	 */
 	public void actionPerformed(ActionEvent arg0) {
-		JButton source = (JButton)arg0.getSource();
 		int index = Integer.parseInt(arg0.getActionCommand());
 		System.out.println(index);
 	}
