@@ -148,7 +148,11 @@ public class Board{
 	 * @param color
 	 * @return true if the <code>PlayerColor</code> is a winner
 	 */
-	public boolean isWinner(PlayerColor color){
+	public boolean isWinner(int row, int col, PlayerColor color){
+		countHorizontal(row, col, color);
+		countVertical(row, col, color);
+		countDiagonalLeft(row, col, color);
+		countDiagonalRight(row, col, color);
 		boolean isWinner = false;
 		if(getHorizontalCount() > 3 || getVerticalCount() > 3 || getDiagonalLeftCount() > 3 || getDiagonalRightCount() > 3){
 			isWinner = true;
@@ -161,7 +165,8 @@ public class Board{
 	 * @return true if there is a winner
 	 */
 	public boolean hasWinner(){
-		return isWinner(PlayerColor.RED) || isWinner(PlayerColor.YELLOW);
+		return false;
+//		return isWinner(PlayerColor.RED) || isWinner(PlayerColor.YELLOW);
 	}
 	
 	/**
@@ -173,6 +178,7 @@ public class Board{
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
 	public void countHorizontal(int row, int col, PlayerColor color){
+		horizontalCount = 0;
 		//Check left
 		if(col>0){
 			boolean colorFound = true;
@@ -206,6 +212,7 @@ public class Board{
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
 	public void countVertical(int row, int col, PlayerColor color){
+		verticalCount = 0;
 		//Check down
 		if(row < maxRow-1){
 			boolean colorFound = true;
@@ -228,6 +235,7 @@ public class Board{
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
 	public void countDiagonalLeft(int row, int col, PlayerColor color){
+		diagonalLeftCount = 0;
 		//Check left up
 		if(row > 0 && col > 0){
 			boolean colorFound = true;
@@ -265,6 +273,7 @@ public class Board{
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
 	public void countDiagonalRight(int row, int col, PlayerColor color){
+		diagonalRightCount = 0;
 		//Check right up
 		if(row < maxRow-1 && col > 0){
 			boolean colorFound = true;
@@ -322,6 +331,14 @@ public class Board{
 		setField(index(row,col), color);
 	}
 	
+	/**
+	 * Checks if the spot in a column is free so it drops completely down.
+	 * If the column is full, the program terminates, because it is not a valid move.
+	 * If the field is found and the column is not full, the field is returned.
+	 * @param col
+	 * @param color
+	 * @return
+	 */
 	public int checkForFreeSpot(int col, PlayerColor color){
 		boolean placeFound = true;
 		int field = col;
@@ -331,21 +348,43 @@ public class Board{
 				placeFound = false;
 			}
 		}
+		for(int j = 0; j < maxCol; j++){
+			if(field == j && !isEmptyField(field)){
+				System.out.println("You can not place here");
+				System.exit(0);
+			}
+		}
 		return field;
 	}
 	
+	/**
+	 * Returns the horizontalCount
+	 * @return
+	 */
 	public int getHorizontalCount(){
 		return horizontalCount;
 	}
-	
+
+	/**
+	 * Returns the verticalCount
+	 * @return
+	 */
 	public int getVerticalCount(){
 		return verticalCount;
 	}
 	
+	/**
+	 * Returns the diagonalLeftCount
+	 * @return
+	 */
 	public int getDiagonalLeftCount(){
 		return diagonalLeftCount;
 	}
 	
+	/**
+	 * Returns the diagonalRightCount
+	 * @return
+	 */
 	public int getDiagonalRightCount(){
 		return diagonalRightCount;
 	}

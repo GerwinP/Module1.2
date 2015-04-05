@@ -15,9 +15,11 @@ import utils.PlayerColor;
 public class Game extends Observable {
 	
 	public static final int NUMBER_PLAYERS = 2;
-	private Board board;
+	public Board board;
 	private Player[] players;
 	private int current;
+	private static final int DIM = 7;
+	private boolean gameOver = false;
 	
 	/**
 	 * Creates a new <code>Game</code> with two <code>Player</code>s
@@ -50,6 +52,7 @@ public class Game extends Observable {
 	 */
 	private void reset(){
 		current = 0;
+		gameOver = false;
 		board.reset();
 	}
 	
@@ -71,17 +74,36 @@ public class Game extends Observable {
 		return players[current].getPlayerColor();
 	}
 	
+	/**
+	 * The method so a standalone game can be played.
+	 * It receives an index, checks if this field is free, sets the field, sets its state to changed and notifies the Observers.
+	 * Finally, it picks the next player
+	 * @param index
+	 */
 	public void takeTurn(int index){
-		int field = board.checkForFreeSpot(index, players[current].getPlayerColor());
-		board.setField(field, players[current].getPlayerColor());
-		setChanged();
-		notifyObservers(field);
-		current = (current+1) % NUMBER_PLAYERS;
+		if(!gameOver){
+			int field = board.checkForFreeSpot(index, players[current].getPlayerColor());
+			board.setField(field, players[current].getPlayerColor());
+			setChanged();
+			notifyObservers(field);
+			int row = (field - index) / DIM;
+			boolean isWinner = board.isWinner(row, index, players[current].getPlayerColor());
+			System.out.println("is full: " + board.isFull());
+			System.out.println("is winner " + isWinner);
+			gameOver = isWinner || board.isFull();
+			current = (current+1) % NUMBER_PLAYERS;
+		} else{
+			
+		}
+	}
+	
+	public boolean gameOver(){
+		return gameOver;
 	}
 	
 	public static void main(String[] args){
-		Player p1 = new HumanPlayer("Gerwin", PlayerColor.RED);
-		Player p2 = new HumanPlayer("Josje", PlayerColor.YELLOW);
-		Game game = new Game(p1, p2);
+//		Player p1 = new HumanPlayer("Gerwin", PlayerColor.RED);
+//		Player p2 = new HumanPlayer("Josje", PlayerColor.YELLOW);
+//		Game game = new Game(p1, p2);
 	}
 }

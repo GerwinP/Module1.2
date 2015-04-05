@@ -40,12 +40,21 @@ public class ConnectFourController implements ActionListener{
 		}
 	}
 
+	private void disableButtons(){
+		for(int i = 0; i < y; i++){
+			rowChoosers[i].setEnabled(false);
+		}
+	}
+	
 	/**
 	 * The <code>ActionPerformed</code> method that reacts on button presses.
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		int index = Integer.parseInt(arg0.getActionCommand());
-		System.out.println(index);
+//		if(game.gameOver()){
+//			System.out.println("There is a winner");
+//			disableButtons();
+//		}
 		game.takeTurn(index);
 	}
 }

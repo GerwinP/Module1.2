@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import connectFour.Game;
 import utils.PlayerColor;
 
 /**
@@ -128,7 +129,8 @@ public class BoardGUI extends JFrame implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if(arg1 instanceof Integer){
-//			setBackground((int)arg1, game.getCurrentPlayer());
+			Game game = (Game)arg0;
+			setBackground((int)arg1, game.getCurrentPlayer());
 		}
 		
 	}
