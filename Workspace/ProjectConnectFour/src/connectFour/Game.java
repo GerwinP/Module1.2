@@ -91,6 +91,10 @@ public class Game extends Observable {
 			System.out.println("is full: " + board.isFull());
 			System.out.println("is winner " + isWinner);
 			gameOver = isWinner || board.isFull();
+			if(gameOver){
+				setChanged();
+				notifyObservers("Game Over");
+			}
 			current = (current+1) % NUMBER_PLAYERS;
 		} else{
 			

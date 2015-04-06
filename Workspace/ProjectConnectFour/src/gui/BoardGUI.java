@@ -8,6 +8,7 @@ import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import connectFour.Game;
@@ -24,6 +25,7 @@ public class BoardGUI extends JFrame implements Observer{
 
 	private JPanel connectFourPanel;
 	private JPanel rowChooserPanel;
+	private JPanel infoPanel;
 	private JFrame boardFrame;
 	private JButton[] buttons;
 	private JButton[] rowChoosers;
@@ -56,6 +58,7 @@ public class BoardGUI extends JFrame implements Observer{
 		boardFrame.setLayout(border);
 		boardFrame.add(createRowChooserPanel(), BorderLayout.NORTH);
 		boardFrame.add(createConnectFourPanel(), BorderLayout.CENTER);
+		boardFrame.add(createInfoPanel(), BorderLayout.EAST);
 		boardFrame.setSize(700,700);
 		boardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		boardFrame.setVisible(true);
@@ -106,6 +109,11 @@ public class BoardGUI extends JFrame implements Observer{
 		return connectFourPanel;
 	}
 	
+	private JPanel createInfoPanel(){
+		infoPanel = new JPanel();
+		return infoPanel;
+	}
+	
 	/**
 	 * The method that lets the <code>BoardGUI</code> change the Background of the buttons
 	 * given an index and a <code>PlayerColor</code>
@@ -121,6 +129,12 @@ public class BoardGUI extends JFrame implements Observer{
 		
 	}
 	
+	private void disableButtons(){
+		for(int i = 0; i < y; i++){
+			rowChoosers[i].setEnabled(false);
+		}
+	}
+	
 	/**
 	 * The update method that the <code>BoardGUI</code> uses in the Observer-Oberservable pattern.
 	 * It reacts to changes in the <code>Game</code> and makes sure that the colors on the <code>BoardGUI</code>
@@ -131,6 +145,10 @@ public class BoardGUI extends JFrame implements Observer{
 		if(arg1 instanceof Integer){
 			Game game = (Game)arg0;
 			setBackground((int)arg1, game.getCurrentPlayer());
+		} else if(arg1.equals("Game Over")){
+			disableButtons();
+			JLabel winner = new JLabel("There is a winner");
+			infoPanel.add(winner);
 		}
 		
 	}
