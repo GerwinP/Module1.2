@@ -118,7 +118,7 @@ public class StartGUI {
 	
 	/**
 	 * The controller class for the start menu.
-	 * @author Gerwin
+	 * @author Gerwin Puttenstein
 	 *
 	 */
 	class startFrameController implements ActionListener{

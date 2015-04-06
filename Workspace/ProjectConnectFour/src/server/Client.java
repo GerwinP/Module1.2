@@ -87,6 +87,12 @@ public class Client extends Thread implements ServerProtocol{
 			print("Error: no valid portnumber");
 			System.exit(0);
 		}
+		try{
+			Client client = new Client(this.name, host, port);
+		}catch(IOException e){
+			print("ERROR: Could not construct a client object");
+			System.exit(0);
+		}
 		
 		
 	}

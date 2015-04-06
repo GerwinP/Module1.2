@@ -1,7 +1,5 @@
 package server;
 
-import gui.BoardGUI;
-
 import java.util.Iterator;
 import java.util.List;
 import java.io.IOException;
@@ -9,22 +7,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import players.HumanPlayer;
-import players.Player;
-import utils.GameState;
-import utils.PlayerColor;
 import utils.ServerProtocol;
-import connectFour.Board;
 import connectFour.Game;
-import utils.*;
-import connectFour.*;
-import java.util.*;
-import java.net.*;
 
 public class Server implements ServerProtocol{
 
 	public Game game;
-	public GameState gamestate;
 	private int port;
 	private List<ClientHandler> threads;
 	public ServerSocket serverSocket = null;

@@ -26,7 +26,8 @@ public class BoardGUI extends JFrame implements Observer{
 	private JPanel connectFourPanel;
 	private JPanel rowChooserPanel;
 	private JPanel infoPanel;
-	private JFrame boardFrame;
+	private JPanel boardPanel;
+	private JFrame totalFrame;
 	private JButton[] buttons;
 	private JButton[] rowChoosers;
 	private static final int buttonAmount = 42;
@@ -38,31 +39,33 @@ public class BoardGUI extends JFrame implements Observer{
 	 * Creates a new <code>BoardGUI</code>.
 	 */
 	public BoardGUI(){
-		initialise();
+		createTotalFrame();
 	}
 	
-	/**
-	 * Creates a new <code>BoardFrame</code> that displays the <code>Board</code>
-	 */
-	private void initialise(){
-		createBoardFrame();
+	private JFrame createTotalFrame(){
+		totalFrame = new JFrame();
+		BorderLayout border = new BorderLayout();
+		totalFrame.setLayout(border);
+		totalFrame.add(createBoardPanel(), BorderLayout.CENTER);
+		totalFrame.add(createInfoPanel(), BorderLayout.EAST);
+		totalFrame.setSize(700, 700);
+		totalFrame.setLocationRelativeTo(null);
+		totalFrame.setVisible(true);
+		totalFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		return totalFrame;
 	}
 	
 	/**
 	 * Creates and returns a <code>BoardFrame</code> with the buttons on it.
 	 * @return
 	 */
-	private JFrame createBoardFrame(){
-		boardFrame = new JFrame("Vier op een Rij");
+	private JPanel createBoardPanel(){
+		boardPanel = new JPanel();
 		BorderLayout border = new BorderLayout();
-		boardFrame.setLayout(border);
-		boardFrame.add(createRowChooserPanel(), BorderLayout.NORTH);
-		boardFrame.add(createConnectFourPanel(), BorderLayout.CENTER);
-		boardFrame.add(createInfoPanel(), BorderLayout.EAST);
-		boardFrame.setSize(700,700);
-		boardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		boardFrame.setVisible(true);
-		return boardFrame;
+		boardPanel.setLayout(border);
+		boardPanel.add(createRowChooserPanel(), BorderLayout.NORTH);
+		boardPanel.add(createConnectFourPanel(), BorderLayout.CENTER);
+		return boardPanel;
 	}
 	
 	/**

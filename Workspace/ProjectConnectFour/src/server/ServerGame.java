@@ -31,47 +31,46 @@ public class ServerGame implements ServerProtocol{
 		chs.add(ch1);
 		chs.add(ch2);
 		this.server = server;
-		player1 = new HumanPlayer(ch1, ch1.getClientName(), PlayerColor.RED);
-		player2 = new HumanPlayer(ch2, ch2.getClientName(), PlayerColor.YELLOW);
-		game = new Game(player1, player2, false);
+		player1 = new HumanPlayer(ch1.getClientName(), PlayerColor.RED);
+		player2 = new HumanPlayer(ch2.getClientName(), PlayerColor.YELLOW);
+		game = new Game(player1, player2);
 		initiate();
 	}
 	
 	private void initiate(){
-		game.setGameState("inprogress");
 		server.broadcast(chs, MAKE_GAME);
 		ch1.setIngame();
 		ch2.setIngame();
 	}
 	
 	private String getStringPlayer(){
-		if(game.getCurrentPlayer() == player1){
+		if(game.getCurrentPlayer() == player1.getPlayerColor()){
 			return "player1";
-		}else if(game.getCurrentPlayer() == player2){
+		}else if(game.getCurrentPlayer() == player2.getPlayerColor()){
 			return "player2";
 		}else{
 			return "geen speler";
 		}
 	}
 	
-	public void makeMove(int index, ClientHandler clienthandler){
-		if(game.getCurrentPlayer() == player1 && ((HumanPlayer)player1).getClientHandler() == clienthandler){
-			game.board.setCurrentPlayer(player1);
-			game.board.setStone(index);
-			game.countColor(game.board.getX(), game.board.getY(), player1.getPlayerColor());
-			server.broadcast(chs, MAKE_MOVE + " " + index);
-		}else if(((HumanPlayer)player2).getClientHandler() == clienthandler &&  game.getCurrentPlayer() == player2){
-			game.board.setCurrentPlayer(player2);
-			game.board.setStone(index);
-			game.countColor(game.board.getX(), game.board.getY(), player2.getPlayerColor());
-			server.broadcast(chs, MAKE_MOVE + " " + index);
-		}
-		if(game.isWinner()){
-			boolean isDraw = false;
-			server.broadcast(chs, ServerProtocol.SEND_GAME_OVER + " " + isDraw + " " + game.getWinner().getName());
-			ch1.setIngame();
-			ch2.setIngame();
-			game.boardgui.disposeFrame();
-		}
-	}
+//	public void makeMove(int index, ClientHandler clienthandler){
+//		if(game.getCurrentPlayer() == player1 && ((HumanPlayer)player1).getClientHandler() == clienthandler){
+//			game.board.setCurrentPlayer(player1);
+//			game.board.setStone(index);
+//			game.countColor(game.board.getX(), game.board.getY(), player1.getPlayerColor());
+//			server.broadcast(chs, MAKE_MOVE + " " + index);
+//		}else if(((HumanPlayer)player2).getClientHandler() == clienthandler &&  game.getCurrentPlayer() == player2){
+//			game.board.setCurrentPlayer(player2);
+//			game.board.setStone(index);
+//			game.countColor(game.board.getX(), game.board.getY(), player2.getPlayerColor());
+//			server.broadcast(chs, MAKE_MOVE + " " + index);
+//		}
+//		if(game.isWinner()){
+//			boolean isDraw = false;
+//			server.broadcast(chs, ServerProtocol.SEND_GAME_OVER + " " + isDraw + " " + game.getWinner().getName());
+//			ch1.setIngame();
+//			ch2.setIngame();
+//			game.boardgui.disposeFrame();
+//		}
+//	}
 }
