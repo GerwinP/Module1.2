@@ -32,6 +32,12 @@ public class Server implements ServerProtocol{
 		server.run();
 	}
 	
+	public Server(String arg){
+		Server server = new Server(Integer.parseInt(arg));
+//		server.run();
+		System.out.println("Server started on port " + arg);
+	} 
+	
 	public Server(int portArg) {
 		port = portArg;
 		threads = new ArrayList<ClientHandler>();

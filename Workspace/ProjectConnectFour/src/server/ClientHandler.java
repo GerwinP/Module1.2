@@ -120,7 +120,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	}
 	
 	private void makeMove(int index) {
-		serverGame.makeMove(index, this);
+//		serverGame.makeMove(index, this);
 	}
 	
 	private void shutDown() {

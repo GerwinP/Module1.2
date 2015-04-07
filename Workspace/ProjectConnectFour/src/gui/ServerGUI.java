@@ -1,25 +1,24 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.border.Border;
 
 public class ServerGUI {
 	
-	private JPanel infoPanel;
-	private JPanel okPanel;
-	private JPanel outPutPanel;
 	private JFrame serverFrame;
-	private JTextField ipadres;
-	private JTextField port;
-	private JButton okButton;
+	private JPanel logPanel;
+	private JPanel clientPanel;
+	private JPanel emptyPanel;
+	private JTextArea logArea;
+	private JTextArea clientArea;
 	
 	public ServerGUI(){
 		createServerFrame();
@@ -27,51 +26,53 @@ public class ServerGUI {
 	
 	private JFrame createServerFrame(){
 		serverFrame = new JFrame();
-		BorderLayout border = new BorderLayout();
-		serverFrame.setLayout(border);
-		serverFrame.add(createInfoPanel(), BorderLayout.WEST);
-		serverFrame.add(createOkPanel(), BorderLayout.CENTER);
-		serverFrame.setSize(700,700);
+		GridLayout grid = new GridLayout(1,2);
+		serverFrame.setLayout(grid);
+		serverFrame.add(createLogPanel());
+		serverFrame.add(createClientPanel());
+		serverFrame.setSize(700,500);
 		serverFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		serverFrame.setVisible(true);
 		return serverFrame;
 	}
 	
-	private JPanel createInfoPanel(){
-		infoPanel = new JPanel();
-		GridLayout grid = new GridLayout(2,1);
-		infoPanel.setLayout(grid);
-		JLabel ipadresLabel = new JLabel("IP adres");
-		ipadres = new JTextField();
-		JLabel portLabel = new JLabel("Port number");
-		port = new JTextField();
-		infoPanel.add(ipadresLabel);
-		infoPanel.add(ipadres);
-		infoPanel.add(portLabel);
-		infoPanel.add(port);
-		return infoPanel;
+	private JPanel createLogPanel(){
+		logPanel = new JPanel();
+		BorderLayout border = new BorderLayout();
+		logPanel.setLayout(border);
+		JLabel logLabel = new JLabel("Server log:");
+		Border logAreaBorder = BorderFactory.createLineBorder(Color.BLACK);
+		logArea = new JTextArea();
+		logArea.setBorder(logAreaBorder);
+		logPanel.add(logLabel, BorderLayout.NORTH);
+		logPanel.add(logArea, BorderLayout.CENTER);
+		logPanel.add(createEmptyPanel(), BorderLayout.WEST);
+		logPanel.add(createEmptyPanel(), BorderLayout.SOUTH);
+		return logPanel;
 	}
 	
-	private JPanel createOkPanel(){
-		okPanel = new JPanel();
-		okButton = new JButton("Start Server");
-		okPanel.add(okButton);
-		okButton.addActionListener(new ServerGUIController());
-		okButton.setActionCommand("start server");
-		return okPanel;
+	private JPanel createClientPanel(){
+		clientPanel = new JPanel();
+		BorderLayout border = new BorderLayout();
+		clientPanel.setLayout(border);
+		Border clientAreaBorder = BorderFactory.createLineBorder(Color.BLACK);
+		clientArea = new JTextArea();
+		clientArea.setBorder(clientAreaBorder);
+		JLabel clientLabel = new JLabel("Clients");
+		clientPanel.add(clientLabel, BorderLayout.NORTH);
+		clientPanel.add(clientArea, BorderLayout.CENTER);
+		clientPanel.add(createEmptyPanel(), BorderLayout.WEST);
+		clientPanel.add(createEmptyPanel(), BorderLayout.EAST);
+		clientPanel.add(createEmptyPanel(), BorderLayout.SOUTH);
+		return clientPanel;
+	}
+	
+	private JPanel createEmptyPanel(){
+		emptyPanel = new JPanel();
+		return emptyPanel;
 	}
 	
 	public static void main(String[] args){
 		new ServerGUI();
-	}
-	
-	class ServerGUIController implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
 }
