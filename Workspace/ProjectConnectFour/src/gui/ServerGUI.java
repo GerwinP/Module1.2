@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
+import server.Server;
+
 public class ServerGUI {
 	
 	private JFrame serverFrame;
@@ -19,9 +21,16 @@ public class ServerGUI {
 	private JPanel emptyPanel;
 	private JTextArea logArea;
 	private JTextArea clientArea;
+	private Server server;
 	
-	public ServerGUI(){
+	public ServerGUI(int port){
 		createServerFrame();
+		startServer(port);
+	}
+	
+	private void startServer(int port){
+		server = new Server(port, this);
+		server.start();
 	}
 	
 	private JFrame createServerFrame(){
@@ -73,6 +82,6 @@ public class ServerGUI {
 	}
 	
 	public static void main(String[] args){
-		new ServerGUI();
+//		new ServerGUI();
 	}
 }

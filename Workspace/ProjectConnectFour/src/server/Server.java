@@ -1,5 +1,7 @@
 package server;
 
+import gui.ServerGUI;
+
 import java.util.Iterator;
 import java.util.List;
 import java.io.IOException;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import utils.ServerProtocol;
 import connectFour.Game;
 
-public class Server implements ServerProtocol{
+public class Server extends Thread implements ServerProtocol{
 
 	public Game game;
 	private int port;
@@ -21,26 +23,19 @@ public class Server implements ServerProtocol{
 	public final String versie = "100";
 	public List<ClientHandler> waitingForGame = new ArrayList<ClientHandler>();
 	private List<ServerGame> servergames = new ArrayList<ServerGame>();
+	private ServerGUI gui;
 	
 	public static void main(String[] args){
 		if (args.length != 1) {
 			System.out.println(USAGE);
 			System.exit(0);
 		}
-		
-		Server server = new Server(Integer.parseInt(args[0]));
-		server.run();
 	}
 	
-	public Server(String arg){
-		Server server = new Server(Integer.parseInt(arg));
-//		server.run();
-		System.out.println("Server started on port " + arg);
-	} 
-	
-	public Server(int portArg) {
+	public Server(int portArg, ServerGUI servergui) {
 		port = portArg;
 		threads = new ArrayList<ClientHandler>();
+		System.out.println("Server started on port " + portArg);
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
@@ -51,12 +46,12 @@ public class Server implements ServerProtocol{
 
 	public void run() {
 		try {
-			while (true) {
+//			while (true) {
 				Socket clientSocket = serverSocket.accept();
 				ClientHandler clientHandler = new ClientHandler(this, clientSocket);
 				addHandler(clientHandler);
 				clientHandler.start();
-			}
+//			}
 		} catch (IOException e) {
 			System.out.println("Stuk");
 		}

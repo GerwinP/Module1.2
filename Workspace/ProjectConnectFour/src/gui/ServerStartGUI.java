@@ -32,7 +32,7 @@ public class ServerStartGUI {
 		serverFrame.setLayout(border);
 		serverFrame.add(createInfoPanel(), BorderLayout.NORTH);
 		serverFrame.add(createOkPanel(), BorderLayout.CENTER);
-		serverFrame.setSize(300,60);
+		serverFrame.setSize(300,100);
 		serverFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		serverFrame.setVisible(true);
 		return serverFrame;
@@ -72,7 +72,14 @@ public class ServerStartGUI {
 		public void actionPerformed(ActionEvent arg0) {
 			if(arg0.getActionCommand().equals("start server")){
 				String portString = port.getText();
-				new Server(portString);
+				int portNumber = 0;
+				try{
+					portNumber = Integer.parseInt(portString);
+				} catch(NumberFormatException e){
+					System.out.println("NaN");
+					System.exit(0);
+				}
+				new ServerGUI(portNumber);
 				serverFrame.dispose();
 			}
 			
