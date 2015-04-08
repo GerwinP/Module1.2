@@ -2,6 +2,11 @@ package server;
 
 import gui.BoardGUI;
 
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,12 +15,14 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import utils.ServerProtocol;
 
+import utils.ServerProtocol;
 import connectFour.Board;
 import utils.*;
+
 import java.net.*;
 import java.io.*;
+
 import gui.*;
 import connectFour.*;
 
@@ -105,9 +112,10 @@ public class Client extends Thread implements ServerProtocol{
 		isConnected = true;
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+		new ClientGUIController();
 		sendMessage("hello " + "100 " + name);
 	}
-	
+
 	public void run(){
 		try{
 			while(isConnected){
@@ -124,7 +132,6 @@ public class Client extends Thread implements ServerProtocol{
 				}else if(message != null && splitMessage[0].equals(SEND_GAME_OVER)){
 					print("The game is over");
 					print("The winner is: " + splitMessage[2]);
-//					boardgui.disposeFrame();
 					sendMessage(SEND_GAME_OVER);
 				}else if(message != null){
 					print(message);
@@ -135,10 +142,10 @@ public class Client extends Thread implements ServerProtocol{
 			System.out.println("No longer connected, terminating process");
 			shutDown();
 		}catch(IOException e){
-			System.out.println("Connection to the server lost. Terminating process");
+			System.out.println("IO: Connection to the server lost. Terminating process");
 			shutDown();
 		}catch(NullPointerException e){
-			System.out.println("Connection to the server lost. Terminating process");
+			System.out.println("NULL: Connection to the server lost. Terminating process");
 			shutDown();
 		}
 	}
@@ -157,9 +164,11 @@ public class Client extends Thread implements ServerProtocol{
 	public void shutDown(){
 		try {
 //			out.flush();
+			System.out.println("Shutdown");
 			sock.shutdownInput();
 			sock.shutdownOutput();
 			sock.close();
+			gui.clientFrame.dispose();
 			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -188,5 +197,34 @@ public class Client extends Thread implements ServerProtocol{
 //			e.printStackTrace();
 		}
 		return (input == null) ? "" : input;
+	}
+	
+	class ClientGUIController extends WindowAdapter implements ActionListener{
+
+		public ClientGUIController(){
+			gui.play.addActionListener(this);
+			gui.quit.addActionListener(this);
+			gui.clientFrame.addWindowListener(this);
+		}
+		
+		public void windowClosing(WindowEvent e){
+			Window w = e.getWindow();
+			w.dispose();
+		}
+		
+		public void windowClosed(WindowEvent e){
+			sendMessage("quit");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if(arg0.getActionCommand().equals("quit")){
+				sendMessage("quit");
+			} else if(arg0.getActionCommand().equals("play")){
+				sendMessage("play");
+			}
+			
+		}
+		
 	}
 }

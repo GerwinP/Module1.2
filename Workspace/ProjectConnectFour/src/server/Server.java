@@ -4,6 +4,11 @@ import gui.ServerGUI;
 
 import java.util.Iterator;
 import java.util.List;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,6 +40,7 @@ public class Server extends Thread implements ServerProtocol{
 	public Server(int portArg, ServerGUI servergui) {
 		port = portArg;
 		threads = new ArrayList<ClientHandler>();
+		gui = servergui;
 		System.out.println("Server started on port " + portArg);
 		try {
 			serverSocket = new ServerSocket(port);
@@ -59,6 +65,7 @@ public class Server extends Thread implements ServerProtocol{
 
 	public void print(String message) {
 		System.out.println(message);
+		gui.addMessage(message);
 	}
 	
 	public void broadcast(List<ClientHandler> chs, String msg){
@@ -89,10 +96,12 @@ public class Server extends Thread implements ServerProtocol{
 	
 	public void addClientName(String name){
 		clientNames.add(name);
+		updateClientList();
 	}
 	
 	public void removeClientName(String name){
 		clientNames.remove(name);
+		updateClientList();
 	}
 	
 	public String getVersie(){
@@ -112,5 +121,33 @@ public class Server extends Thread implements ServerProtocol{
 	
 	public void removeGame(ServerGame serverGame){
 		servergames.remove(serverGame);
+	}
+	
+	public void updateClientList(){
+		gui.addClients(clientNames);
+	}
+	
+	private void shutDown(){
+		System.out.println("Shutting down");
+		System.exit(0);
+	}
+	
+	class ServerGUIController extends WindowAdapter implements ActionListener{
+
+		public void WindowClosing(WindowEvent e){
+			Window w = e.getWindow();
+			w.dispose();
+		}
+		
+		public void WindowClosed(WindowEvent e){
+			shutDown();
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 }

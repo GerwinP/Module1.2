@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -33,6 +34,17 @@ public class ServerGUI {
 		server.start();
 	}
 	
+	public void addMessage(String message){
+		logArea.append(message + "\n");
+	}
+	
+	public void addClients(List<String> clients){
+		clientArea.setText(null);
+		for(int i = 0; i < clients.size(); i++){
+			clientArea.append(clients.get(i) + "\n");
+		}
+	}
+	
 	private JFrame createServerFrame(){
 		serverFrame = new JFrame();
 		GridLayout grid = new GridLayout(1,2);
@@ -40,7 +52,6 @@ public class ServerGUI {
 		serverFrame.add(createLogPanel());
 		serverFrame.add(createClientPanel());
 		serverFrame.setSize(700,500);
-		serverFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		serverFrame.setVisible(true);
 		return serverFrame;
 	}
@@ -52,6 +63,7 @@ public class ServerGUI {
 		JLabel logLabel = new JLabel("Server log:");
 		Border logAreaBorder = BorderFactory.createLineBorder(Color.BLACK);
 		logArea = new JTextArea();
+		logArea.setEditable(false);
 		logArea.setBorder(logAreaBorder);
 		logPanel.add(logLabel, BorderLayout.NORTH);
 		logPanel.add(logArea, BorderLayout.CENTER);
@@ -66,6 +78,7 @@ public class ServerGUI {
 		clientPanel.setLayout(border);
 		Border clientAreaBorder = BorderFactory.createLineBorder(Color.BLACK);
 		clientArea = new JTextArea();
+		clientArea.setEditable(false);
 		clientArea.setBorder(clientAreaBorder);
 		JLabel clientLabel = new JLabel("Clients");
 		clientPanel.add(clientLabel, BorderLayout.NORTH);
