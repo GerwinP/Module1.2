@@ -23,45 +23,45 @@ public class Client extends Thread implements ServerProtocol{
 	
 	private static final String USAGE = "usage: java week7.cmdchat.Client <name> <address> <port>";
 	
-	public static void main(String[] args){
-		if (args.length != 3) {
-			System.out.println(USAGE);
-			System.exit(0);
-		}
-		
-		InetAddress host = null;
-		int port = 0;
-		
-		try {
-			host = InetAddress.getByName(args[1]);
-		} catch (UnknownHostException e) {
-			print("ERROR: no valid hostname!");
-			System.exit(0);
-		}
-		
-		try {
-			port = Integer.parseInt(args[2]);
-		} catch (NumberFormatException e) {
-			print("ERROR: no valid portnummer!");
-			System.exit(0);
-		}
-		
-		try {
-			Client client = new Client(args[0], host, port);
-			client.sendMessage(args[0]);
-			client.start();
-			
-			do{
-				String input = readIn();
-				client.sendMessage(input);
-			}while(true);
-			
-		} catch (IOException e) {
-			print("ERROR: couldn't construct a client object!");
-			System.exit(0);
-		}
-
-	}
+//	public static void main(String[] args){
+//		if (args.length != 3) {
+//			System.out.println(USAGE);
+//			System.exit(0);
+//		}
+//		
+//		InetAddress host = null;
+//		int port = 0;
+//		
+//		try {
+//			host = InetAddress.getByName(args[1]);
+//		} catch (UnknownHostException e) {
+//			print("ERROR: no valid hostname!");
+//			System.exit(0);
+//		}
+//		
+//		try {
+//			port = Integer.parseInt(args[2]);
+//		} catch (NumberFormatException e) {
+//			print("ERROR: no valid portnummer!");
+//			System.exit(0);
+//		}
+//		
+//		try {
+//			Client client = new Client(args[0], host, port);
+//			client.sendMessage(args[0]);
+//			client.start();
+//			
+//			do{
+//				String input = readIn();
+//				client.sendMessage(input);
+//			}while(true);
+//			
+//		} catch (IOException e) {
+//			print("ERROR: couldn't construct a client object!");
+//			System.exit(0);
+//		}
+//
+//	}
 	
 	private String name;
 	private Socket sock = null;
@@ -70,6 +70,7 @@ public class Client extends Thread implements ServerProtocol{
 	private boolean isConnected = false;
 	private BoardGUI boardgui;
 	private Board board;
+	private ClientGUI gui;
 	
 	public Client(String name, String ipaddress, String portString){
 		this.name = name;
@@ -87,18 +88,19 @@ public class Client extends Thread implements ServerProtocol{
 			print("Error: no valid portnumber");
 			System.exit(0);
 		}
-		try{
-			Client client = new Client(this.name, host, port);
-		}catch(IOException e){
-			print("ERROR: Could not construct a client object");
-			System.exit(0);
-		}
+//		try{
+//			Client client = new Client(this.name, host, port);
+//		}catch(IOException e){
+//			print("ERROR: Could not construct a client object");
+//			System.exit(0);
+//		}
 		
 		
 	}
 	
-	public Client(String name, InetAddress host, int port) throws IOException{
+	public Client(String name, InetAddress host, int port, ClientGUI gui) throws IOException{
 		this.name = name;
+		this.gui = gui;
 		sock = new Socket(host, port);
 		isConnected = true;
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -124,8 +126,7 @@ public class Client extends Thread implements ServerProtocol{
 					print("The winner is: " + splitMessage[2]);
 //					boardgui.disposeFrame();
 					sendMessage(SEND_GAME_OVER);
-				}
-				else if(message != null){
+				}else if(message != null){
 					print(message);
 				}else{
 					isConnected = false;

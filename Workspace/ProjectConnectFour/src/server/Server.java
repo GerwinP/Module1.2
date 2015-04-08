@@ -46,12 +46,12 @@ public class Server extends Thread implements ServerProtocol{
 
 	public void run() {
 		try {
-//			while (true) {
+			while (true) {
 				Socket clientSocket = serverSocket.accept();
 				ClientHandler clientHandler = new ClientHandler(this, clientSocket);
 				addHandler(clientHandler);
 				clientHandler.start();
-//			}
+			}
 		} catch (IOException e) {
 			System.out.println("Stuk");
 		}

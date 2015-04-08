@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -81,6 +83,7 @@ public class StartGUI {
 		startButton.setActionCommand("standalone");
 		startMPButton.setActionCommand("multiplayer");
 		startButton.addActionListener(new startFrameController());
+		startMPButton.addActionListener(new startFrameController());
 		return startPanel;
 	}
 	
@@ -133,7 +136,23 @@ public class StartGUI {
 				name = nameField.getText();
 				ipadress = ipField.getText();
 				port = portField.getText();
-				new Client(name, ipadress, port);
+				InetAddress host = null;
+				int portNumber = 0;
+				
+				try {
+					host = InetAddress.getByName(ipadress);
+				} catch (UnknownHostException e) {
+					System.out.println("ERROR: no valid hostname!");
+					System.exit(0);
+				}
+				
+				try {
+					portNumber = Integer.parseInt(port);
+				} catch (NumberFormatException e) {
+					System.out.println("ERROR: no valid portnummer!");
+					System.exit(0);
+				}
+				new ClientGUI(name, host, portNumber);
 				startFrame.dispose();
 			}
 		}
