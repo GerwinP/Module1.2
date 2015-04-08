@@ -18,7 +18,6 @@ public class ServerStartGUI {
 	private JPanel infoPanel;
 	private JPanel okPanel;
 	private JFrame serverFrame;
-	private JTextField ipadres;
 	private JTextField port;
 	private JButton okButton;
 	
@@ -42,12 +41,8 @@ public class ServerStartGUI {
 		infoPanel = new JPanel();
 		GridLayout grid = new GridLayout(1,1);
 		infoPanel.setLayout(grid);
-		JLabel ipadresLabel = new JLabel("IP adres");
-		ipadres = new JTextField();
 		JLabel portLabel = new JLabel("Port number");
 		port = new JTextField();
-//		infoPanel.add(ipadresLabel);
-//		infoPanel.add(ipadres);
 		infoPanel.add(portLabel);
 		infoPanel.add(port);
 		return infoPanel;
