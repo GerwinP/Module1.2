@@ -42,11 +42,15 @@ public class ClientHandler extends Thread implements ServerProtocol {
 				String[] splitMessage = msg.split("\\s+");
 				if (splitMessage[0].equals(SEND_HELLO)) {
 					clientName = splitMessage[2];
-					server.addClientName(clientName);
-					opties = splitMessage[1];
-					announce();
-					sendMessage(SEND_HELLO + " " + server.getVersie());
-					ack = true;
+					if(server.checkClientNames(clientName)){
+						server.addClientName(clientName);
+						opties = splitMessage[1];
+						announce();
+						sendMessage(SEND_HELLO + " " + server.getVersie());
+						ack = true;
+					}else{
+						sendMessage(SEND_ERROR_INVALIDNAME);
+					}
 				}else if (ack && !inGame && splitMessage[0].equals(SEND_PLAY)) {
 					System.out.println("[" + clientName + " is waiting]");
 					server.waitingForGame.add(this);
@@ -75,7 +79,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 				}else if(splitMessage[0].equals(SEND_GAME_OVER)){
 					server.removeGame(serverGame);
 				}else{
-//					sendMessage(SEND_ERROR_INVALIDCOMMAND);
+					sendMessage(SEND_ERROR_INVALIDCOMMAND);
 				}
 			}
 		} catch (IOException e) {
@@ -94,7 +98,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	}
 	
 	public void announce() throws IOException {
-		server.broadcast("[" + clientName + " has entered]");
+		sendMessage(SEND_PLAYERS);
 	}
 
 	public void sendMessage(String msg) {

@@ -127,6 +127,16 @@ public class Server extends Thread implements ServerProtocol{
 		gui.addClients(clientNames);
 	}
 	
+	public boolean checkClientNames(String name){
+		boolean nameAvailable = true;
+		for(int i = 0;nameAvailable && i < clientNames.size(); i++){
+			if(clientNames.get(i).equals(name)){
+				nameAvailable = false;
+			}
+		}
+		return nameAvailable;
+	}
+	
 	private void shutDown(){
 		System.out.println("Shutting down");
 		System.exit(0);
