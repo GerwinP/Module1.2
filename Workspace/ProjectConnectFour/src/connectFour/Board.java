@@ -139,8 +139,8 @@ public class Board{
 	 * Checks if the game is over, so if there is a winner or if the <code>Board</code> is full
 	 * @return true if the game is over
 	 */
-	public boolean gameOver(){
-		return hasWinner() || isFull();
+	public boolean gameOver(int row, int col, PlayerColor color){
+		return isWinner(row, col, color) || isFull();
 	}
 	
 	/**
@@ -160,16 +160,6 @@ public class Board{
 		}
 		return isWinner;
 	}
-	
-	/**
-	 * Checks if the <code>Game</code> has a winner
-	 * @return true if there is a winner
-	 */
-	public boolean hasWinner(){
-		return false;
-//		return isWinner(PlayerColor.RED) || isWinner(PlayerColor.YELLOW);
-	}
-	
 	/**
 	 * Counts all the horizontal fields up and down from the given pair (row,col)
 	 * that are the <code>PlayerColor</code> that is given and connected

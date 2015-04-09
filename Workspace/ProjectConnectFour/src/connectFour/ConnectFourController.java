@@ -25,6 +25,7 @@ public class ConnectFourController implements ActionListener{
 	private JButton[] rowChoosers;
 	private Player p1;
 	private Player p2;
+	private boolean isOnline = false;
 	
 	/**
 	 * Creates a new <code>Game</code> with two <code>Player</code> objects.
@@ -37,6 +38,7 @@ public class ConnectFourController implements ActionListener{
 			this.p2 = new ComputerPlayer("Computer", PlayerColor.YELLOW);
 		}else{
 			this.p2 = new HumanPlayer(p2, PlayerColor.YELLOW);
+			isOnline = true;
 		}
 		game = new Game(this.p1,this.p2);
 		gui = new BoardGUI();
@@ -52,10 +54,13 @@ public class ConnectFourController implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		int index = Integer.parseInt(arg0.getActionCommand());
-		game.takeTurn(index);
-		if(p2 instanceof ComputerPlayer){
-			System.out.println(p2.determineMove());
+		if(!isOnline){
+			//HumanPlayer takes turn
+			game.takeTurn(index);
+			//ComputerPlayer takes turn
 			game.takeTurn(p2.determineMove());
+		} else {
+			
 		}
 	}
 }

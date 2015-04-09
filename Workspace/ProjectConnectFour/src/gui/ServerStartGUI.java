@@ -70,12 +70,13 @@ public class ServerStartGUI {
 				int portNumber = 0;
 				try{
 					portNumber = Integer.parseInt(portString);
+					new ServerGUI(portNumber);
+					serverFrame.dispose();
 				} catch(NumberFormatException e){
 					System.out.println("NaN");
 					System.exit(0);
 				}
-				new ServerGUI(portNumber);
-				serverFrame.dispose();
+
 			}
 			
 		}

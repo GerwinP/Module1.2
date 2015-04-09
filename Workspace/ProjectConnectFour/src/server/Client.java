@@ -78,6 +78,7 @@ public class Client extends Thread implements ServerProtocol{
 	private BoardGUI boardgui;
 	private Board board;
 	private ClientGUI gui;
+	private ConnectFourController connectFourController;
 	
 	public Client(String name, String ipaddress, String portString){
 		this.name = name;
@@ -125,7 +126,7 @@ public class Client extends Thread implements ServerProtocol{
 					shutDown();
 				}else if(message!= null && splitMessage[0].equals(MAKE_GAME)){
 					System.out.println("Starting boardGui");
-					new ConnectFourController(splitMessage[1], splitMessage[2]);
+					makeGame(splitMessage[1], splitMessage[2]);
 				}else if(message != null && splitMessage[0].equals(MAKE_MOVE)){
 					int index = Integer.parseInt(splitMessage[1]);
 					makeMove(index);
@@ -184,6 +185,10 @@ public class Client extends Thread implements ServerProtocol{
 	
 	public String getClientName(){
 		return name;
+	}
+	
+	private void makeGame(String name1, String name2){
+		connectFourController = new ConnectFourController(name1, name2);
 	}
 	
 	private void makeMove(int index){

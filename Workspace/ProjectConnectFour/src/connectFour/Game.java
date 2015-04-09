@@ -2,7 +2,6 @@ package connectFour;
 
 import java.util.Observable;
 
-import players.ComputerPlayer;
 import players.HumanPlayer;
 import players.Player;
 import utils.PlayerColor;
@@ -39,7 +38,7 @@ public class Game extends Observable {
 	/**
 	 * Resets the <code>Game</code> and then starts a new <code>Game</code>
 	 */
-	public void start(){
+	private void start(){
 		boolean goOn = true;
 		while(goOn){
 			reset();
@@ -61,7 +60,7 @@ public class Game extends Observable {
 	 * Waits for input from a <code>Player</code> until the <code>Game</code> is over
 	 */
 	private void play(){
-		while(!board.gameOver()){
+		while(!false){
 			if(players[current] instanceof HumanPlayer){
 				takeTurn(players[current].determineMove());
 			}
@@ -94,9 +93,7 @@ public class Game extends Observable {
 			setChanged();
 			notifyObservers(field);
 			int row = (field - toPlay) / DIM;
-			boolean isWinner = board.isWinner(row, toPlay, players[current].getPlayerColor());
-			gameOver = isWinner || board.isFull();
-			if(gameOver){
+			if(board.gameOver(row, toPlay, players[current].getPlayerColor())){
 				setChanged();
 				notifyObservers("Game Over");
 			}
