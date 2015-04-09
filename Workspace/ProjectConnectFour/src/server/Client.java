@@ -134,11 +134,9 @@ public class Client extends Thread implements ServerProtocol{
 					print("The winner is: " + splitMessage[2]);
 					sendMessage(SEND_GAME_OVER);
 				}else if(message != null && splitMessage[0].equals(SEND_ERROR_INVALIDNAME)){
-					
-				}
-				
-				
-				else if(message != null){
+//					print(SEND_ERROR_INVALIDNAME);
+//					shutDown();
+				}else if(message != null){
 					print(message);
 				}else{
 					isConnected = false;

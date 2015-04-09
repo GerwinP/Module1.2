@@ -17,11 +17,7 @@ public class ErrorGUI {
 	
 	public ErrorGUI(String message){
 		this.message = message;
-//		createErrorFrame();
-		JOptionPane.showMessageDialog(frame,
-			    "Eggs are not supposed to be green.",
-			    "Inane error",
-			    JOptionPane.ERROR_MESSAGE);
+		createErrorFrame();
 	}
 	
 	private JFrame createErrorFrame(){
