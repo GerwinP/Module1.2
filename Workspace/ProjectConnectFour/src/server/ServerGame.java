@@ -24,21 +24,25 @@ public class ServerGame implements ServerProtocol{
 	private Server server;
 	private Player player1;
 	private Player player2;
+	private String player1Name;
+	private String player2Name;
 	
 	public ServerGame(ClientHandler ch1, ClientHandler ch2, Server server){
 		this.ch1 = ch1;
 		this.ch2 = ch2;
 		chs.add(ch1);
 		chs.add(ch2);
+		player1Name = ch1.getClientName();
+		player2Name = ch2.getClientName();
 		this.server = server;
-		player1 = new HumanPlayer(ch1.getClientName(), PlayerColor.RED);
-		player2 = new HumanPlayer(ch2.getClientName(), PlayerColor.YELLOW);
+		player1 = new HumanPlayer(player1Name, PlayerColor.RED);
+		player2 = new HumanPlayer(player2Name, PlayerColor.YELLOW);
 		game = new Game(player1, player2);
 		initiate();
 	}
 	
 	private void initiate(){
-		server.broadcast(chs, MAKE_GAME);
+		server.broadcast(chs, MAKE_GAME + " " + player1Name + " " + player2Name);
 		ch1.setIngame();
 		ch2.setIngame();
 	}

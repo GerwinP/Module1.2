@@ -2,6 +2,7 @@ package connectFour;
 
 import java.util.Observable;
 
+import players.ComputerPlayer;
 import players.HumanPlayer;
 import players.Player;
 import utils.PlayerColor;
@@ -61,7 +62,9 @@ public class Game extends Observable {
 	 */
 	private void play(){
 		while(!board.gameOver()){
-			players[current].makeMove(board);
+			if(players[current] instanceof HumanPlayer){
+				takeTurn(players[current].determineMove());
+			}
 			current = (current+1) % NUMBER_PLAYERS;
 		}
 	}
@@ -82,14 +85,16 @@ public class Game extends Observable {
 	 */
 	public void takeTurn(int index){
 		if(!gameOver){
-			int field = board.checkForFreeSpot(index, players[current].getPlayerColor());
+			int toPlay = index;
+//			if(players[current] instanceof ComputerPlayer){
+//				toPlay = players[current].determineMove(board);
+//			}
+			int field = board.checkForFreeSpot(toPlay, players[current].getPlayerColor());
 			board.setField(field, players[current].getPlayerColor());
 			setChanged();
 			notifyObservers(field);
-			int row = (field - index) / DIM;
-			boolean isWinner = board.isWinner(row, index, players[current].getPlayerColor());
-			System.out.println("is full: " + board.isFull());
-			System.out.println("is winner " + isWinner);
+			int row = (field - toPlay) / DIM;
+			boolean isWinner = board.isWinner(row, toPlay, players[current].getPlayerColor());
 			gameOver = isWinner || board.isFull();
 			if(gameOver){
 				setChanged();

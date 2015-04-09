@@ -40,14 +40,14 @@ public abstract class Player {
 	 * @param board
 	 * @return
 	 */
-	public abstract int determineMove(Board board);
+	public abstract int determineMove();
 	
 	/**
 	 * Calls <code>determineMove</code> to get a possible move and plays this on the <code>Board</code>
 	 * @param board
 	 */
 	public void makeMove(Board board){
-		int keuze = determineMove(board);
+		int keuze = determineMove();
 		board.setField(keuze, getPlayerColor());
 	}
 }

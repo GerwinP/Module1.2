@@ -70,7 +70,7 @@ public class Server extends Thread implements ServerProtocol{
 	
 	public void broadcast(List<ClientHandler> chs, String msg){
 		Iterator<ClientHandler> iterator = chs.iterator();
-		print(msg);
+		print("Message: " + msg);
 		while(iterator.hasNext()){
 			iterator.next().sendMessage(msg);
 		}
@@ -79,7 +79,7 @@ public class Server extends Thread implements ServerProtocol{
 	public void broadcast(String msg) {
 		Iterator<ClientHandler> iterator = threads.iterator();
 		
-		print(msg);
+		print("Message: " + msg);
 		
 		while(iterator.hasNext()){
 			iterator.next().sendMessage(msg);
@@ -129,7 +129,7 @@ public class Server extends Thread implements ServerProtocol{
 	
 	public boolean checkClientNames(String name){
 		boolean nameAvailable = true;
-		for(int i = 0;nameAvailable && i < clientNames.size(); i++){
+		for(int i = 0; nameAvailable && i < clientNames.size(); i++){
 			if(clientNames.get(i).equals(name)){
 				nameAvailable = false;
 			}

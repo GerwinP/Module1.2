@@ -125,7 +125,7 @@ public class Client extends Thread implements ServerProtocol{
 					shutDown();
 				}else if(message!= null && splitMessage[0].equals(MAKE_GAME)){
 					System.out.println("Starting boardGui");
-					new ConnectFourController();
+					new ConnectFourController(splitMessage[1], splitMessage[2]);
 				}else if(message != null && splitMessage[0].equals(MAKE_MOVE)){
 					int index = Integer.parseInt(splitMessage[1]);
 					makeMove(index);

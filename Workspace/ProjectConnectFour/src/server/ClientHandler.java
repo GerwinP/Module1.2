@@ -56,7 +56,6 @@ public class ClientHandler extends Thread implements ServerProtocol {
 					server.waitingForGame.add(this);
 					if (server.waitingForGame.size() == 2) {
 						System.out.println("Two players waiting");
-						server.print(MAKE_GAME);
 						server.makeGame();
 					}
 				}else if (ack && inGame && splitMessage[0].equals(SEND_MOVE)) {

@@ -129,7 +129,11 @@ public class StartGUI {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if(arg0.getActionCommand().equals("standalone")){
-				new ConnectFourController();
+				name = nameField.getText();
+				if(name.equals(null) || name.equals("")){
+					name = "Player";
+				}
+				new ConnectFourController(name, "2354365256545");
 				startFrame.dispose();
 			} else if(arg0.getActionCommand().equals("multiplayer")){
 				//Create a new client

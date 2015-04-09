@@ -1,7 +1,6 @@
 package players;
 
 import utils.PlayerColor;
-import connectFour.Board;
 
 public class HumanPlayer extends Player{
 
@@ -9,7 +8,7 @@ public class HumanPlayer extends Player{
 		super(theName, theColor);
 	}
 
-	public int determineMove(Board board) {
+	public int determineMove() {
 		return 0;
 	}
 	
