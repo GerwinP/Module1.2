@@ -20,12 +20,13 @@ import utils.PlayerColor;
 public class ConnectFourController implements ActionListener{
 	
 	private Game game;
-	private BoardGUI gui;
+	public BoardGUI gui;
 	private static final int y = 7;
 	private JButton[] rowChoosers;
 	private Player p1;
 	private Player p2;
 	private boolean isOnline = false;
+	private int lastMove;
 	
 	/**
 	 * Creates a new <code>Game</code> with two <code>Player</code> objects.
@@ -41,12 +42,16 @@ public class ConnectFourController implements ActionListener{
 			isOnline = true;
 		}
 		game = new Game(this.p1,this.p2);
-		gui = new BoardGUI();
+		gui = new BoardGUI(p1);
 		this.game.addObserver(this.gui);
 		rowChoosers = this.gui.getRowChoosers();
 		for(int i = 0; i < y; i++){
 			rowChoosers[i].addActionListener(this);
 		}
+	}
+	
+	public int lastMove(){
+		return lastMove;
 	}
 	
 	/**
@@ -60,7 +65,7 @@ public class ConnectFourController implements ActionListener{
 			//ComputerPlayer takes turn
 			game.takeTurn(p2.determineMove());
 		} else {
-			
+			lastMove = index;
 		}
 	}
 }

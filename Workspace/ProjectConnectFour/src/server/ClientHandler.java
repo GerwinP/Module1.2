@@ -8,9 +8,6 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 import utils.ServerProtocol;
-import utils.*;
-import java.net.*;
-import java.io.*;
 
 public class ClientHandler extends Thread implements ServerProtocol {
 
@@ -37,7 +34,6 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	public void run() {
 		try {
 			while (true) {
-				// server.broadcast("[" + clientName + "]" + in.readLine());
 				String msg = in.readLine();
 				String[] splitMessage = msg.split("\\s+");
 				if (splitMessage[0].equals(SEND_HELLO)) {
@@ -123,7 +119,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	}
 	
 	private void makeMove(int index) {
-//		serverGame.makeMove(index, this);
+		serverGame.makeMove(index, this);
 	}
 	
 	private void shutDown() {

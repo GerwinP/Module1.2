@@ -51,6 +51,10 @@ public class Board{
 		return index;
 	}
 	
+	/**
+	 * A getter for the <code>PlayerColor[]</code> fields.
+	 * @return
+	 */
 	public PlayerColor[] getFields(){
 		return fields;
 	}

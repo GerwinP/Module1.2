@@ -30,13 +30,6 @@ public class Server extends Thread implements ServerProtocol{
 	private List<ServerGame> servergames = new ArrayList<ServerGame>();
 	private ServerGUI gui;
 	
-	public static void main(String[] args){
-		if (args.length != 1) {
-			System.out.println(USAGE);
-			System.exit(0);
-		}
-	}
-	
 	public Server(int portArg, ServerGUI servergui) {
 		port = portArg;
 		threads = new ArrayList<ClientHandler>();

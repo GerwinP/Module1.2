@@ -1,21 +1,17 @@
 package server;
 
-import gui.BoardGUI;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import players.HumanPlayer;
 import players.Player;
 import utils.PlayerColor;
 import utils.ServerProtocol;
 import connectFour.Game;
-import utils.*;
-import connectFour.*;
-import java.util.*;
-import players.*;
 
-public class ServerGame implements ServerProtocol{
+public class ServerGame implements ServerProtocol, Observer{
 	
 	private Game game;
 	private ClientHandler ch1;
@@ -38,6 +34,7 @@ public class ServerGame implements ServerProtocol{
 		player1 = new HumanPlayer(player1Name, PlayerColor.RED);
 		player2 = new HumanPlayer(player2Name, PlayerColor.YELLOW);
 		game = new Game(player1, player2);
+		game.addObserver(this);
 		initiate();
 	}
 	
@@ -55,6 +52,24 @@ public class ServerGame implements ServerProtocol{
 		}else{
 			return "geen speler";
 		}
+	}
+	
+	public void makeMove(int index, ClientHandler clienthandler){
+//		if(game.getCurrentPlayer() == player1.getPlayerColor()){
+//			game.takeTurn(index);
+//		}else if(game.getCurrentPlayer() == player2.getPlayerColor()){
+//			game.takeTurn(index);
+//		}
+		game.takeTurn(index);
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if(arg1 instanceof Integer){
+			int index = (int)arg1;
+			server.broadcast(chs, MAKE_MOVE + " " + index); 
+		}
+		
 	}
 	
 //	public void makeMove(int index, ClientHandler clienthandler){

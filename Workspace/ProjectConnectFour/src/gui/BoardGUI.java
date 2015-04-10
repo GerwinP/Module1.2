@@ -30,6 +30,7 @@ public class BoardGUI extends JFrame implements Observer{
 	private JFrame totalFrame;
 	private JButton[] buttons;
 	private JButton[] rowChoosers;
+	private PlayerColor toPlay = PlayerColor.RED;
 	private static final int buttonAmount = 42;
 	private static final int x = 6;
 	private static final int y = 7;
@@ -38,12 +39,13 @@ public class BoardGUI extends JFrame implements Observer{
 	/**
 	 * Creates a new <code>BoardGUI</code>.
 	 */
-	public BoardGUI(){
-		createTotalFrame();
+	public BoardGUI(String name){
+		createTotalFrame(name);
+		
 	}
 	
-	private JFrame createTotalFrame(){
-		totalFrame = new JFrame();
+	private JFrame createTotalFrame(String name){
+		totalFrame = new JFrame(name);
 		BorderLayout border = new BorderLayout();
 		totalFrame.setLayout(border);
 		totalFrame.add(createBoardPanel(), BorderLayout.CENTER);
@@ -123,7 +125,7 @@ public class BoardGUI extends JFrame implements Observer{
 	 * @param buttonIndex
 	 * @param color
 	 */
-	private void setBackground(int buttonIndex, PlayerColor color){
+	public void setBackground(int buttonIndex, PlayerColor color){
 		if(color == PlayerColor.YELLOW){
 			buttons[buttonIndex].setBackground(Color.yellow);	
 		} else if(color == PlayerColor.RED){
@@ -132,9 +134,19 @@ public class BoardGUI extends JFrame implements Observer{
 		
 	}
 	
-	private void disableButtons(){
+	public void setBackground(int buttonIndex){
+		setBackground(buttonIndex, toPlay);
+	}
+	
+	public void disableButtons(){
 		for(int i = 0; i < y; i++){
 			rowChoosers[i].setEnabled(false);
+		}
+	}
+	
+	public void setButtons(boolean enable){
+		for(int i = 0; i < y; i++){
+			rowChoosers[i].setEnabled(enable);
 		}
 	}
 	
@@ -154,6 +166,18 @@ public class BoardGUI extends JFrame implements Observer{
 			infoPanel.add(winner);
 		}
 		
+	}
+	
+	public PlayerColor colorToPlayer(){
+		return toPlay;
+	}
+	
+	public void nextPlayer(){
+		if(toPlay == PlayerColor.RED){
+			toPlay = PlayerColor.YELLOW;
+		}else{
+			toPlay = PlayerColor.RED;
+		}
 	}
 	
 	/**

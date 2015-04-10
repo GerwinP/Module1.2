@@ -1,7 +1,5 @@
 package server;
 
-import gui.BoardGUI;
-
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,98 +12,38 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
+import javax.swing.JButton;
+
+import utils.PlayerColor;
 import utils.ServerProtocol;
-import connectFour.Board;
-import utils.*;
-
-import java.net.*;
-import java.io.*;
-
 import gui.*;
 import connectFour.*;
 
 public class Client extends Thread implements ServerProtocol{
-	
-	private static final String USAGE = "usage: java week7.cmdchat.Client <name> <address> <port>";
-	
-//	public static void main(String[] args){
-//		if (args.length != 3) {
-//			System.out.println(USAGE);
-//			System.exit(0);
-//		}
-//		
-//		InetAddress host = null;
-//		int port = 0;
-//		
-//		try {
-//			host = InetAddress.getByName(args[1]);
-//		} catch (UnknownHostException e) {
-//			print("ERROR: no valid hostname!");
-//			System.exit(0);
-//		}
-//		
-//		try {
-//			port = Integer.parseInt(args[2]);
-//		} catch (NumberFormatException e) {
-//			print("ERROR: no valid portnummer!");
-//			System.exit(0);
-//		}
-//		
-//		try {
-//			Client client = new Client(args[0], host, port);
-//			client.sendMessage(args[0]);
-//			client.start();
-//			
-//			do{
-//				String input = readIn();
-//				client.sendMessage(input);
-//			}while(true);
-//			
-//		} catch (IOException e) {
-//			print("ERROR: couldn't construct a client object!");
-//			System.exit(0);
-//		}
-//
-//	}
 	
 	private String name;
 	private Socket sock = null;
 	private BufferedReader in;
 	private BufferedWriter out;
 	private boolean isConnected = false;
-	private BoardGUI boardgui;
-	private Board board;
 	private ClientGUI gui;
-	private ConnectFourController connectFourController;
+	private boolean inGame = false;
+	private BoardGUI bgui;
+	private JButton[] rowChoosers;
+	private final int y = 7;
+	private PlayerColor currentPlayer;
 	
-	public Client(String name, String ipaddress, String portString){
-		this.name = name;
-		InetAddress host = null;
-		int port = 0;
-		try {
-			host = InetAddress.getByName(ipaddress);
-		} catch (UnknownHostException e) {
-			print("Error: no valid hostname");
-			System.exit(0);
-		}
-		try{
-			port = Integer.parseInt(portString);
-		} catch(NumberFormatException e){
-			print("Error: no valid portnumber");
-			System.exit(0);
-		}
-//		try{
-//			Client client = new Client(this.name, host, port);
-//		}catch(IOException e){
-//			print("ERROR: Could not construct a client object");
-//			System.exit(0);
-//		}
-		
-		
-	}
-	
+	/**
+	 * The constructor that creates a new <code>Client</code>.
+	 * It gets a name, a portnumber, a host and a <code>ClientGUI</code>
+	 * After it is created, it sends an hello message to the server.
+	 * @param name
+	 * @param host
+	 * @param port
+	 * @param gui
+	 * @throws IOException
+	 */
 	public Client(String name, InetAddress host, int port, ClientGUI gui) throws IOException{
 		this.name = name;
 		this.gui = gui;
@@ -117,6 +55,9 @@ public class Client extends Thread implements ServerProtocol{
 		sendMessage("hello " + "100 " + name);
 	}
 
+	/**
+	 * When the clienthread is started and the <code>Client</code> is connected, it will process the incoming messages.
+	 */
 	public void run(){
 		try{
 			while(isConnected){
@@ -127,7 +68,7 @@ public class Client extends Thread implements ServerProtocol{
 				}else if(message!= null && splitMessage[0].equals(MAKE_GAME)){
 					System.out.println("Starting boardGui");
 					makeGame(splitMessage[1], splitMessage[2]);
-				}else if(message != null && splitMessage[0].equals(MAKE_MOVE)){
+				}else if(message != null && inGame && splitMessage[0].equals(MAKE_MOVE)){
 					int index = Integer.parseInt(splitMessage[1]);
 					makeMove(index);
 				}else if(message != null && splitMessage[0].equals(SEND_GAME_OVER)){
@@ -139,8 +80,6 @@ public class Client extends Thread implements ServerProtocol{
 //					shutDown();
 				}else if(message != null){
 					print(message);
-				}else{
-					isConnected = false;
 				}
 			}
 			System.out.println("No longer connected, terminating process");
@@ -154,6 +93,11 @@ public class Client extends Thread implements ServerProtocol{
 		}
 	}
 	
+	/**
+	 * When this method is called, the message that is given as an parameter will be printed to the <code>Client</code>.
+	 * After that, the message will be written to the output stream of the socket. If that is not possible, the <code>Client</code> will terminate.
+	 * @param msg
+	 */
 	public void sendMessage(String msg){
 		print(msg);
 		try {
@@ -165,10 +109,13 @@ public class Client extends Thread implements ServerProtocol{
 		}
 	}
 	
+	/**
+	 * The method that will shutdown the client. 
+	 * It will shutdown the socket input and output and then close the socket. 
+	 * After that it will dispose the <code>ClientGUI</code> and then exit the program.
+	 */
 	public void shutDown(){
 		try {
-//			out.flush();
-			System.out.println("Shutdown");
 			sock.shutdownInput();
 			sock.shutdownOutput();
 			sock.close();
@@ -179,59 +126,106 @@ public class Client extends Thread implements ServerProtocol{
 		}
 	}
 	
+	/**
+	 * Just prints the message to System.out.
+	 * @param message
+	 */
 	private static void print(String message){
 		System.out.println(message);
 	}
 	
+	/**
+	 * Returns the name of the client.
+	 * @return
+	 */
 	public String getClientName(){
 		return name;
 	}
 	
+	/**
+	 * Creates a new <code>ConnectFourController</code> with the two players that are going to play this game.
+	 * @param name1
+	 * @param name2
+	 */
 	private void makeGame(String name1, String name2){
-		connectFourController = new ConnectFourController(name1, name2);
-	}
-	
-	private void makeMove(int index){
-//		board.setField(index);
-	}
-	
-	public static String readIn(){
-		String input = null;
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			input = in.readLine();
-		} catch (IOException e) {
-			System.exit(0);
-//			e.printStackTrace();
+		inGame = true;
+		new BoardGUIController();
+		if(name.equals(name2)){
+			bgui.setButtons(false);
 		}
-		return (input == null) ? "" : input;
 	}
 	
+	/**
+	 * Makes a move on the <code>Board</code>
+	 * @param index
+	 */
+	private void makeMove(int index){
+		bgui.setBackground(index);
+		bgui.nextPlayer();
+		bgui.setButtons(true);
+	}
+	
+	/**
+	 * The class that controlls the <code>ClientGUI</code>
+	 * @author Gerwin
+	 *
+	 */
 	class ClientGUIController extends WindowAdapter implements ActionListener{
 
+		/**
+		 * Adds the actionlisteners to the buttons on the <code>ClientGUI</code>
+		 * Also adds an windowListener to the <code>JFrame</code> of the <code>ClientGUI</code>
+		 */
 		public ClientGUIController(){
 			gui.play.addActionListener(this);
 			gui.quit.addActionListener(this);
 			gui.clientFrame.addWindowListener(this);
 		}
 		
+		/**
+		 * It makes sure that if the window is closing the frame that created the windowevent will be disposed
+		 */
 		public void windowClosing(WindowEvent e){
 			Window w = e.getWindow();
 			w.dispose();
 		}
 		
+		/**
+		 * Makes sure that if the window is closed, the <code>Client</code> will safely shutdown.
+		 */
 		public void windowClosed(WindowEvent e){
 			sendMessage("quit");
 		}
 		
+		/**
+		 * Handles the button input.
+		 */
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if(arg0.getActionCommand().equals("quit")){
-				sendMessage("quit");
+				gui.clientFrame.dispose();
 			} else if(arg0.getActionCommand().equals("play")){
 				sendMessage("play");
 			}
-			
+		}
+		
+	}
+	
+	class BoardGUIController implements ActionListener{
+
+		public BoardGUIController(){
+			bgui = new BoardGUI(name);
+			rowChoosers = bgui.getRowChoosers();
+			for(int i = 0; i < y; i++){
+				rowChoosers[i].addActionListener(this);
+			}
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			int index = Integer.parseInt(arg0.getActionCommand());
+			bgui.setButtons(false);
+			sendMessage(SEND_MOVE + " " + index);
 		}
 		
 	}
