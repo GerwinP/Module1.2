@@ -26,7 +26,6 @@
 \tableofcontents
 \newpage
 \section{Inleiding}
-\section{Inleiding}
 Een van de doelen van de afgelopen module, module Software Systemen, was het maken van het project. Als project wordt er een spel gemaakt. Dat spel moet over een server gespeeld kunnen worden en het spel moet zelf controleren of de spelers zich aan de regels houden en of er iemand gewonnen heeft als er een set gedaan is. Het gaat om een bordspel waarbij het niet gaat om geluk maar om strategie zodat er ook een AI voor gemaakt kan worden die door zijn strategie bijna standaard wint.\\
 Dit jaar is het spel dat ge\"implementeerd zal worden `vier op een rij'. Dit is een spel voor twee personen. Bij `vier op een rij' is het de bedoeling dat men stenen in een van de zeven rechtopstaande kokers gooit, wanneer een kolom vol is mag hier natuurlijk geen steen meer aan toe gevoegd worden. De spelers doen dit om de beurt en proberen er voor te zorgen dat de andere speler geen vier stenen, horizontaal, verticaal of schuin aansluitend heeft liggen en probeert tegelijkertijd dit wel zelf voor elkaar te krijgen. De eerste die dit lukt heeft gewonnen.\\
 Als begin positie is het bord leeg. De persoon die begint is vrij om een rij te kiezen. Ook in elke volgende set is er geen beperking bij het kiezen van de kolom. De rij waarop de steen terecht komt is afhankelijk van het aantal stenen dat er al in die kolom liggen, alle stenen zullen namelijk naar beneden vallen. In het echte spel mag men onderling bepalen wie de eerste set mag doen, in mijn versie van het spel wordt dit door de volgorde waarop de spelers op `play' klikken. Dus de speler die als eerste op 'play' heeft gedrukt mag als eerste beginnen en heeft de rode kleur\\
@@ -38,7 +37,7 @@ Als begin positie is het bord leeg. De persoon die begint is vrij om een rij te 
 Er moesten een aantal belangrijke dingen in het programma komen. Deze staan op pagina 18 van de reader en hier heb ik me dan ook zo goed mogelijk aan gehouden.
 Voor de server zijn het de volgende vereisten:
 \begin{enumerate}
-\item Het poortnummer kan je ingeven via de StartServerGUI waar de server daarna naar gaat luisteren, mits het een geldig poortnummer is die nog niet in gebruik is.
+\item Het poortnummer kan je ingeven via de ServerStartGUI waar de server daarna naar gaat luisteren, mits het een geldig poortnummer is die nog niet in gebruik is.
 \item (een goede error wordt gemaakt als port niet kan) Er wordt een error weergeven als er geen geldig poortnummer wordt ingevoerd. Dan terminate het hele programma. 
 \item De server ondersteund meerdere games die tegelijkertijd gespeeld kunnen worden. Dit wordt gedaan doordat de Server per twee spelers die willen spelen een nieuwe ServerGame maakt die de Game bij houdt.
 \item Er is nu geen TUI die zorgt dat alle berichten naar System.out schrijft, maar een ServerGUI die zorgt dat alle berichten naar een JTextArea worden geschreven die binnenkomen op de server. Ook de berichten die de server stuurt worden naar de JTextArea geschreven.
@@ -85,7 +84,71 @@ De Game wordt aangeroepen door de bovengenoemde controller en door een ServerGam
 Binnen deze package zijn alle klassen te vinden die zorgen voor het grafische deel van het programma.
 \subsubsection{BoardGUI}
 De grafische weergave van een bord en tevens de View in het MVC patroon. De BoardGUI bevat in de initi\"ele staat 42 zwarte, niet klikbare knoppen. Deze stellen de velden van een vier op een rij spel voor. Boven elke kolom is een klikbare knop te vinden om een zet te kunnen doen in die kolom.\\
-Deze klasse wordt door elke klasse gebruikt die een grafische interface wil voor een bord.
+Deze klasse wordt door elke klasse gebruikt die een grafische interface wil voor een bord. 
+\subsubsection{ClientGUI}
+De GUI die de client te zien krijgt nadat hij connectie heeft gemaakt met de server. Hier kan hij kiezen om te spelen of om te stopppen. Daarnaast kan hij een bericht intypen zodat hij kan chatten. Op een JTextArea worden alle binnenkomende en uitgaande berichten weergeven.\\
+Deze klasse wordt alleen door de startgui gebruikt om een nieuwe client te starten. De Client dient als controller voor deze klasse. Deze zorgt ervoor dat de knoppen een functie krijgen en dat de JTextArea wordt geupdate.
+\subsubsection{ErrorGUI}
+...
+\subsubsection{ServerGUI}
+De GUI die men te zien krijgt als er een server is gestart vanaf de ServerStartGUI. Op de GUI zijn twee JTextAreas. Op de ene staan alle binnenkomende en uitgaande berichten van de server. Op de ander staat een lijst van clientnamen die geconnect zijn met de server.\\
+Deze GUI wordt gestart door een ServerStartGUI. De ServerGUI zorgt ervoor dat er een Server wordt gestart. De Server is de controller voor deze klasse en zorgt ervoor dat de JTextAreas worden geupdate.
+\subsubsection{ServerStartGUI}
+De ServerStartGUI zorgt ervoor dat er een poortnummer kan worden ingevoerd en dat er een server kan worden gestart. Deze GUI bevat slechts een JTextField en een JButton. De textfield om een poortnummer in te kunnen voeren en de button om een server te starten. Als de poortnummer niet geldig is termineert het programma.\\
+Deze klasse is van geen andere klasse afhankelijk. Hij start alleen een server, mits het ingevoerde poortnummer is geldig.
+\subsubsection{StartGUI}
+Met de startgui kan een nieuwe client worden gestart of kan er standalone worden gespeeld. Als men standalone wil spelen hoeft er niks te worden ingevuld, maar mocht men dit willen kan er een naam worden ingevuld. Als men een client wil starten en dus online wil spelen moeten alle velden worden ingevoerd. Deze zijn er een voor de naam, een voor het ipadres en een voor de poortnummer. Als al deze waarden geldig zijn en ingevuld wordt er een nieuwe client gestart en connectie gemaakt met de server, mits deze server bestaat op de gegeven waarden.\\
+De StartGUI kan los gedraaid worden en heeft geen andere klassen nodig om te werken. Een inner klasse zorgt ervoor dat de knoppen functies krijgen en dat de ingevoerde informatie wordt gecheckt en verwerkt.
 
+\subsection{Players}
+Binnen deze package zijn drie klasses. Twee klasses extenden de derde klasse.
+\subsubsection{Player}
+De abstracte klasse binnen deze package. Deze heeft de methodes die elke Player nodig heeft, zoals een getName() of getColor(). Er is een abstracte methode binnen de klasse. Deze verschilt dus per extentie van Player. 
+\subsubsection{HumanPlayer}
+Een extentie van Player. Deze klasse heeft niet veel meer functie in het spel dan de naam en de kleur van de speler bijhouden.\\
+Deze klasse heeft dus Player nodig, omdat hij Player extend.
+\subsubsection{ComputerPlayer}
+Een tweede extentie van Player. Dit keer is het een ComputerPlayer. Deze heeft een zekere vorm van AI. De klasse wordt gebruikt om zetten te doen zonder dat daar een mens voor nodig is. Als iemand standalone kiest op de StartGUI, dan gaat hij spelen tegen een ComputerPlayer.\\
+De ComputerPlayer neemt een random getal tussen de 0 en de 6 en doet in die kolom een zet.\\
+Ook deze klasse is afhankelijk van Player, omdat hij Player extend.
+\subsection{server}
+Binnen deze package zijn alles klasses die te maken hebben met de Client-Server connectie en het spelen van een spel via een server.
+\subsubsection{Client}
+De Client zorgt ervoor dat een persoon verbinding kan maken met een server met berichten kan sturen naar de server. Een Client zorgt er ook voor dat de berichten die binnen komen goed worden verwerkt.\\
+De Client is afhankelijk van een ClientHandler om daadwerkelijk met een server te kunnen communiceren.
+\subsubsection{ClientHandler}
+\subsubsection{Server}
+\subsubsection{ServerGame}
 
+\subsection{tests}
+De test klassen die in deze package te vinden zijn worden besproken in het gedeelte over de tests.
+
+\subsection{utils}
+Binnen deze package zijn een aantal klassen die door een aantal andere klassen worden gebruikt zonder verder invloed te hebben op uitkomsten of hoe het eruit ziet.
+\subsubsection{PlayerColor}
+Een enum klasse. De enum bestaat uit drie delen, namelijk een RED, een YELLOW en EMPTY. Met deze enum wordt er binnen het spel aangegeven welke kleur een veld heeft en welke kleur een speler is. Voor een veld kan dat RED, YELLOW of EMPTY zijn, waar RED een rood veldje voorsteld, YELLOW een geel veldje en EMPTY een leeg veldje.
+\subsubsection{ServerProtocol}
+Deze klasse hebben we tijdens een projectmeeting opgesteld toen we het protocol gingen samenstellen. Binnen deze klasse zijn een aantal final Strings die commandos voorstellen voor de Client-Server commmunicatie. Hier moeten zowel de Client als de Server zich aan houden.Dit protocol zorgt er ook voor dat verschillende implementaties van het spel toch tegen elkaar kunnen spelen.
+
+\section{Testrapport}
+
+\section{Metrics report}
+
+\section{Reflectie op de planning}
+\subsection{Ervaringen week vier}
+In de vierde week van de module zijn we in het design project gaan kijken naar wat er zoal gedaan moest worden en hoeveel tijd de losse onderdelen zouden gaan kosten. Ook hebben we gekeken naar welke dingen eerst af moesten voor we verder konden. Dit is mij erg van pas gekomen bij het plannen van mijn programmeer project. Sommige dingen, zoals het uitbreiden van de GUI bijvoorbeeld had ik heeft veel zin in maar heb ik toch nog aan de kant geschoven om eerst de verplichtte vereiste af te krijgen. Daarom heb ik de vereisten boven aan gezet en ben ik daarna gaan kijken naar de extra's die ik nog kon implementeren.\\
+\subsection{Project planning}
+Tijdens de projectweken van de tweede module waar ik eigenlijk deze opdracht moest afhebben was het me niet gelukt om me aan mijn planning te houden. Dit door andere dingen die onverwachts meer tijd nodig hadden.\\
+Omdat ik nu deze opdracht heb gerepareerd in een andere module, was het extreem belangrijk dat ik me aan mijn planning hield. Dit is me dan ook beter gelukt dan in het begin.  Soms heb ik echter wel moeten afwijken van mijn planning omdat er dan dingen zijn die onverwachts weer meer tijd kosten of een opdracht van de andere module die wat meer aandacht vergt. Maar over het geheel genomen ben ik toch zeer tevreden.
+\subsection{Compensatie voor de verloren tijd}
+Ten compensatie van de verloren tijd ben ik sommige avonden langer doorgegaan zodat ik toch voldeed aan het aantal uur dat ik had ingepland.\\
+Er zijn dan wel dingen die niet helemaal perfect zijn gegaan en perfect zijn afgewerkt doordat ik niet helemaal goed had gepland, maar het blijft toch een goed en mogelijk project.
+\subsection{Wat ik geleerd heb}
+Wat ik geleerd heb, is vooral dat het heel behulpzaam kan zijn om mensen om hulp te vragen. Om dan maar, ondanks dat het daar druk is en ik me slechter kan concentreren, toch naar practicum te gaan en daar te vragen hoe ik nu verder moet in plaats van proberen het allemaal zelf op internet te vinden. Veel antwoorden kun je op internet vinden maar helaas niet alles, daar heb je soms iemand voor nodig die kan helpen met het uitzoeken waar nou precies in mijn geval de fout zit.\\
+Dit schreef ik in het verslag voor de eerste keer dat ik dit project maakte, en ik sta hier nog steeds achter. Hulp vragen is altijd de beste manier als je er zelf echt niet uitkomt, zeker nu ik een nog strakkere planning had.
+\subsection{Mijn advies}
+Als student assistent zou ik mijn studenten vooral adviseren op tijd te beginnen, dit heb ik wel gedaan maar ik weet dat veel mensen hier vaak de fout bij ingaan. Verder zou ik ze adviseren snel hulp te vragen als ze vast zitten. Het heeft geen zin om je hoofd te blijven breken over een bug die je niet ziet maar die een ander er binnen een paar minuten uit heeft. Ik zal ze ook vertellen dat ze het project vooral niet moeten onderschatten. Verder dat ze vooral ook niet naar hun scherm moeten blijven staren als het niet lukt. Als je er even niet uit komt is het het beste om even te gaan lopen en een kopje drinken te halen. Wanneer je dan terug komt zie je misschien wel meteen wat er aan de hand was en kun je weer verder.\\
+Een gevaar wat ik me ook realiseerde is dat het heel snel kan gebeuren dat je gaat multitasken. Dit houdt in dat je bezig bent met een probleem dat je wil implementeren, en tijdens dat implementeren kom je een ander probleem tegen, waar je dan mee verder gaat. Zo kan je steeds verder van je werkelijke doel afraken en vordert het werk niet meer. Daarom denk ik dat het goed is om als je denkt dat dit gebeurt, dingen die je tegenkomt op te schrijven en daar later stuk voor stuk naar te kijken.
+\section{Nawoord}
+Helaas heb ik het project niet gehaald de eerste keer. Dit had zo mijn redenen. Daarom ben ik dankbaar dat ik het project heb mogen repareren. Ik sta er nog steeds achter dat ik geen spijt heb van het feit dat ik alleen heb gewerkt, ik heb nu alle kanten van dit project gezien en weet hoe alles in elkaar steekt. Ook mede dankzij hulp van studentassistenten. 
 \end{document}
