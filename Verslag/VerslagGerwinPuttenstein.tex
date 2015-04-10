@@ -54,6 +54,38 @@ Voor de client zijn het de volgende eisen die worden gesteld en op de volgende m
  \item 
 \end{enumerate}
 
+\subsection{Observer en Model-View-Controller}
+Binnen mijn implementatie van het spel is de BoardGUI de observer en de Game klasse de Observable. Wanneer er een zet wordt gedaan op de gui, wordt deze doorgespeeld naar de Game, deze kijkt of dit een geldige zet is en speelt deze zet op het bord, als de zet geldig is. Daarna stuurt de Game een update naar alle Observers. In dit geval is dit alleen de BoardGUI. Als deze een update binnenkrijgt, wordt de zet gedaan op de gui.\\
+Ook maak ik gebruikt van het MVC patroon. Binnen mijn implementatie is de Game klasse de model, de BoardGUI klasse de view en de ConnectFourController de controller. De controller maakt een view en een model aan en zorgt ervoor dat updates op de view worden doorgespeeld naar de model en vice versa.
+
+\subsection{Formats voor data opslag en communicatieprotocol}
+Een board klasse houdt bij welke plaatsen op het bord zijn bezet met stenen en welke plaatsen nog leeg zijn. Deze velden worden bijgehouden in een array van PlayerColors. Deze array is 42 plaatsen groot, gelijk aan het aantal velden van een vier op een rij spel. Een veld kan leeg zijn, PlayerColor.EMPTY, geel zijn, PlayerColor.YELLOW, of rood zijn, PlayerColor.RED. \\
+Voor een online spel houdt een ServerGame bij welke spelers in dat specifieke spel zitten en wie er aan de beurt is. Een ServerGame wordt aangemaakt door de Server als twee spelers willen spelen.\\
+Voor het commmunicatieprotocol wordt het protocol gebruikt dat is opgesteld tijdens een projectmeeting. Daar hebben we gekozen om een klasse te gebruiken die commands voor de server, commands voor de client, commands voor beide en errormessages bevat.
+
+\newpage
+
+\section{Discussie per klasse}
+Hier volgt een korte toelichting op elke klasse die in mijn implementatie van het spel zitten, opgedeeld per package.\\
+\subsection{connectFour}
+In deze package zitten alle klassen die nodig zijn voor de kern van het spel.
+\subsubsection{Board}
+Deze klasse houdt voor elk spel de stand van het bord bij. Ook worden binnen deze klasse de spelregels bijgehouden en zijn er de methoden om te kijken of er een winnaar is. Deze klasse houdt bij of het bord vol is, of het spel voorbij is en wie de winnaar is. \\
+De klasse Game gebruik de Boardklasse om het bord aan te kunnen passen, een winnaar te bepalen en te kijken of het spel over is.
+
+\subsubsection{ConnectFourController}
+De controller klasse van het spel. Deze klasse maakt een View en een Model aan en zorgt er daarna voor dat er een spel gespeeld kan worden via het MVC patroon. De klasse bevat alleen een contructor om alles aan te maken en een actionPerformed om het klikken op een knop af te handelen.\\
+Deze klasse wordt aangeroepen als je standalone wil gaan spelen.
+
+\subsubsection{Game}
+De model in het MVC patroon. Deze klasse zorgt ervoor dat er een nieuw spel kan worden gemaakt met twee spelers. Daarnaast houdt hij bij wie er aan de beurt is en voert hij beurten uit voor spelers op een Gui en een bord.\\
+De Game wordt aangeroepen door de bovengenoemde controller en door een ServerGame. 
+
+\subsection{gui}
+Binnen deze package zijn alle klassen te vinden die zorgen voor het grafische deel van het programma.
+\subsubsection{BoardGUI}
+De grafische weergave van een bord en tevens de View in het MVC patroon. De BoardGUI bevat in de initi\"ele staat 42 zwarte, niet klikbare knoppen. Deze stellen de velden van een vier op een rij spel voor. Boven elke kolom is een klikbare knop te vinden om een zet te kunnen doen in die kolom.\\
+Deze klasse wordt door elke klasse gebruikt die een grafische interface wil voor een bord.
 
 
 \end{document}
