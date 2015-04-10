@@ -72,7 +72,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 					server.removeClientName(clientName);
 					server.removeHandler(this);
 				}else if(splitMessage[0].equals(SEND_GAME_OVER)){
-					server.removeGame(serverGame);
+					server.removeGame(serverGame, this);
 				}else{
 					sendMessage(SEND_ERROR_INVALIDCOMMAND);
 				}

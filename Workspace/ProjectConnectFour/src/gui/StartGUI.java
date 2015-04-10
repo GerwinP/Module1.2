@@ -63,6 +63,7 @@ public class StartGUI {
 		startFrame.add(createStartPanel(), BorderLayout.SOUTH);
 		startFrame.add(createInfoPanel(), BorderLayout.NORTH);
 		startFrame.setSize(300, 300);
+		startFrame.setResizable(false);
 		startFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		startFrame.setVisible(true);
 		return startFrame;
@@ -97,8 +98,8 @@ public class StartGUI {
 		GridLayout grid = new GridLayout(4,1);
 		infoPanel.setLayout(grid);
 		nameField = new JTextField();
-		ipField = new JTextField();
-		portField = new JTextField();
+		ipField = new JTextField("localhost");
+		portField = new JTextField("4545");
 		JLabel nameLabel = new JLabel("Name");
 		JLabel ipLabel = new JLabel("Ip adres");
 		JLabel portLabel = new JLabel("Port");

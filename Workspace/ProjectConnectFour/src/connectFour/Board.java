@@ -147,6 +147,8 @@ public class Board{
 		return isWinner(row, col, color) || isFull();
 	}
 	
+//	public boolean gameOver()
+	
 	/**
 	 * Checks if the given <code>PlayerColor</code> is a winner
 	 * @param color
@@ -157,7 +159,6 @@ public class Board{
 		countVertical(row, col, color);
 		countDiagonalLeft(row, col, color);
 		countDiagonalRight(row, col, color);
-		System.out.println(getHorizontalCount() + ", " + getVerticalCount() + ", " + getDiagonalLeftCount() + ", " + getDiagonalRightCount());
 		boolean isWinner = false;
 		if(getHorizontalCount() >= 3 || getVerticalCount() >= 3 || getDiagonalLeftCount() >= 3 || getDiagonalRightCount() >= 3){
 			isWinner = true;

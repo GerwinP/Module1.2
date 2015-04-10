@@ -55,41 +55,39 @@ public class ServerGame implements ServerProtocol, Observer{
 	}
 	
 	public void makeMove(int index, ClientHandler clienthandler){
-//		if(game.getCurrentPlayer() == player1.getPlayerColor()){
-//			game.takeTurn(index);
-//		}else if(game.getCurrentPlayer() == player2.getPlayerColor()){
-//			game.takeTurn(index);
-//		}
-		game.takeTurn(index);
+		if(!game.gameOver()){
+			game.takeTurn(index);
+			checkGameOver();
+		}
 	}
 
+	private void checkGameOver(){
+		if(game.gameOver()){
+			String winner = "draw";
+			if(player1.getPlayerColor() == game.getCurrentPlayer()){
+				winner = player1Name;
+			}else if(player2.getPlayerColor() == game.getCurrentPlayer()){
+				winner = player2Name;
+			}
+			server.broadcast(chs, SEND_GAME_OVER + " " + false + " "+ winner);
+		}
+	}
+	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if(arg1 instanceof Integer){
 			int index = (int)arg1;
-			server.broadcast(chs, MAKE_MOVE + " " + index); 
+			server.broadcast(chs, MAKE_MOVE + " " + index);
+			
 		}
-		
+//		if(arg1.equals("Game over")){
+//			String winner = "draw";
+//			if(player1.getPlayerColor() == game.getCurrentPlayer()){
+//				winner = player1Name;
+//			}else if(player2.getPlayerColor() == game.getCurrentPlayer()){
+//				winner = player2Name;
+//			}
+//			server.broadcast(chs, SEND_GAME_OVER + " " + false + winner);
+//		}
 	}
-	
-//	public void makeMove(int index, ClientHandler clienthandler){
-//		if(game.getCurrentPlayer() == player1 && ((HumanPlayer)player1).getClientHandler() == clienthandler){
-//			game.board.setCurrentPlayer(player1);
-//			game.board.setStone(index);
-//			game.countColor(game.board.getX(), game.board.getY(), player1.getPlayerColor());
-//			server.broadcast(chs, MAKE_MOVE + " " + index);
-//		}else if(((HumanPlayer)player2).getClientHandler() == clienthandler &&  game.getCurrentPlayer() == player2){
-//			game.board.setCurrentPlayer(player2);
-//			game.board.setStone(index);
-//			game.countColor(game.board.getX(), game.board.getY(), player2.getPlayerColor());
-//			server.broadcast(chs, MAKE_MOVE + " " + index);
-//		}
-//		if(game.isWinner()){
-//			boolean isDraw = false;
-//			server.broadcast(chs, ServerProtocol.SEND_GAME_OVER + " " + isDraw + " " + game.getWinner().getName());
-//			ch1.setIngame();
-//			ch2.setIngame();
-//			game.boardgui.disposeFrame();
-//		}
-//	}
 }

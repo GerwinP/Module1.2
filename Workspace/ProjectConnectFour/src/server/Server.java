@@ -34,9 +34,9 @@ public class Server extends Thread implements ServerProtocol{
 		port = portArg;
 		threads = new ArrayList<ClientHandler>();
 		gui = servergui;
-		System.out.println("Server started on port " + portArg);
 		try {
 			serverSocket = new ServerSocket(port);
+			System.out.println("Server started on port " + portArg);
 		} catch (IOException e) {
 			System.out.println("Could not create a ServerSocket on port "
 					+ port);
@@ -63,7 +63,7 @@ public class Server extends Thread implements ServerProtocol{
 	
 	public void broadcast(List<ClientHandler> chs, String msg){
 		Iterator<ClientHandler> iterator = chs.iterator();
-		print("Message: " + msg);
+		print(msg);
 		while(iterator.hasNext()){
 			iterator.next().sendMessage(msg);
 		}
@@ -72,7 +72,7 @@ public class Server extends Thread implements ServerProtocol{
 	public void broadcast(String msg) {
 		Iterator<ClientHandler> iterator = threads.iterator();
 		
-		print("Message: " + msg);
+		print(msg);
 		
 		while(iterator.hasNext()){
 			iterator.next().sendMessage(msg);
@@ -112,8 +112,9 @@ public class Server extends Thread implements ServerProtocol{
 		p2.setServerGame(serverGame);
 	}
 	
-	public void removeGame(ServerGame serverGame){
+	public void removeGame(ServerGame serverGame, ClientHandler ch){
 		servergames.remove(serverGame);
+		ch.setIngame();
 	}
 	
 	public void updateClientList(){

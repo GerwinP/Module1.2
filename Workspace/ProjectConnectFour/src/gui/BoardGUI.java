@@ -27,7 +27,9 @@ public class BoardGUI extends JFrame implements Observer{
 	private JPanel rowChooserPanel;
 	private JPanel infoPanel;
 	private JPanel boardPanel;
+	private JPanel hintPanel;
 	private JFrame totalFrame;
+	public JButton hint;
 	private JButton[] buttons;
 	private JButton[] rowChoosers;
 	private PlayerColor toPlay = PlayerColor.RED;
@@ -50,7 +52,9 @@ public class BoardGUI extends JFrame implements Observer{
 		totalFrame.setLayout(border);
 		totalFrame.add(createBoardPanel(), BorderLayout.CENTER);
 		totalFrame.add(createInfoPanel(), BorderLayout.EAST);
+		totalFrame.add(createHintPanel(), BorderLayout.SOUTH);
 		totalFrame.setSize(700, 700);
+		totalFrame.setResizable(false);
 		totalFrame.setLocationRelativeTo(null);
 		totalFrame.setVisible(true);
 		totalFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -119,6 +123,14 @@ public class BoardGUI extends JFrame implements Observer{
 		return infoPanel;
 	}
 	
+	private JPanel createHintPanel(){
+		hintPanel = new JPanel();
+		hint = new JButton("hint");
+		hint.setActionCommand("hint");
+		hintPanel.add(hint);
+		return hintPanel;
+	}
+	
 	/**
 	 * The method that lets the <code>BoardGUI</code> change the Background of the buttons
 	 * given an index and a <code>PlayerColor</code>
@@ -136,6 +148,10 @@ public class BoardGUI extends JFrame implements Observer{
 	
 	public void setBackground(int buttonIndex){
 		setBackground(buttonIndex, toPlay);
+	}
+	
+	public void setHint(int buttonIndex){
+		buttons[buttonIndex].setBackground(Color.gray);
 	}
 	
 	public void disableButtons(){
@@ -186,5 +202,10 @@ public class BoardGUI extends JFrame implements Observer{
 	 */
 	public JButton[] getRowChoosers(){
 		return rowChoosers;
+	}
+	
+	public void disableGUI(){
+		totalFrame.setVisible(false);
+		totalFrame.dispose();
 	}
 }

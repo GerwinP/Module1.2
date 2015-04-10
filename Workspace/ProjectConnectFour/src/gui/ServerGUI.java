@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
@@ -52,6 +53,7 @@ public class ServerGUI {
 		serverFrame.add(createLogPanel());
 		serverFrame.add(createClientPanel());
 		serverFrame.setSize(700,500);
+		serverFrame.setResizable(false);
 		serverFrame.setVisible(true);
 		return serverFrame;
 	}
@@ -63,10 +65,11 @@ public class ServerGUI {
 		JLabel logLabel = new JLabel("Server log:");
 		Border logAreaBorder = BorderFactory.createLineBorder(Color.BLACK);
 		logArea = new JTextArea();
+		JScrollPane sp = new JScrollPane(logArea);
 		logArea.setEditable(false);
 		logArea.setBorder(logAreaBorder);
 		logPanel.add(logLabel, BorderLayout.NORTH);
-		logPanel.add(logArea, BorderLayout.CENTER);
+		logPanel.add(sp, BorderLayout.CENTER);
 		logPanel.add(createEmptyPanel(), BorderLayout.WEST);
 		logPanel.add(createEmptyPanel(), BorderLayout.SOUTH);
 		return logPanel;

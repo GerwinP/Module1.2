@@ -60,10 +60,12 @@ public class Game extends Observable {
 			notifyObservers(field);
 			int row = (field - toPlay) / DIM;
 			if(board.gameOver(row, toPlay, players[current].getPlayerColor())){
+				gameOver = true;
 				setChanged();
 				notifyObservers("Game Over");
+			}else{
+				current = (current+1) % NUMBER_PLAYERS;
 			}
-			current = (current+1) % NUMBER_PLAYERS;
 		} 
 	}
 	

@@ -3,8 +3,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -13,7 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import server.Client;
@@ -24,13 +24,16 @@ public class ClientGUI {
 	private JPanel clientsPanel;
 	private JPanel buttonPanel;
 	private JPanel emptyPanel;
+	private JPanel chatPanel;
 	private JTextArea clientsArea;
+	private JTextField chatField;
+	public JButton chat;
 	public JButton play;
 	public JButton quit;
 	private Client client;
 	
 	public ClientGUI(String name, InetAddress host, int port){
-		createClientFrame();
+		createClientFrame(name);
 		startClient(name,host,port);
 	}
 	
@@ -48,13 +51,15 @@ public class ClientGUI {
 		clientsArea.append(message + "\n");
 	}
 	
-	private JFrame createClientFrame(){
-		clientFrame = new JFrame();
+	private JFrame createClientFrame(String name){
+		clientFrame = new JFrame(name);
 		BorderLayout border = new BorderLayout();
 		clientFrame.setLayout(border);
+		clientFrame.add(createChatPanel(), BorderLayout.NORTH);
 		clientFrame.add(createClientsPanel(), BorderLayout.CENTER);
 		clientFrame.add(createButtonPanel(), BorderLayout.SOUTH);
 		clientFrame.setSize(400,400);
+		clientFrame.setResizable(false);
 //		clientFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		clientFrame.setVisible(true);
 		return clientFrame;
@@ -66,11 +71,12 @@ public class ClientGUI {
 		clientsArea.setEditable(false);
 		Border clientAreaBorder = BorderFactory.createLineBorder(Color.BLACK);
 		clientsArea.setBorder(clientAreaBorder);
-		JLabel clients = new JLabel("Clients");
+		JScrollPane sp = new JScrollPane(clientsArea);
+		JLabel clients = new JLabel("Messages");
 		BorderLayout border = new BorderLayout();
 		clientsPanel.setLayout(border);
 		clientsPanel.add(clients, BorderLayout.NORTH);
-		clientsPanel.add(clientsArea, BorderLayout.CENTER);
+		clientsPanel.add(sp, BorderLayout.CENTER);
 		clientsPanel.add(createEmptyPanel(), BorderLayout.SOUTH);
 		clientsPanel.add(createEmptyPanel(), BorderLayout.WEST);
 		clientsPanel.add(createEmptyPanel(), BorderLayout.EAST);
@@ -97,12 +103,27 @@ public class ClientGUI {
 		return buttonPanel;
 	}
 	
+	private JPanel createChatPanel(){
+		chatPanel = new JPanel();
+		chat = new JButton("Chat");
+		chat.setActionCommand("chat");
+		chatField = new JTextField();
+		chatField.setColumns(20);
+		chatPanel.add(chatField);
+		chatPanel.add(chat);
+		return chatPanel;
+	}
+	
 	private JPanel createEmptyPanel(){
 		emptyPanel = new JPanel();
 		return emptyPanel;
 	}
 	
-	public static void main(String[] args){
-//		new ClientGUI();
+	public String getChatText(){
+		return chatField.getText();
+	}
+	
+	public void clearChatText(){
+		chatField.setText("");
 	}
 }

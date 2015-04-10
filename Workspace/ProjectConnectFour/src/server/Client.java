@@ -15,6 +15,7 @@ import java.net.Socket;
 
 import javax.swing.JButton;
 
+import players.ComputerPlayer;
 import utils.PlayerColor;
 import utils.ServerProtocol;
 import gui.*;
@@ -32,7 +33,7 @@ public class Client extends Thread implements ServerProtocol{
 	private BoardGUI bgui;
 	private JButton[] rowChoosers;
 	private final int y = 7;
-	private PlayerColor currentPlayer;
+	private boolean myTurn = false;
 	
 	/**
 	 * The constructor that creates a new <code>Client</code>.
@@ -71,10 +72,8 @@ public class Client extends Thread implements ServerProtocol{
 				}else if(message != null && inGame && splitMessage[0].equals(MAKE_MOVE)){
 					int index = Integer.parseInt(splitMessage[1]);
 					makeMove(index);
-				}else if(message != null && splitMessage[0].equals(SEND_GAME_OVER)){
-					print("The game is over");
-					print("The winner is: " + splitMessage[2]);
-					sendMessage(SEND_GAME_OVER);
+				}else if(message != null && inGame && splitMessage[0].equals(SEND_GAME_OVER)){
+					gameOver(splitMessage[2]);
 				}else if(message != null && splitMessage[0].equals(SEND_ERROR_INVALIDNAME)){
 //					print(SEND_ERROR_INVALIDNAME);
 //					shutDown();
@@ -119,7 +118,6 @@ public class Client extends Thread implements ServerProtocol{
 			sock.shutdownInput();
 			sock.shutdownOutput();
 			sock.close();
-			gui.clientFrame.dispose();
 			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -130,8 +128,9 @@ public class Client extends Thread implements ServerProtocol{
 	 * Just prints the message to System.out.
 	 * @param message
 	 */
-	private static void print(String message){
+	private void print(String message){
 		System.out.println(message);
+		gui.addMessage(message);
 	}
 	
 	/**
@@ -152,6 +151,8 @@ public class Client extends Thread implements ServerProtocol{
 		new BoardGUIController();
 		if(name.equals(name2)){
 			bgui.setButtons(false);
+		}else if(name.equals(name1)){
+			myTurn = true;
 		}
 	}
 	
@@ -161,8 +162,25 @@ public class Client extends Thread implements ServerProtocol{
 	 */
 	private void makeMove(int index){
 		bgui.setBackground(index);
+		setTurn();
 		bgui.nextPlayer();
-		bgui.setButtons(true);
+	}
+	
+	private void setTurn(){
+		if(myTurn){
+			myTurn = false;
+			bgui.setButtons(false);
+		}else{
+			myTurn = true;
+			bgui.setButtons(true);
+		}
+	}
+	
+	private void gameOver(String winner){
+		inGame = false;
+		print("The game is over");
+		print("The winner is: " + winner);
+		bgui.disableGUI();
 	}
 	
 	/**
@@ -179,6 +197,7 @@ public class Client extends Thread implements ServerProtocol{
 		public ClientGUIController(){
 			gui.play.addActionListener(this);
 			gui.quit.addActionListener(this);
+			gui.chat.addActionListener(this);
 			gui.clientFrame.addWindowListener(this);
 		}
 		
@@ -194,7 +213,7 @@ public class Client extends Thread implements ServerProtocol{
 		 * Makes sure that if the window is closed, the <code>Client</code> will safely shutdown.
 		 */
 		public void windowClosed(WindowEvent e){
-			sendMessage("quit");
+			sendMessage(SEND_QUIT);
 		}
 		
 		/**
@@ -205,7 +224,10 @@ public class Client extends Thread implements ServerProtocol{
 			if(arg0.getActionCommand().equals("quit")){
 				gui.clientFrame.dispose();
 			} else if(arg0.getActionCommand().equals("play")){
-				sendMessage("play");
+				sendMessage(SEND_PLAY);
+			} else if(arg0.getActionCommand().equals("chat")){
+				sendMessage(CHAT + " " + gui.getChatText());
+				gui.clearChatText();
 			}
 		}
 		
@@ -216,6 +238,7 @@ public class Client extends Thread implements ServerProtocol{
 		public BoardGUIController(){
 			bgui = new BoardGUI(name);
 			rowChoosers = bgui.getRowChoosers();
+			bgui.hint.addActionListener(this);
 			for(int i = 0; i < y; i++){
 				rowChoosers[i].addActionListener(this);
 			}
@@ -223,9 +246,14 @@ public class Client extends Thread implements ServerProtocol{
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			int index = Integer.parseInt(arg0.getActionCommand());
-			bgui.setButtons(false);
-			sendMessage(SEND_MOVE + " " + index);
+			if(arg0.getActionCommand().equals("hint")){
+				int col = new ComputerPlayer("", PlayerColor.EMPTY).determineMove();
+				int index = new Board().checkForFreeSpot(col, PlayerColor.RED);
+				bgui.setHint(index);
+			}else{
+				int index = Integer.parseInt(arg0.getActionCommand());
+				sendMessage(SEND_MOVE + " " + index);
+			}
 		}
 		
 	}
