@@ -34,10 +34,26 @@ Als begin positie is het bord leeg. De persoon die begint is vrij om een rij te 
 \section{Bespreking van het totale ontwerp}
 \subsection{Klassediagram}
 
-\subsectien{Vereisten}
+\subsection{Vereisten}
 Er moesten een aantal belangrijke dingen in het programma komen. Deze staan op pagina 18 van de reader en hier heb ik me dan ook zo goed mogelijk aan gehouden.
 Voor de server zijn het de volgende vereisten:
 \begin{enumerate}
 \item Het poortnummer kan je ingeven via de StartServerGUI waar de server daarna naar gaat luisteren, mits het een geldig poortnummer is die nog niet in gebruik is.
-\item 
+\item (een goede error wordt gemaakt als port niet kan) Er wordt een error weergeven als er geen geldig poortnummer wordt ingevoerd. Dan terminate het hele programma. 
+\item De server ondersteund meerdere games die tegelijkertijd gespeeld kunnen worden. Dit wordt gedaan doordat de Server per twee spelers die willen spelen een nieuwe ServerGame maakt die de Game bij houdt.
+\item Er is nu geen TUI die zorgt dat alle berichten naar System.out schrijft, maar een ServerGUI die zorgt dat alle berichten naar een JTextArea worden geschreven die binnenkomen op de server. Ook de berichten die de server stuurt worden naar de JTextArea geschreven.
+\item (server protocol)
+\end{enumerate}
+Voor de client zijn het de volgende eisen die worden gesteld en op de volgende manier zijn ge\"implementeerd.
+\begin{enumerate}
+ \item Ook hier wordt geen gebruik gemaakt van een TUI, maar van een GUI. Hier is het mogelijk om het adres en de poortnummer van de server waar je op wil spelen kan invoeren en waar je een naam kan invoeren. Ook is het mogelijk om binnen deze GUI te kiezen om standalone te spelen. Dit is een spel tegen de computer.
+ \item Er is support voor HumanPlayers en voor ComputerPlayers. Deze maken beide gebruik van een abstracte klasse Player. Hiervoor heb ik een beetje de klassen gevolgd die we hebben gebruikt voor de opdrachen en zelf wat aangepast zodat het beter aansluit op mijn implementatie. De ComputerPlayer bevat een kleine mate van intelligentie, dit houdt in dat de ComputerPlayer een random getal kiest tussen 0 en 6 voor de kolom waar hij een steen wil plaatsen.
+ \item (thinking time ComputerPlayer)
+ \item (hint)
+ \item (als de game klaar is moet de Client een nieuwe game kunnen starten)
+ \item 
+\end{enumerate}
+
+
+
 \end{document}
