@@ -47,14 +47,14 @@ public class ClientHandler extends Thread implements ServerProtocol {
 					}else{
 						sendMessage(SEND_ERROR_INVALIDNAME);
 					}
-				}else if (ack && !inGame && splitMessage[0].equals(SEND_PLAY)) {
+				}else if (ack && splitMessage[0].equals(SEND_PLAY)) {
 					System.out.println("[" + clientName + " is waiting]");
 					server.waitingForGame.add(this);
 					if (server.waitingForGame.size() == 2) {
 						System.out.println("Two players waiting");
 						server.makeGame();
 					}
-				}else if (ack && inGame && splitMessage[0].equals(SEND_MOVE)) {
+				}else if (ack && splitMessage[0].equals(SEND_MOVE)) {
 					int index = Integer.parseInt(splitMessage[1]);
 					makeMove(index);
 				}else if(splitMessage[0].equals(CHAT)){

@@ -44,16 +44,6 @@ public class ServerGame implements ServerProtocol, Observer{
 		ch2.setIngame();
 	}
 	
-	private String getStringPlayer(){
-		if(game.getCurrentPlayer() == player1.getPlayerColor()){
-			return "player1";
-		}else if(game.getCurrentPlayer() == player2.getPlayerColor()){
-			return "player2";
-		}else{
-			return "geen speler";
-		}
-	}
-	
 	public void makeMove(int index, ClientHandler clienthandler){
 		if(!game.gameOver()){
 			game.takeTurn(index);
@@ -64,9 +54,9 @@ public class ServerGame implements ServerProtocol, Observer{
 	private void checkGameOver(){
 		if(game.gameOver()){
 			String winner = "draw";
-			if(player1.getPlayerColor() == game.getCurrentPlayer()){
+			if(player1.getPlayerColor() == game.getCurrentPlayer() && !game.board.isFull()){
 				winner = player1Name;
-			}else if(player2.getPlayerColor() == game.getCurrentPlayer()){
+			}else if(player2.getPlayerColor() == game.getCurrentPlayer() && !game.board.isFull()){
 				winner = player2Name;
 			}
 			server.broadcast(chs, SEND_GAME_OVER + " " + false + " "+ winner);
@@ -78,7 +68,6 @@ public class ServerGame implements ServerProtocol, Observer{
 		if(arg1 instanceof Integer){
 			int index = (int)arg1;
 			server.broadcast(chs, MAKE_MOVE + " " + index);
-			
 		}
 //		if(arg1.equals("Game over")){
 //			String winner = "draw";

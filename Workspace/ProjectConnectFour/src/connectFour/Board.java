@@ -346,8 +346,7 @@ public class Board{
 		}
 		for(int j = 0; j < maxCol; j++){
 			if(field == j && !isEmptyField(field)){
-				System.out.println("You can not place here");
-				System.exit(0);
+				field = -1;
 			}
 		}
 		return field;

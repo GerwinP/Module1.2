@@ -32,7 +32,9 @@ Als begin positie is het bord leeg. De persoon die begint is vrij om een rij te 
 \newpage 
 \section{Bespreking van het totale ontwerp}
 \subsection{Klassediagram}
-
+Ik heb voor het overzicht van dit diagram de klassen in packages onderverdeeld. Ze zitten in het diagram in dezelfde package als dat ze in het systeem zijn ingedeeld. Ook heb ik ervoor gekozen om geen methodes in het klassediagram op te nemen, dit komt het overzicht niet ten goede. \\
+\includegraphics[scale=0.5]{ConnectFour.jpg}\\
+De enige klasse die wel in het systeem zit en niet in het klasse diagram is opgenomen is de klasse PlayerColor. Omdat dit een enum is, wordt hij door bijna alle klassen gebruikt en voegt het dus niet veel toe aan het klasse diagram.
 \subsection{Vereisten}
 Er moesten een aantal belangrijke dingen in het programma komen. Deze staan op pagina 18 van de reader en hier heb ik me dan ook zo goed mogelijk aan gehouden.
 Voor de server zijn het de volgende vereisten:
@@ -41,16 +43,17 @@ Voor de server zijn het de volgende vereisten:
 \item (een goede error wordt gemaakt als port niet kan) Er wordt een error weergeven als er geen geldig poortnummer wordt ingevoerd. Dan terminate het hele programma. 
 \item De server ondersteund meerdere games die tegelijkertijd gespeeld kunnen worden. Dit wordt gedaan doordat de Server per twee spelers die willen spelen een nieuwe ServerGame maakt die de Game bij houdt.
 \item Er is nu geen TUI die zorgt dat alle berichten naar System.out schrijft, maar een ServerGUI die zorgt dat alle berichten naar een JTextArea worden geschreven die binnenkomen op de server. Ook de berichten die de server stuurt worden naar de JTextArea geschreven.
-\item (server protocol)
+\item Het serverprotocol dat is besproken tijdens de projectmeeting wordt gerespecteerd. Er zijn een aantal commandos die de server niet kent, en niet alle errors worden gestuurd. De niet ge\"implementeerde commandos hebben te maken met het challenge en leaderboard gedeelte. Dit ondersteund mijn server niet, dus is het ook niet nuttig om deze te implementeren. Ook worden niet alle errors verzonden omdat niet op alles wordt gecheckt.
 \end{enumerate}
 Voor de client zijn het de volgende eisen die worden gesteld en op de volgende manier zijn ge\"implementeerd.
 \begin{enumerate}
  \item Ook hier wordt geen gebruik gemaakt van een TUI, maar van een GUI. Hier is het mogelijk om het adres en de poortnummer van de server waar je op wil spelen kan invoeren en waar je een naam kan invoeren. Ook is het mogelijk om binnen deze GUI te kiezen om standalone te spelen. Dit is een spel tegen de computer.
- \item Er is support voor HumanPlayers en voor ComputerPlayers. Deze maken beide gebruik van een abstracte klasse Player. Hiervoor heb ik een beetje de klassen gevolgd die we hebben gebruikt voor de opdrachen en zelf wat aangepast zodat het beter aansluit op mijn implementatie. De ComputerPlayer bevat een kleine mate van intelligentie, dit houdt in dat de ComputerPlayer een random getal kiest tussen 0 en 6 voor de kolom waar hij een steen wil plaatsen.
- \item (thinking time ComputerPlayer)
- \item (hint)
- \item (als de game klaar is moet de Client een nieuwe game kunnen starten)
- \item 
+ \item Er is support voor HumanPlayers en voor ComputerPlayers. Deze maken beide gebruik van een abstracte klasse Player. Hiervoor heb ik een beetje de klassen gevolgd die we hebben gebruikt voor de opdrachen en zelf wat aangepast zodat het beter aansluit op mijn implementatie. De ComputerPlayer bevat een kleine mate van intelligentie, dit houdt in dat de ComputerPlayer een random getal kiest tussen 0 en 6 voor de kolom waar hij een steen wil plaatsen. Er kan online alleen worden gespeeld met een HumanPlayer, de optie om een ComputerPlayer te kiezen is er niet. De ComputerPlayer wordt gebruikt als er standalone wordt gespeeld.
+ \item Omdat de ComputerPlayer alleen wordt gebruikt tijdens het standalone spelen en ik gefocust was op het online gedeelte heb ik niet gedacht aan de mogelijkheid om de denktijd van een ComputerPlayer te kunnen veranderen.
+ \item Er is een hintsysteem ge\"implementeerd, echter werkt deze niet naar behoren. Hij maakt gebruik van de determineMove() van de ComputerPlayer. Het probleem is dat er niet wordt gekeken of de velden eronder vrij zijn of niet en er wordt dan dus altijd een vakje grijs gekleurd op de onderste rij.
+ \item Nadat een client spel heeft gespeeld kan deze gelijk weer een nieuw spel starten door opnieuw op play te drukken.
+ \item Als de server onverwachts disconnect dan handelt de client dit goed af. Hij heeft door als er geen connectie meer is en sluit dan veilig alle verbindingen die openstaan. Dan sluit de gui af en termineert het programma.
+ \item De client respecteert ook het protocol dat is afgesproken. Ook hier geld dat de leaderboard en challenge commandos niet zijn ge\"implementeerd omdat de client deze niet ondersteund. En er wordt niet veel gedaan met de error commandos die zijn afgesproken.
 \end{enumerate}
 
 \subsection{Observer en Model-View-Controller}
@@ -88,8 +91,6 @@ Deze klasse wordt door elke klasse gebruikt die een grafische interface wil voor
 \subsubsection{ClientGUI}
 De GUI die de client te zien krijgt nadat hij connectie heeft gemaakt met de server. Hier kan hij kiezen om te spelen of om te stopppen. Daarnaast kan hij een bericht intypen zodat hij kan chatten. Op een JTextArea worden alle binnenkomende en uitgaande berichten weergeven.\\
 Deze klasse wordt alleen door de startgui gebruikt om een nieuwe client te starten. De Client dient als controller voor deze klasse. Deze zorgt ervoor dat de knoppen een functie krijgen en dat de JTextArea wordt geupdate.
-\subsubsection{ErrorGUI}
-...
 \subsubsection{ServerGUI}
 De GUI die men te zien krijgt als er een server is gestart vanaf de ServerStartGUI. Op de GUI zijn twee JTextAreas. Op de ene staan alle binnenkomende en uitgaande berichten van de server. Op de ander staat een lijst van clientnamen die geconnect zijn met de server.\\
 Deze GUI wordt gestart door een ServerStartGUI. De ServerGUI zorgt ervoor dat er een Server wordt gestart. De Server is de controller voor deze klasse en zorgt ervoor dat de JTextAreas worden geupdate.
@@ -117,8 +118,12 @@ Binnen deze package zijn alles klasses die te maken hebben met de Client-Server 
 De Client zorgt ervoor dat een persoon verbinding kan maken met een server met berichten kan sturen naar de server. Een Client zorgt er ook voor dat de berichten die binnen komen goed worden verwerkt.\\
 De Client is afhankelijk van een ClientHandler om daadwerkelijk met een server te kunnen communiceren.
 \subsubsection{ClientHandler}
+De ClientHandler is een klasse die wordt gestart als een Client een connectie wil met de Server. De Server maakt dan bij een binnenkomend verzoek een nieuwe ClientHandler aan. Deze ClientHandler zorgt er voor dat berichten die gestuurd worden vanaf de Client naar de Server worden afgehandeld. Dus als bijvoorbeeld een Client het commando play stuurt, dan krijgt de ClientHandler dit bericht en zorgt dan dat de server hier dingen mee gaat doen, in dit geval de Client in een wachtrij stoppen of als er genoeg spelers zijn, in een spel stopppen.
 \subsubsection{Server}
+De Server zorgt ervoor dat Clients met elkaar kunnen communiceren. Hier maken alle Clients mee verbinding en via de Server worden dan de berichten verspreid, of worden nieuwe spellen gestart of gestopt. 
 \subsubsection{ServerGame}
+De ServerGame klasse houdt een spel bij die op de Server draait. Binnen deze klasse zijn twee ClientHandlers geregistreerd die met elkaar een spel aan het spelen zijn. Een Server maakt een nieuwe ServerGame aan per twee ClientHandlers die hebben aangegeven dat ze een spel willen spelen. Binnen de ServerGame worden de binnenkomende moves gecheckt en wordt er na elke move gekeken of er al een winnaar is of dat het spel al voorbij is. Dan stuurt een ServerGame via de Server de moves of een game over naar de verbonden ClientHandlers die in dit spel zitten.\\
+Per Server kunnen er meerdere ServerGames zijn, dit zorgt er dan voor dat er meerdere spellen tegelijkertijd gespeeld kunnen worden op een Server.
 
 \subsection{tests}
 De test klassen die in deze package te vinden zijn worden besproken in het gedeelte over de tests.
@@ -131,8 +136,53 @@ Een enum klasse. De enum bestaat uit drie delen, namelijk een RED, een YELLOW en
 Deze klasse hebben we tijdens een projectmeeting opgesteld toen we het protocol gingen samenstellen. Binnen deze klasse zijn een aantal final Strings die commandos voorstellen voor de Client-Server commmunicatie. Hier moeten zowel de Client als de Server zich aan houden.Dit protocol zorgt er ook voor dat verschillende implementaties van het spel toch tegen elkaar kunnen spelen.
 
 \section{Testrapport}
+Het testen van het systeem ging op verschillende manieren. Omdat er veel gebruik wordt gemaakt van GUIs, worden deze getest door te kijken of alles binnen de GUI werkt en goed reageert op invloeden van buiten. Ook is het voor de GUIs belangrijk dat ze goed in elkaar zitten en niet raar er uit zien.\\
+\subsection{GUI test}
+Per GUI heb ik gekeken wat er gebeurde als ik bepaalde knoppen in drukte of wat er met een JTextArea gebeurde als er een nieuw bericht werd gegenereerd.
+\subsubsection{BoardGUI}
+Voor de BoardGUI is het belangrijk dat de knoppen boven de kolommen goed werken en de juiste events genereren. Dit heb ik gedaan door een nieuw spel te starten en gewoon te gaan spelen. Door op een knop te drukken werd dan een steen geplaatst in de juiste kolom en werd deze zo ver mogelijk naar onderen geplaatst.\\
+Ook was belangrijk dat de knoppen die de velden moeten voorstellen juist werden gekleurt. Dit gebeurde ook als de knop boven de desbetreffende kolom werd ingedrukt en werkte dit gedeelte ook naar behoren. Het enige gevaar was nog als de rij vol was en je wil nog een steen daar plaatsen. Hier kwam ik tijdens het spelen achter. Dit is opgelost door een bericht te geven dat je hier geen steen mag plaatsen en dan het programma te termineren, zoals ook is afgesproken in het protocol.\\
+Dit werkte goed in een standalone versie van het spel, alleen tijdens het testen van het systeem kwam ik er achter dat als een kolom helemaal wordt gevuld en er komt nog een steen bij dat niet de Client maar de Server stopt. Dus dan stopt iedereen. Dit is logisch, omdat de Game wordt gemaakt op de Server en de Game een move checkt. Maar dit zou doorgespeeld moeten worden naar de Client. \\
+Na deze test heb ik dit veranderd en wordt het te spelen field -1, zodat hier op gecheckt kan worden en er een invalid move gestuurd kan worden als de move niet valid is.
+\subsubsection{ClientGUI}
+Wat hier getest moest worden was of het logpanel goed werd geupdate met berichten die binnenkwamen en eruit gingen en dat de knoppen "play" en "quit" werkten.\\
+Het logpanel is getest door te kijken naar de berichten die op de console van eclipse stonden en deze te vergelijken met de berichten in het logpanel. Deze kwamen altijd over een en concludeerde ik dat de berichten goed werden weergeven.\\
+De knoppen werden getest door er op te klikken en kijken wat de uitkomst was. Voor "play" zou dit moeten zijn dat er een play wordt verstuurd naar de server. Dit werd gedaan en als er nog een andere speler dit had gedaan werd er een nieuw spel gestart.\\
+Voor "quit" geld dat de socket goed wordt afgesloten en dat de gui verdwijnt. Dit wordt goed gedaan omdat de Server weet dat een Client is geleaved als een Client op quit drukt.
+\subsubsection{ServerGUI}
+Voor de ServerGUI geldt ongeveer hetzelfde als voor de ClientgUI. Het logpanel en het clientpanel moeten de juiste informatie weergeven. Dit heb ik op dezelfde manier getest als bij de Client en dit gaat goed.\\
+Bij de ServerGUI heb ik ook een panel waar een lijst staat met Clients. Deze wordt ook goed geupdate. Dit heb ik getest door Clients te connecten en te verwijderen van de Server. Ten allen tijde klopte de lijst met de Clients die waren geconnect.\\
+Er was een probleem, en dat was dat twee Clients dezelfde naam hadden, dit zou niet mogen kunnen, maar er wordt niet op gecheckt door de Server. Dus als een van de twee van de Server disconnect verdwijnen beide namen uit de lijst, terwijl er nog wel een van de twee is geconnect.\\
+Een ander probleem wat er is met de ServerGUI is dat als ik de GUI sluit, de server door blijft draaien tot ik deze handmatig termineer via de console van eclipe. Ik ben nog niet achter de oorzaak hiervan gekomen.
+\subsubsection{ServerStartGUI}
+Hier gaat het er vooral om dat de informatie die wordt ingevoerd geldig is en dat de knop een nieuwe server start. Dit is makkelijk te testen door dingen in te voeren en een server te starten.\\
+Dit geeft als resultaat dat als er geen nummer wordt ingevoerd dit wordt gemeld en het programma wordt gestopt.\\
+Echter als het poortnummer in gebruik is, wordt er toch geprobeerd een nieuwe server te starten en dan wordt er dan toch een error gecre\"erd dat er een nullpointer is omdat de Socket niet geopend kon worden.
+\subsubsection{StartGUI}
+Ook hier geld dat de informatie die wordt ingevoerd goed moet worden gecheckt en moet worden afgehandeld als de informatie niet klopt. Zolang een Client niks met de informatie kan die is ingevoerd en er wordt toch geprobeerd verbinding te maken met een niet bestaande server wordt het programma simpelweg gestopt.\\
+Voor de knoppen gaat het erom dat voor de een een standalone spel wordt gestart en voor de ander er word geprobeerd verbinding te maken met de server. Dit wordt correct gedaan.
+\subsection{connectFour package}
+De Board klasse is getest door een test klasse te schrijven, namelijk testBoard. Deze klasse maakt gebruik van JUnit om te testen. Per test staat er een stukje commentaar bij wat er precies wordt getest. Dit was goed om te doen, omdat er binnen de Board klasse de spelregels zijn ge\"implementeerd. De test gaf geen errors en dus kloppen alle methods. De testBoard gaf op de Board een coverage van 90.4\%.\\
+De Game klasse is lastig te testen, omdat deze erg afhankelijk is van andere klassen. Dus hiervoor heb ik een nieuwe standalone spel gestart en gekeken of de Game goed reageerde op de input die ik gaf. Het enige waar deze dus niet goed op reageerde was als de kolom vol was. Dan wordt in multiplayer de Server gestopt. Dit is licht veranderd zodat de server en in ieder geval niet meer mee stopt.
+
+\subsection{Player package}
+Voor de Player package heb ik een nieuwe JUnit test case gemaakt die alle drie de klassen in de package test. Dit kan omdat twee klassen, namelijk ComputerPlayer en HumanPlayer, extenties zijn van Player.\\
+Deze testklasse geeft voor ComputerPlayer en HumanPlayer een coverage van 100\% en voor Player een coverage van 62.5\%.
+
+\subsection{Server package}
+Het server gedeelte is wat lastiger te testen omdat de klassen elkaar nodig hebben om te testen. De server was hiervan nog het makkelijkste om te testen door verbinding te maken met telnet en commandos te sturen naar de server om te kijken of deze correct reageerd.\\
+Hier ben ik erachter gekomen dat de server altijd correct terug reageerd. Als ik bijvoorbeeld een niet bestaand commando geef, dan krijg ik een Invalid Command error terug en als ik chat en bericht doe, dan chat ik op de server.\\
+Via dit test je ook of de Client goed communiceerd. Dus of de juiste commandos het juiste effect hebben op de server. Het spelen van een spel werkt niet correct via een telnet, omdat hier een GUI voor nodig is om correct te functioneren. Via telnet kan je zetten blijven spelen, ook al ben je niet aan de beurt. Via de GUI wordt dit geregeld door knoppen te disablen als je niet aan de beurt bent.\\
+De Client-Server gedeelte wordt verder getest in een system test.
+
+\subsection{System tests}
+In deze sectie zal ik kort beschrijven hoe ik de requirements heb getest in het systeem.
 
 \section{Metrics report}
+Voor de analyse van mijn code met de Metrics plugin heb ik eerst gekeken naar de MLoC(Method lines of code). Hiervoor heb ik een klein experiment gedaan met een aantal methodes binnen mijn systeem. Hieruit heb ik geconcludeerd dat mijn code een goede kwaliteit heeft, omdat de MLoC zo klein mogelijk is. Zo start ik bijvoorbeeld een else gelijk na het haakje van een if in plaats van op een nieuwe regel. Door dit een aantal keer in een methode te doen daalt de MLoC.\\
+Voor de cyclomatic complexity van mijn code heb ik een aantal methodes binnen een aantal klassen die zeer hoog uitvallen. Dit zijn met name de run methodes voor de Server en de Client, omdat deze een oneindige while loop bevatten. Ook binnen de board zijn er een aantal hoge waarden. Deze zijn voor het tellen van de stenen voor een winnaar. Dit komt omdat ik een aantal loops in elkaar heb en daar binnen weer een if-elseif contructie. Dit geeft hoge waardes. Dit komt mijn kwaliteit van de code niet ten goede, maar dit is nu eenmaal de manier voor mij om dit te doen. Ik zie geen andere mogelijkheid om dit te maken.\\
+Daarnaast heb ik ook nog naar de weigthed methods per class gekeken. Deze was voor een aantal klassen zeer hoog. Dit komt door het aantal for loops en if statements die er in deze klassen te vinden zijn. Deze hoge waarden houden in dat de klassen applicatiespecifiek zijn. Voor bijvoorbeeld Board, met een WMC van 84, klopt dit ook. Hier zijn de spelregels voor Vier op een rij en dus is deze klasse niet echt voor een andere applicatie te gebruiken. De GUIs hebben een vrij lage waarde, dus deze zijn wat makkelijker te hergebruiken.\\
+Al met al is de code niet overal van goede kwaliteit en niet altijd even herbruikbaar. De MLoC waren wel mooie waren die zo laag mogelijk waren. Echter waren de cyclomatic complexity en de WMC vrij hoog. Dit zou nog naar beneden kunnen om de kwaliteit van de klassen te kunnen verbeteren.
 
 \section{Reflectie op de planning}
 \subsection{Ervaringen week vier}

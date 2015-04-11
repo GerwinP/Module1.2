@@ -18,6 +18,7 @@ public class TestBoard {
 		board = new Board();
 	}
 
+	
 	@Test
 	public void testDeepCopy(){
 		Board copyBoard = board.deepCopy();
@@ -65,11 +66,6 @@ public class TestBoard {
 			board.setField(i, PlayerColor.RED);
 		}
 		assertEquals("End with full board", true, board.isFull());
-	}
-	
-	@Test
-	public void testGameOver(){
-//		assertEquals("With an empty board and no winner")
 	}
 	
 	@Test

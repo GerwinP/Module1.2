@@ -67,8 +67,10 @@ public class Client extends Thread implements ServerProtocol{
 				if(message != null && splitMessage[0].equals(SEND_QUIT)){
 					shutDown();
 				}else if(message!= null && splitMessage[0].equals(MAKE_GAME)){
-					System.out.println("Starting boardGui");
-					makeGame(splitMessage[1], splitMessage[2]);
+					if(!inGame){
+						System.out.println("Starting boardGui");
+						makeGame(splitMessage[1], splitMessage[2]);
+					}
 				}else if(message != null && inGame && splitMessage[0].equals(MAKE_MOVE)){
 					int index = Integer.parseInt(splitMessage[1]);
 					makeMove(index);
