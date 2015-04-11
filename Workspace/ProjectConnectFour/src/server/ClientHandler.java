@@ -40,7 +40,7 @@ public class ClientHandler extends Thread implements ServerProtocol {
 					clientName = splitMessage[2];
 					if(server.checkClientNames(clientName)){
 						server.addClientName(clientName);
-						opties = splitMessage[1];
+						setOpties(splitMessage[1]);
 						announce();
 						sendMessage(SEND_HELLO + " " + server.getVersie());
 						ack = true;
@@ -124,6 +124,13 @@ public class ClientHandler extends Thread implements ServerProtocol {
 	
 	private void shutDown() {
 		server.removeHandler(this);
-		server.broadcast("[" + clientName + " has left]");
+	}
+
+	public String getOpties() {
+		return opties;
+	}
+
+	public void setOpties(String opties) {
+		this.opties = opties;
 	}
 }

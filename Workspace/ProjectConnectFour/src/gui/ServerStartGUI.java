@@ -11,8 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import server.Server;
-
 public class ServerStartGUI {
 	
 	private JPanel infoPanel;

@@ -28,23 +28,16 @@ public class Board{
 	}
 	
 	/**
-	 * Creates a deepcopy of the <code>Board</code>
-	 * @return a copy of the <code>Board</code>
-	 */
-	public Board deepCopy(){
-		Board copyBoard = new Board();
-		for(int i = 0; i < fields.length; i++){
-			copyBoard.fields[i] = this.fields[i];
-		}
-		return copyBoard;
-	}
-	
-	/**
 	 * Returns the index of a field on the <code>Board</code>
 	 * given the row and the column
 	 * @param row
 	 * @param col
 	 * @return the index of a field
+	 */
+	/*
+	 * @ requires row >= 0 && row <= 5;
+	 * 	 requires col >= 0 && col <= 6;
+	 * 	 ensures index == col + row * this.maxCol;
 	 */
 	private int index(int row, int col){
 		int index = col + row * maxCol;
@@ -55,7 +48,8 @@ public class Board{
 	 * A getter for the <code>PlayerColor[]</code> fields.
 	 * @return
 	 */
-	public PlayerColor[] getFields(){
+
+	/*@ pure */public PlayerColor[] getFields(){
 		return fields;
 	}
 	
@@ -63,6 +57,10 @@ public class Board{
 	 * Checks if the given index is a field on the <code>Board</code>
 	 * @param index
 	 * @return if the index is a field
+	 */
+	/*
+	 * @ requires index  >= 0 && index <= 41;
+	 * 	 ensures \result == isField;
 	 */
 	public boolean isField(int index){
 		boolean isField = false;
@@ -78,7 +76,7 @@ public class Board{
 	 * @param col
 	 * @return if the row and column belong to a field
 	 */
-	public boolean isField(int row, int col){
+	/*@ pure */public boolean isField(int row, int col){
 		return isField(index(row,col));
 	}
 	
@@ -86,6 +84,10 @@ public class Board{
 	 * Gets the <code>PlayerColor</code> of a field <code>index</code>
 	 * @param index
 	 * @return </code>PlayerColor</code> of the given field
+	 */
+	/*
+	 * @ requires index >= 0 && index <= 41;
+	 * 	 ensures color == PlayerColor.YELLOW || color == PlayerColor.RED;
 	 */
 	public PlayerColor getField(int index){
 		PlayerColor color = null;
@@ -101,7 +103,7 @@ public class Board{
 	 * @param col
 	 * @return <code>PlayerColor</code> of the given pair (row,col)
 	 */
-	public PlayerColor getField(int row, int col){
+	/*@ pure */public PlayerColor getField(int row, int col){
 		return getField(index(row,col));
 	}
 	
@@ -110,6 +112,9 @@ public class Board{
 	 * Checks if the <code>index</code> corresponds to an empty field
 	 * @param index
 	 * @return true if the field is empty
+	 */
+	/*
+	 * @ requires index >= 0 && index <= 41;
 	 */
 	public boolean isEmptyField(int index){	
 		return getField(index) == PlayerColor.EMPTY;
@@ -121,13 +126,16 @@ public class Board{
 	 * @param col
 	 * @return true if the field is empty
 	 */
-	public boolean isEmptyField(int row, int col){
+	/*@ pure */public boolean isEmptyField(int row, int col){
 		return isEmptyField(index(row,col));
 	}
 	
 	/**
 	 * Checks if the whole <code>Board</code> is full
 	 * @return true if the <code>Board</code> is full
+	 */
+	/*
+	 * @ ensures \result == isFull;
 	 */
 	public boolean isFull(){
 		boolean isFull = true;
@@ -143,16 +151,25 @@ public class Board{
 	 * Checks if the game is over, so if there is a winner or if the <code>Board</code> is full
 	 * @return true if the game is over
 	 */
+	/*
+	 * @ requires row >= 0 && row <= 5;
+	 * 	 requires col >= 0 && col <= 6;
+	 * 	 requires color != null && (color == PlayerColor.YELLOW || color == PlayerColor.RED);
+	 */
 	public boolean gameOver(int row, int col, PlayerColor color){
 		return isWinner(row, col, color) || isFull();
 	}
-	
-//	public boolean gameOver()
 	
 	/**
 	 * Checks if the given <code>PlayerColor</code> is a winner
 	 * @param color
 	 * @return true if the <code>PlayerColor</code> is a winner
+	 */
+	/*
+	 * @ requires row >= 0 && row <= 5;
+	 * 	 requires col >= 0 && col <= 6;
+	 * 	 requires color != null && (color == PlayerColor.YELLOW || color == PlayerColor.RED);
+	 * 	 ensures \result == isWinner
 	 */
 	public boolean isWinner(int row, int col, PlayerColor color){
 		countHorizontal(row, col, color);
@@ -173,11 +190,18 @@ public class Board{
 	 * @param color
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
+	/*
+	 * @ requires row >= 0 && row <= 5;
+	 * 	 requires col >= 0 && col <= 6;
+	 * 	 requires color != null && (color == PlayerColor.YELLOW || color == PlayerColor.RED);
+	 * 	 ensures getHorizontalCount() => 0;
+	 */
 	public void countHorizontal(int row, int col, PlayerColor color){
 		horizontalCount = 0;
 		//Check left
 		if(col>0){
 			boolean colorFound = true;
+			//@ loop_invariant col-1 >= x && x >= 0;
 			for(int x = col - 1; colorFound && x >= 0; x--){
 				if(!getField(row,x).equals(color)){
 					colorFound = false;
@@ -189,6 +213,7 @@ public class Board{
 		//Check right
 		if(col < maxCol - 1){
 			boolean colorFound = true;
+			//@ loop_invariant col+1 <= x && x <= this.maxCol;
 			for(int x = col + 1; colorFound && x >= col && x < maxCol; x++){
 				if(!getField(row,x).equals(color)){
 					colorFound = false;
@@ -207,11 +232,18 @@ public class Board{
 	 * @param color
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
+	/*
+	 * @ requires row >= 0 && row <= 5;
+	 * 	 requires col >= 0 && col <= 6;
+	 * 	 requires color != null && (color == PlayerColor.YELLOW || color == PlayerColor.RED);
+	 * 	 ensures getVerticalCount() => 0;
+	 */
 	public void countVertical(int row, int col, PlayerColor color){
 		verticalCount = 0;
 		//Check down
 		if(row < maxRow-1){
 			boolean colorFound = true;
+			//@ loop_invariant x >= row+1 && x < this.maxRow;
 			for(int x = row + 1; colorFound && x >= row && x < maxRow; x++){
 				if(!getField(x, col).equals(color)){
 					colorFound = false;
@@ -230,12 +262,19 @@ public class Board{
 	 * @param color
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
+	/*
+	 * @ requires row >= 0 && row <= 5;
+	 * 	 requires col >= 0 && col <= 6;
+	 * 	 requires color != null && (color == PlayerColor.YELLOW || color == PlayerColor.RED);
+	 * 	 ensures getDiagonalLeftCount() => 0;
+	 */
 	public void countDiagonalLeft(int row, int col, PlayerColor color){
 		diagonalLeftCount = 0;
 		//Check left up
 		if(row > 0 && col > 0){
 			boolean colorFound = true;
 			int y = col-1;
+			//@ loop_invariant 0 <= x && x <= row-1;
 			for(int x = row-1; colorFound && row >= 0; x--){
 				if(!getField(x,y).equals(color)){
 					colorFound = false;
@@ -249,6 +288,7 @@ public class Board{
 		if(row < maxRow-1 && col < maxCol-1){
 			boolean colorFound = true;
 			int y = col+1;
+			//@ loop_invariant maxRow > x && x >= row+1;
 			for(int x = row+1; colorFound && x < maxRow; x++){
 				if(!getField(x,y).equals(color)){
 					colorFound = false;
@@ -268,12 +308,19 @@ public class Board{
 	 * @param color
 	 * @return the amount of adjacent fields with the same <code>PlayerColor</code>
 	 */
+	/*
+	 * @ requires row >= 0 && row <= 5;
+	 * 	 requires col >= 0 && col <= 6;
+	 * 	 requires color != null && (color == PlayerColor.YELLOW || color == PlayerColor.RED);
+	 * 	 ensures getDiagonalRightCount() => 0;
+	 */
 	public void countDiagonalRight(int row, int col, PlayerColor color){
 		diagonalRightCount = 0;
 		//Check right up
 		if(row < maxRow-1 && col > 0){
 			boolean colorFound = true;
 			int y = col + 1;
+			//@ loop_invariant 0 <= x && x <= row-1;
 			for(int x = row -1; colorFound && x >= 0; x--){
 				if(!getField(x,y).equals(color)){
 					colorFound = false;
@@ -287,6 +334,7 @@ public class Board{
 		if(row > 0 && col < maxRow-1){
 			boolean colorFound = true;
 			int y = col-1;
+			//@ loop_invariant x < this.maxRow && x >= row+1;
 			for(int x = row + 1; colorFound && x < maxRow; x++){
 				if(!getField(x,y).equals(color)){
 					colorFound = false;
@@ -302,7 +350,9 @@ public class Board{
 	/**
 	 * Resets the <code>Board</code> by setting all the fields to empty
 	 */
+	//@ ensures (\forall int i; i < this.maxFields; getField(i) == PlayerColor.EMPTY);
 	public void reset(){
+		//@ loop_invariant 0 <= i && i < this.maxFields;
 		for(int i = 0; i < maxFields; i++){
 			setField(i, PlayerColor.EMPTY);
 		}
@@ -312,6 +362,10 @@ public class Board{
 	 * Sets a field on the <code>Board</code> with the given <code>index</code> in the <code>color</code> that is given
 	 * @param index
 	 * @param color
+	 */
+	/*
+	 * @ requires index >= 0 && index < this.maxFields;
+	 * 	 ensures getField(index) == color;
 	 */
 	public void setField(int index, PlayerColor color){
 		fields[index] = color;
@@ -323,7 +377,7 @@ public class Board{
 	 * @param col
 	 * @param color
 	 */
-	public void setField(int row, int col, PlayerColor color){
+	/* pure */public void setField(int row, int col, PlayerColor color){
 		setField(index(row,col), color);
 	}
 	
@@ -334,6 +388,11 @@ public class Board{
 	 * @param col
 	 * @param color
 	 * @return
+	 */
+	/*
+	 * @ requires col >= 0 && col <= 6;
+	 * 	 requires color != null && (color == PlayerColor.YELLOW || color == PlayerColor.RED);
+	 * 	 ensures field >= 0 && field <= this.maxFields;
 	 */
 	public int checkForFreeSpot(int col, PlayerColor color){
 		boolean placeFound = true;
@@ -356,7 +415,7 @@ public class Board{
 	 * Returns the horizontalCount
 	 * @return
 	 */
-	public int getHorizontalCount(){
+	/* pure */public int getHorizontalCount(){
 		return horizontalCount;
 	}
 
@@ -364,7 +423,7 @@ public class Board{
 	 * Returns the verticalCount
 	 * @return
 	 */
-	public int getVerticalCount(){
+	/* pure */public int getVerticalCount(){
 		return verticalCount;
 	}
 	
@@ -372,7 +431,7 @@ public class Board{
 	 * Returns the diagonalLeftCount
 	 * @return
 	 */
-	public int getDiagonalLeftCount(){
+	/* pure */public int getDiagonalLeftCount(){
 		return diagonalLeftCount;
 	}
 	
@@ -380,7 +439,7 @@ public class Board{
 	 * Returns the diagonalRightCount
 	 * @return
 	 */
-	public int getDiagonalRightCount(){
+	/* pure */public int getDiagonalRightCount(){
 		return diagonalRightCount;
 	}
 }

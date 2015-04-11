@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import server.Client;
 import connectFour.ConnectFourController;
 
 /**

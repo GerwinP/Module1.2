@@ -23,7 +23,6 @@ public class Server extends Thread implements ServerProtocol{
 	private int port;
 	private List<ClientHandler> threads;
 	public ServerSocket serverSocket = null;
-	private static final String USAGE = "usage: " + Server.class.getName() + " <port>";
 	private List<String> clientNames = new ArrayList<String>();
 	public final String versie = "100";
 	public List<ClientHandler> waitingForGame = new ArrayList<ClientHandler>();
@@ -149,7 +148,6 @@ public class Server extends Thread implements ServerProtocol{
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
 			
 		}
 		

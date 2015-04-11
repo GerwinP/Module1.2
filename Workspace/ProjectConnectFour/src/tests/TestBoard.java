@@ -23,19 +23,6 @@ public class TestBoard {
 	public void setUp() throws Exception {
 		board = new Board();
 	}
-
-	/**
-	 * Tests if the deepCopy method correctly copies the Board.
-	 */
-	@Test
-	public void testDeepCopy(){
-		Board copyBoard = board.deepCopy();
-		PlayerColor[] boardFields = board.getFields();
-		PlayerColor[] copyFields = copyBoard.getFields();
-		for(int i = 0; i < boardFields.length; i++){
-			assertEquals("The " + i + "th field of board", copyFields[i], boardFields[i]);
-		}
-	}
 	
 	/**
 	 * Tests for several inputs if it is a field on the Board or not. 
