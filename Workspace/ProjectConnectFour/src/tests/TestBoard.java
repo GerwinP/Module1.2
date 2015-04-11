@@ -13,12 +13,20 @@ public class TestBoard {
 	public Board board;
 	private int maxFields = 42;
 	
+	/**
+	 * The initial setup.
+	 * Called before every test.
+	 * It creates a new Board.
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		board = new Board();
 	}
 
-	
+	/**
+	 * Tests if the deepCopy method correctly copies the Board.
+	 */
 	@Test
 	public void testDeepCopy(){
 		Board copyBoard = board.deepCopy();
@@ -29,6 +37,10 @@ public class TestBoard {
 		}
 	}
 	
+	/**
+	 * Tests for several inputs if it is a field on the Board or not. 
+	 * Both tested with existing fields and non existing fields.
+	 */
 	@Test
 	public void testIsField(){
 		assertEquals("With a correct field and index", true, board.isField(3));
@@ -37,6 +49,10 @@ public class TestBoard {
 		assertEquals("With a wrong field, row and col", false, board.isField(6,7));
 	}
 	
+	/**
+	 * Test for the getField method. It should return the PlayerColor of a field.
+	 * Tested with a none existing field, an empty field and a colored field.
+	 */
 	@Test
 	public void testgetField(){
 		assertEquals("With a none existing field", null, board.getField(45));
@@ -49,6 +65,10 @@ public class TestBoard {
 		assertEquals("With filled in row and col", PlayerColor.YELLOW, board.getField(3,4));
 	}
 	
+	/**
+	 * Test for the isEmptyField method.
+	 * Tests if a field is empty. First checked two empty fields, after that colored those fields and checked those again
+	 */
 	@Test
 	public void testIsEmptyField(){
 		assertEquals("With an empty field 32", true, board.isEmptyField(32));
@@ -59,6 +79,11 @@ public class TestBoard {
 		assertEquals("With Yellow row and col 3,4", false, board.isEmptyField(3,4));
 	}
 	
+	/**
+	 * Tests if the board is full.
+	 * Start with an empty board.
+	 * Filled the board and called the method again.
+	 */
 	@Test
 	public void testIsFull(){
 		assertEquals("Start with an empty board", false, board.isFull());
@@ -68,6 +93,10 @@ public class TestBoard {
 		assertEquals("End with full board", true, board.isFull());
 	}
 	
+	/**
+	 * Test for the horizontalCount. The method checks if there is a row of four on the horizontal.
+	 * First check for a stone with no row, and then create a row and check again.
+	 */
 	@Test
 	public void testCountHorizontal(){
 		board.countHorizontal(2,3,PlayerColor.RED);
@@ -79,6 +108,10 @@ public class TestBoard {
 		assertEquals("Test with a horizontal line", 3, board.getHorizontalCount());
 	}
 	
+	/**
+	 * Test for the verticalCount. Checks if there is a vertical row of four.
+	 * First check for a stone with no row, then create a vertical row and check again.
+	 */
 	@Test
 	public void testVerticalCount(){
 		board.countVertical(2, 2, PlayerColor.YELLOW);
@@ -90,6 +123,10 @@ public class TestBoard {
 		assertEquals("Test with a vertical line", 3 , board.getVerticalCount());
 	}
 	
+	/**
+	 * Test for the diagonalLeftCount. Checks if there is a diagonal row of four from right to left.
+	 * First check for a stone with no row, then create a diagonal row and check again.
+	 */
 	@Test
 	public void testCountDiagonalLeft(){
 		board.countDiagonalLeft(3,2,PlayerColor.RED);
@@ -101,6 +138,10 @@ public class TestBoard {
 		assertEquals("Test with a diagonal line", 3, board.getDiagonalLeftCount());
 	}
 	
+	/**
+	 * Test for the diagonalRightCount. Checks if there is a diagonal row from left to right.
+	 * First check for a stone with no row, then create a diagonal row and check again.
+	 */
 	@Test
 	public void testCountDiagonalRight(){
 		board.countDiagonalRight(2,3,PlayerColor.YELLOW);
@@ -112,6 +153,10 @@ public class TestBoard {
 		assertEquals("Test with a diagonal line", 3, board.getDiagonalRightCount());
 	}
 	
+	/**
+	 * Test for the checkForFreeSpot. It should make sure that a stone will be always at the lowest point of a column.
+	 * So first an empty row, then set some fields, check again, set some more fields and check again.
+	 */
 	@Test
 	public void testCheckForFreeSpot(){
 		assertEquals("Test with no other field filled", 38, board.checkForFreeSpot(3,  PlayerColor.RED));
@@ -122,11 +167,5 @@ public class TestBoard {
 		board.setField(17, PlayerColor.RED);
 		board.setField(10, PlayerColor.RED);
 		assertEquals("Test with 5 fields filled", 3, board.checkForFreeSpot(3, PlayerColor.RED));
-	}
-	
-	@Test
-	public void testCheckForFreeSpotFirstColumn(){
-		assertEquals("Test with no other field filled", 35, board.checkForFreeSpot(0, PlayerColor.RED));
-		
 	}
 }
